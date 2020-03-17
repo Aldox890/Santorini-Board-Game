@@ -1,11 +1,11 @@
-package it.polimi.ingsw;
+package client;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 /**
- * Unit test for simple App.
+ * Unit test for simple it.polimi.ingsw.App.
  */
 public class AppTest 
 {
