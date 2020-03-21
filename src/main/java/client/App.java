@@ -1,5 +1,7 @@
 package client;
 
+import client.god.Apollo;
+
 /**
  * Hello world!
  *
