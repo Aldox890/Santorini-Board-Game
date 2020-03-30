@@ -1,4 +1,4 @@
-package server;
+package project.server;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -20,8 +20,8 @@ public class Server {
         System.out.println("Server socket ready on port: " + port);
 
         //TODO: while loop waiting for ALL players to connect and start PlayerInstance as thread to serve each player.
-        Socket socket = serverSocket.accept(); //waiting for first client connection
-        System.out.println("Received client connection");
+        Socket socket = serverSocket.accept(); //waiting for first project.client connection
+        System.out.println("Received project.client connection");
 
         //TODO: this should be moved into PlayerInstance class.
         Scanner in = new Scanner(socket.getInputStream());

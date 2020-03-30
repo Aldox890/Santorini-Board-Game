@@ -1,4 +1,4 @@
-package client;
+package project;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,11 +28,11 @@ public class Client {
             while(!socketLine.equals("quit")){
                 String inputLine = stdin.nextLine();
 
-                //send message to the server
+                //send message to the project.server
                 socketOut.println(inputLine);
                 socketOut.flush();
 
-                //wait for server response
+                //wait for project.server response
                 socketLine = socketIn.nextLine();
                 System.out.println(socketLine);
             }

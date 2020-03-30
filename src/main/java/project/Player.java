@@ -1,4 +1,4 @@
-package client;
+package project;
 
 public class Player {
     public String name;
