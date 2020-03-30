@@ -10,6 +10,6 @@ public class Apollo extends Player {
         System.out.println("CIAO SONO Apollo");
     }
 
-    public void move(){
+    public void move (){
     }
 }
