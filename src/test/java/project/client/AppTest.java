@@ -1,4 +1,4 @@
-package client;
+package project.client;
 
 import static org.junit.Assert.assertTrue;
 

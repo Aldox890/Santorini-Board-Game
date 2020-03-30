@@ -1,6 +1,6 @@
-package client.god;
+package project.client.god;
 
-import client.Player;
+import project.Player;
 
 public class Artemis extends Player {
 
