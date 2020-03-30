@@ -17,9 +17,29 @@ public class Server {
 
     public void startServer() throws IOException{
         serverSocket = new ServerSocket(port);
-        Socket socket = serverSocket.accept();
+        System.out.println("Server socket ready on port: " + port);
 
+        //TODO: while loop waiting for ALL players to connect and start PlayerInstance as thread to serve each player.
+        Socket socket = serverSocket.accept(); //waiting for first client connection
+        System.out.println("Received client connection");
+
+        //TODO: this should be moved into PlayerInstance class.
         Scanner in = new Scanner(socket.getInputStream());
         PrintWriter out = new PrintWriter(socket.getOutputStream());
+
+        String line = in.nextLine();
+        while (!line.equals("quit")) {
+            out.println(line);
+            out.flush();
+            line = in.nextLine();
+        }
+
+        // Close socket stream
+        out.println("quit");
+        out.flush();
+        System.out.println("Closing sockets"); in.close();
+        out.close();
+        socket.close();
+        serverSocket.close();
     }
 }
