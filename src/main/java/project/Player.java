@@ -3,7 +3,7 @@ package project;
 public class Player {
     private String name;
 
-    public Player(String n,God g){
+    public Player(String n){
         name = n;
     }
     public void test (){

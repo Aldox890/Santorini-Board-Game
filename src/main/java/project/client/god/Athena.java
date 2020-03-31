@@ -6,6 +6,10 @@ public class Athena extends Player {
 
     private static final String GOD_NAME = "Athena";
 
+    public Athena(String n) {
+        super(n);
+    }
+
     public void test(){
         System.out.println("CIAO SONO Athena");
     }

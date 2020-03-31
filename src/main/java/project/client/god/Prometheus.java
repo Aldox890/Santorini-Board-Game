@@ -6,6 +6,10 @@ public class Prometheus extends Player {
 
     private static final String GOD_NAME = "Prometheus";
 
+    public Prometheus(String n) {
+        super(n);
+    }
+
     public void test(){
         System.out.println("CIAO SONO Prometheus");
     }
