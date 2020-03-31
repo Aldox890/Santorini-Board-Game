@@ -1,7 +1,7 @@
 package project;
 
 public class Player {
-    public String name;
+    private String name;
 
     public Player(String n,God g){
         name = n;

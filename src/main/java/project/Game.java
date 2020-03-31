@@ -1,10 +1,10 @@
 package project;
 
 public class Game {
-    Player [] playersList;
-    Board gameBoard;
+    private Player [] playersList;
+    private Board gameBoard;
 
-    public void Game(){
+    public Game(){
         playersList = new Player[3];
         gameBoard = new Board();
     }

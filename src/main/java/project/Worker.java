@@ -1,9 +1,9 @@
 package project;
 
 public class Worker {
-    Player player;
-    Cell cell;
-    public void worker(Player p, Cell c){
+    private Player player;
+    private Cell cell;
+    public Worker(Player p, Cell c){
         this.player = p;
         this.cell = c;
     }

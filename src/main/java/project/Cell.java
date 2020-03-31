@@ -1,12 +1,12 @@
 package project;
 
 public class Cell {
-    int x; //X coordinates
-    int y; //Y coordinates
-    int level;
-    Worker occupiedBy;
+    private int x; //X coordinates
+    private int y; //Y coordinates
+    private int level;
+    private Worker occupiedBy;
 
-    public void Cell(){ //project.Cell constructor
+    public Cell(){ //project.Cell constructor
         level = 0;
         occupiedBy = null;
     }
