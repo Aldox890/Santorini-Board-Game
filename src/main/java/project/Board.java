@@ -8,7 +8,7 @@ public class Board {
 
         for(int i=0; i<5;i++){  //set up of coordinates of the cells
             for(int j=0; j<5;j++){
-                this.board[i][j].setCoordinates(i,j);
+                //this.board[i][j].setCoordinates(i,j); ----- this line is not working, uncomment and run ServerMain for more info
             }
         }
 

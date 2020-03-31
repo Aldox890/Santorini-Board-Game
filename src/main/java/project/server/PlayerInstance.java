@@ -6,21 +6,26 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class PlayerInstance implements Runnable {
-    Socket socket;
-    public PlayerInstance(Socket s){
-        this.socket = s;
+    private Socket socket;
+    private Game game;
+    private int playerid;
+
+    public PlayerInstance(Socket socket, Game game,int playerid){
+        this.game = game;
+        this.socket = socket;
+        this.playerid = playerid;
     }
 
     @Override
     public void run() {
         try {
-            //TODO: this should be moved into PlayerInstance class.
             Scanner in = new Scanner(socket.getInputStream());
             PrintWriter out = new PrintWriter(socket.getOutputStream());
 
             String line = in.nextLine();
             while (!line.equals("quit")) {
                 out.println(line);
+                System.out.println(playerid+": " + line); //print input from client "ID: line"
                 out.flush();
                 line = in.nextLine();
             }
@@ -34,6 +39,5 @@ public class PlayerInstance implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //serverSocket.close();
     }
 }
