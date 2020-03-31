@@ -5,10 +5,12 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.util.Scanner;
 import java.io.PrintWriter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
 
-    public int port;
+    private int port;
     private ServerSocket serverSocket;
 
     public Server(int port){
@@ -16,30 +18,32 @@ public class Server {
     }
 
     public void startServer() throws IOException{
-        serverSocket = new ServerSocket(port);
+        ExecutorService executor = Executors.newCachedThreadPool();
+
+        try{
+            serverSocket = new ServerSocket(port);
+        }
+        catch(IOException e){
+            System.err.println(e.getMessage());
+            return;
+        }
         System.out.println("Server socket ready on port: " + port);
 
-        //TODO: while loop waiting for ALL players to connect and start PlayerInstance as thread to serve each player.
-        Socket socket = serverSocket.accept(); //waiting for first project.client connection
-        System.out.println("Received project.client connection");
-
-        //TODO: this should be moved into PlayerInstance class.
-        Scanner in = new Scanner(socket.getInputStream());
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
-
-        String line = in.nextLine();
-        while (!line.equals("quit")) {
-            out.println(line);
-            out.flush();
-            line = in.nextLine();
+        while(true){
+            try {
+                Socket socket = serverSocket.accept();
+                executor.submit(new PlayerInstance(socket));
+            }
+            catch(IOException e){
+                break;
+            }
         }
+        executor.shutdown();
 
-        // Close socket stream
-        out.println("quit");
-        out.flush();
-        System.out.println("Closing sockets"); in.close();
-        out.close();
-        socket.close();
-        serverSocket.close();
+        //TODO: while loop waiting for ALL players to connect and start PlayerInstance as thread to serve each player.
+        //Socket socket = serverSocket.accept(); //waiting for first project.client connection
+        //System.out.println("Received project.client connection");
+
+
     }
 }
