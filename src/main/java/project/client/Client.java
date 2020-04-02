@@ -23,13 +23,32 @@ public class Client {
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
+        System.out.print("Insert username: ");
         try{
             String socketLine = "";
             while(!socketLine.equals("quit")){
-                String inputLine = stdin.nextLine();
+
+                String inputLineUsername = stdin.nextLine();
+                System.out.println();
+                while((inputLineUsername.length()<3) || inputLineUsername.contains(";")){
+                    System.out.print("Input error re-insert username: ");
+                    inputLineUsername = stdin.nextLine();
+                    System.out.println();
+                }
+
+                System.out.print("Insert your age: ");
+                String inputLineAge = stdin.nextLine();
+                int age = Integer.parseInt(inputLineAge);
+
+                while((age<5 || age>120) || (inputLineAge.contains(";"))){
+                    System.out.print("Input error re-insert your age: ");
+                    inputLineAge = stdin.nextLine();
+                    age = Integer.parseInt(inputLineAge);
+                    System.out.println();
+                }
 
                 //send message to the project.server
-                socketOut.println(inputLine);
+                socketOut.println((inputLineUsername+";"+inputLineAge));    //send to server client's data
                 socketOut.flush();
 
                 //wait for project.server response
