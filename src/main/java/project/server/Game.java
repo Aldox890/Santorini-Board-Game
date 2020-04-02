@@ -1,7 +1,6 @@
 package project.server;
 
 import project.Board;
-import project.Player;
 
 public class Game {
     private Player[] playersList;

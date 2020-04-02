@@ -1,6 +1,6 @@
 package project.client.god;
 
-import project.Player;
+import project.server.Player;
 
 public class Minotaur extends Player {
 

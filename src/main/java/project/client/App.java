@@ -1,5 +1,5 @@
 package project.client;
-import project.Player;
+import project.server.Player;
 
 import java.io.IOException;
 

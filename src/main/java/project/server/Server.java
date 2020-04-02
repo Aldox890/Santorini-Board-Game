@@ -32,7 +32,7 @@ public class Server {
         }
         System.out.println("Server socket ready on port: " + port);
 
-        while(true){
+        while(playerid < 3){
             try {
                 Socket socket = serverSocket.accept();
                 executor.submit(new PlayerInstance(socket,game,playerid));

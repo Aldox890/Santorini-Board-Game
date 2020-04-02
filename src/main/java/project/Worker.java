@@ -1,5 +1,7 @@
 package project;
 
+import project.server.Player;
+
 public class Worker {
     private Player player;
     private Cell cell;
