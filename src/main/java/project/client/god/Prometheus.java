@@ -2,12 +2,12 @@ package project.client.god;
 
 import project.server.Player;
 
-public class Prometheus extends Player {
+public class Prometheus {
 
     private static final String GOD_NAME = "Prometheus";
 
     public Prometheus(String n) {
-        super(n);
+
     }
 
     public void test(){

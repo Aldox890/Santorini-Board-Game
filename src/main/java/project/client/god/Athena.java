@@ -2,12 +2,12 @@ package project.client.god;
 
 import project.server.Player;
 
-public class Athena extends Player {
+public class Athena{
 
     private static final String GOD_NAME = "Athena";
 
     public Athena(String n) {
-        super(n);
+
     }
 
     public void test(){

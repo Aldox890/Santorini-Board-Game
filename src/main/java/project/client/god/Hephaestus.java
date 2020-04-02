@@ -2,12 +2,12 @@ package project.client.god;
 
 import project.server.Player;
 
-public class Hephaestus extends Player {
+public class Hephaestus{
 
     private static final String GOD_NAME = "Hephaestus";
 
     public Hephaestus(String n) {
-        super(n);
+
     }
 
     public void test(){

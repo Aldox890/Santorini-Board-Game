@@ -2,12 +2,12 @@ package project.client.god;
 
 import project.server.Player;
 
-public class Minotaur extends Player {
+public class Minotaur  {
 
     private static final String GOD_NAME = "Minotaur";
 
-    public Minotaur(String n) {
-        super(n);
+    public Minotaur() {
+
     }
 
     public void test(){

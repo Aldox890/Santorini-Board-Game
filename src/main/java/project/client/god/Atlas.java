@@ -2,12 +2,12 @@ package project.client.god;
 
 import project.server.Player;
 
-public class Atlas extends Player {
+public class Atlas {
 
     private static final String GOD_NAME = "Atlas";
 
     public Atlas(String n) {
-        super(n);
+
     }
 
     public void test(){

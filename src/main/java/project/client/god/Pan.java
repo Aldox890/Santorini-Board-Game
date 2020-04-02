@@ -2,12 +2,12 @@ package project.client.god;
 
 import project.server.Player;
 
-public class Pan extends Player {
+public class Pan{
 
     private static final String GOD_NAME = "Pan";
 
     public Pan(String n) {
-        super(n);
+
     }
 
     public void test(){
