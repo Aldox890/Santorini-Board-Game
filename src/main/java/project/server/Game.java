@@ -19,12 +19,11 @@ public class Game {
         roomIsFull = false;
     }
 
-    public synchronized void addPlayer(Player p){
+    public synchronized void addPlayer(Player p){ // adds a new player to the list and
         playerlist.add(p);
         System.out.println("added to playerlist: " + p.getName());
         if(playerlist.size()>2){
             roomIsFull = true;
-
         }
     }
 

@@ -34,7 +34,7 @@ public class PlayerInstance implements Runnable {
             out.println("true");
             out.flush();
 
-            while (!line.equals("quit")) {
+            while (!line.equals("quit")) { //
                 if (game.getTurnOf() != null && game.getTurnOf().equals(player.getName())) { // keeps reading game to check if it's my turn
 
                 }

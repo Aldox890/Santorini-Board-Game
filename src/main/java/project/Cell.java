@@ -6,7 +6,9 @@ public class Cell {
     private int level;
     private Worker occupiedBy;
 
-    public Cell(){ //project.Cell constructor
+    public Cell(int x,int y){ //project.Cell constructor
+        this.x = x;
+        this.y = y;
         level = 0;
         occupiedBy = null;
     }
@@ -35,9 +37,5 @@ public class Cell {
         return y;
     }
 
-    public void setCoordinates(int X, int Y){   //sets cell's coordinates
-        this.x=X;
-        this.y=Y;
-    }
 
 }
