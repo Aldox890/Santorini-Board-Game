@@ -1,5 +1,7 @@
 package project.server;
 
+import java.util.ArrayList;
+
 public class Player {
 
     private String name;
@@ -9,7 +11,6 @@ public class Player {
 
         this.name = name;
         this.age = age;
-
     }
 
     public void test (){
@@ -29,5 +30,9 @@ public class Player {
     public void build(){}
 
     public void endTurn(){}
+
+    public int getAge(){
+        return age;
+    }
 
 }

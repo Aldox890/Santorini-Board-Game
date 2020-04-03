@@ -30,13 +30,15 @@ public class PlayerInstance implements Runnable {
             player = new Player(playerInfo[0],Integer.parseInt(playerInfo[1]));
 
             System.out.println("Player "+ playerInfo[0] + " connected with age: " + playerInfo[1]);
+            game.addPlayer(player);
             out.println("true");
             out.flush();
 
             while (!line.equals("quit")) {
-                if (game.getTurnOf() == player.getName()) {
+                if (game.getTurnOf() != null && game.getTurnOf().equals(player.getName())) { // keeps reading game to check if it's my turn
 
                 }
+                Thread.sleep(100);
             }
 
             // Close socket stream
@@ -45,7 +47,7 @@ public class PlayerInstance implements Runnable {
             System.out.println("Closing sockets"); in.close();
             out.close();
             socket.close();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

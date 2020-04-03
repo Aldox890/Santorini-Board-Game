@@ -32,7 +32,7 @@ public class Server {
         }
         System.out.println("Server socket ready on port: " + port);
 
-        while(playerid < 3){
+        while(playerid < 3){ // server waits for 3 players to connect to the game
             try {
                 Socket socket = serverSocket.accept();
                 executor.submit(new PlayerInstance(socket,game,playerid));
@@ -42,6 +42,13 @@ public class Server {
                 break;
             }
         }
-        executor.shutdown();
+        serverSocket.close();
+
+        try {
+            game.init(); // initialize game
+        }
+        catch(InterruptedException e){
+        }
+        //executor.shutdown();
     }
 }
