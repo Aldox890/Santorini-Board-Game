@@ -1,7 +1,5 @@
 package project.client.god;
 
-import project.server.Player;
-
 public class Artemis{
 
     private static final String GOD_NAME = "Artemis";

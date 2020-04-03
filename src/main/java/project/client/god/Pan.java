@@ -1,7 +1,5 @@
 package project.client.god;
 
-import project.server.Player;
-
 public class Pan{
 
     private static final String GOD_NAME = "Pan";
