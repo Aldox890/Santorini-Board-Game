@@ -30,12 +30,13 @@ public class PlayerInstance implements Runnable {
             player = new Player(playerInfo[0],Integer.parseInt(playerInfo[1]));
 
             System.out.println("Player "+ playerInfo[0] + " connected with age: " + playerInfo[1]);
+            out.println("true");
+            out.flush();
 
             while (!line.equals("quit")) {
-                out.println(line);
-                System.out.println(player.getName() +": " + line); //print input from client "ID: line"
-                out.flush();
-                line = in.nextLine();
+                if (game.getTurnOf() == player.getName()) {
+
+                }
             }
 
             // Close socket stream

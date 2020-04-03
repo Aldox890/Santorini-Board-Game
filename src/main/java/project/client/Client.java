@@ -26,7 +26,7 @@ public class Client {
         System.out.print("Insert username: ");
         try{
             String socketLine = "";
-            while(!socketLine.equals("quit")){
+            while(!socketLine.equals("true")){
 
                 String inputLineUsername = stdin.nextLine();
                 System.out.println();
@@ -54,6 +54,12 @@ public class Client {
                 //wait for project.server response
                 socketLine = socketIn.nextLine();
                 System.out.println(socketLine);
+                if(socketLine.equals("true")){
+                    //registrazione avvenuta
+                }
+                else{
+                    //registrazione fallita
+                }
             }
         }
         catch(NoSuchElementException e){
