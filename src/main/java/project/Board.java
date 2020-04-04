@@ -14,22 +14,6 @@ public class Board {
     }
 
     public void moveWorker(Worker worker,int posX,int posY){
-        if(posX<0 || posX>4 || posY<0 || posY>4){
-            //ECCEZIONE
-        }
-        if(board[posX][posY].isOccupiedBy()!=null){
-            //ECCEZIONE
-        }
-
-        if(posX==worker.getCell().getX() && posY==worker.getCell().getY()){
-            //ECCEZIONE
-        }
-        int distanzaX = Math.abs(posX-worker.getCell().getX());
-        int distanzaY = Math.abs(posY-worker.getCell().getY());
-
-        if(distanzaX > 1 || distanzaY > 1){
-            //ECCEZIONE
-        }
         worker.setCell(board[posX][posY]);
         board[posX][posY].setOccupiedBy(worker);
     }
