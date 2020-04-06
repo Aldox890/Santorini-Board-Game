@@ -61,6 +61,10 @@ public class Client {
                     //registrazione fallita
                 }
             }
+
+            socketLine = socketIn.nextLine();
+
+            //gameloop
         }
         catch(NoSuchElementException e){
             System.out.println("Connection closed");

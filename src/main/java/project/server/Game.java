@@ -11,6 +11,8 @@ public class Game {
     private Board gameBoard;
     private String turnOf;
     private ArrayList playerlist;
+    private ArrayList allowedGods;
+    private int turnNumber;
 
 
     public Game(){
@@ -27,6 +29,14 @@ public class Game {
         }
     }
 
+    public void addGod(String s){
+        allowedGods.add(s);
+    }
+
+    public int getTurnNumber(){
+        return turnNumber;
+    }
+
     public synchronized void setTurnOf (String p){
         turnOf = p;
     }
@@ -36,6 +46,7 @@ public class Game {
         Collections.sort(playerlist, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));
         Player p = (Player) playerlist.get(2);
         turnOf = p.getName();
+        turnNumber = 0;
         System.out.println("turnof " + p.getName());
     }
 
