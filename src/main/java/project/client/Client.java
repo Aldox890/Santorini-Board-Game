@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class Client {
     private String ip;
     private int port;
+    static final String[] GODS= {"Apollo", "Artemis","Athena", "Atlas","Demeter", "Hephaestus","Minotaur", "Pan", "Prometheus"};    //<--- per test
 
     public Client(String ip, int port){
         this.ip = ip;
@@ -53,16 +54,43 @@ public class Client {
 
                 //wait for project.server response
                 socketLine = socketIn.nextLine();
-                System.out.println(socketLine);
+                //System.out.println(socketLine);
                 if(socketLine.equals("true")){
-                    //registrazione avvenuta
+                    System.out.println("registrazione avvenuta");//registrazione avvenuta       // <---------
+
+                    String[] playerturn = socketIn.nextLine().split(";");
+                    //System.out.println(playerturn[0]);
+                    if(playerturn[1].equals(inputLineUsername)) {
+                        if(Integer.parseInt(playerturn[0]) == 0){
+                            System.out.println("Seleziona 3 divinità:");
+                            String inputGodsSelected="";
+                            int gods_selection=1;
+                            while(gods_selection<=3){
+                                System.out.print("Divinità "+gods_selection+": ");    //input gods (aggiungere controlli)
+                                String input= stdin.nextLine();
+                                if(gods_selection!=3){
+                                    inputGodsSelected = (inputGodsSelected + (input+";"));
+                                }else{inputGodsSelected = (inputGodsSelected +input);}
+
+                                gods_selection++;
+                            }
+                            System.out.println("Client: "+inputGodsSelected);
+                            socketOut.println(inputGodsSelected);
+                            socketOut.flush();                                                  // <---------
+                        }
+                    }
+
+                    /*
+                    * Chosing of 3 gods
+                    * */
                 }
                 else{
-                    //registrazione fallita
+                    System.out.println("registrazione fallita");//registrazione fallita
                 }
             }
 
             socketLine = socketIn.nextLine();
+            System.out.println("Server: "+socketLine);
 
             //gameloop
         }
