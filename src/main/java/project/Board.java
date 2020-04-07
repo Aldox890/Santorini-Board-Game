@@ -22,7 +22,9 @@ public class Board {
 
     public void createWorker(){}
 
-    public void buildInPos(Worker worker,int posX,int posY){}
+    public void buildInPos(Worker worker,int posX,int posY){
+        board[posX][posY].setLevel(board[posX][posY].getLevel()+1);
+    }
 
     public boolean checkStuck(){ return false; }
 

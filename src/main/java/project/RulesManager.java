@@ -41,13 +41,49 @@ public class RulesManager {
         }
 
 
-        int distanzaX = Math.abs(x-x1);
-        int distanzaY = Math.abs(y-y1);
+        int distanceX = Math.abs(x-x1);
+        int distanceY = Math.abs(y-y1);
 
-        if(distanzaX > 1 || distanzaY > 1){
+        if(distanceX > 1 || distanceY > 1){
             //ECCEZIONE
         }
 
         b.moveWorker(worker,x1,y1);
+        if(b.board[x][y].getLevel()>3){
+            //HAI VINTO
+        }
+
+    }
+
+    public void build(Player player,int x, int y, int x1, int y1){
+        Worker worker;
+
+        if(x<0 || x>4 || y<0 || y>4){
+            //ECCEZIONE
+        }
+
+        worker = b.board[x][y].isOccupiedBy();
+
+        if(worker.getPlayer()!=player){
+            //ECCEZIONE
+        }
+
+        if(x1<0 || x1>4 || y1<0 || y1>4){
+            //ECCEZIONE
+        }
+
+        if(b.board[x1][y1].getLevel()>4){
+            //ECCEZIONE
+        }
+
+        int distanceX = Math.abs(x-x1);
+        int distanceY = Math.abs(y-y1);
+
+        if(distanceX > 1 || distanceY > 1){
+            //ECCEZIONE
+        }
+
+        b.buildInPos(worker,x1,y1);
+
     }
 }
