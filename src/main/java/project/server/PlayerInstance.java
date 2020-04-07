@@ -44,12 +44,38 @@ public class PlayerInstance implements Runnable {
 
         while (!line.equals("quit")) { //
             if (game.getTurnOf() != null && game.getTurnOf().equals(player.getName())) { // keeps reading game to check if it's my turn
-                out.println(game.getTurnNumber() + game.getTurnOf());
-                out.flush();
-                System.out.println("A");
+                if (game.getTurnNumber() == 0){
+                    // Manage 3 gods chosing phase
+                    setGods();
+                }
+                else if(game.getTurnNumber() == 1){
+                    // Manage god card pick
+                }
+                else if(game.getTurnNumber() == 2){
+                    // Manage set inital workers position
+                }
+                else if (game.getTurnNumber() >= 3){
+                    // Manage standard game
+                }
             }
             Thread.sleep(100);
         }
+    }
+
+    public void setGods(){
+        out.println(game.getTurnNumber() + ";" + game.getTurnOf());
+        out.flush();
+
+        String line = in.nextLine();
+        String[] godsList = line.split(";");
+
+        if(game.setGods(godsList)){
+            out.println("true");
+        }
+        else{
+            out.println("false");
+        }
+        out.flush();
     }
 
     public void initPlayer(){
