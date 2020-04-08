@@ -11,12 +11,11 @@ import java.util.concurrent.Executors;
 public class Server {
 
     private int port;
-    private Game game;
+
     private int playerid;
     private ServerSocket serverSocket;
 
     public Server(int port){
-        this.game = new Game(); // game obj works as shared data;
         this.port = port;
         playerid = 0;
     }
@@ -32,10 +31,15 @@ public class Server {
         }
         System.out.println("Server socket ready on port: " + port);
 
+        Game game = new Game();
+        GameController gameController = new GameController(game);
+
         while(playerid < 3){ // server waits for 3 players to connect to the game
             try {
                 Socket socket = serverSocket.accept();
-                executor.submit(new PlayerInstance(socket,game,playerid));
+                GameObserver gameObserver = new GameObserver(socket);
+                game.addObserver(gameObserver);
+                executor.submit(new ClientObserver(gameController, socket));
                 playerid++;
             }
             catch(IOException e){

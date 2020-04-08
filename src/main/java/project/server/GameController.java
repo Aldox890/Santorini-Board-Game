@@ -5,6 +5,11 @@ package project.server;
 * */
 public class GameController {
 
+    private Game game;
+    public GameController(Game game){
+        this.game = game;
+    }
+
     /*
      * This method sets the game order of the players, based on players' age.
      * */

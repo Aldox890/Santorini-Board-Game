@@ -2,11 +2,24 @@ package project.server;
 
 import project.Board;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
-public class Game {
+public class Game extends Observable {
 
+    private List<Observer> observers = new ArrayList<>();
+
+    public void addObserver(Observer arg) {
+        this.observers.add(arg);
+    }
+
+    public void notifyObserver(Object obj){
+        for (Observer observer : this.observers) {
+            observer.update(this,obj);
+        }
+    }
+
+
+    /** OLD DATA ***/
     private boolean roomIsFull;
     private Board gameBoard;
     private String turnOf;

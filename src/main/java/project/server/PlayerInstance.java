@@ -13,7 +13,7 @@ public class PlayerInstance implements Runnable {
     private Scanner in;
     private PrintWriter out;
 
-    public PlayerInstance(Socket socket, Game game,int playerid) throws IOException {
+    public PlayerInstance(Socket socket, Game game, int playerid) throws IOException {
         this.game = game;
         this.socket = socket;
         this.playerid = playerid;
