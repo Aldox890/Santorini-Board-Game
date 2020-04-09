@@ -6,6 +6,18 @@ import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
+/*
+*  _____           _   _  _______  ____   _____   _____  _   _  _____
+  / ____|   /\    | \ | ||__   __|/ __ \ |  __ \ |_   _|| \ | ||_   _|
+ | (___    /  \   |  \| |   | |  | |  | || |__) |  | |  |  \| |  | |
+  \___ \  / /\ \  | . ` |   | |  | |  | ||  _  /   | |  | . ` |  | |
+  ____) |/ ____ \ | |\  |   | |  | |__| || | \ \  _| |_ | |\  | _| |_
+ |_____//_/    \_\|_| \_|   |_|   \____/ |_|  \_\|_____||_| \_||_____|
+ *
+ * Client class
+* */
+
+
 public class Client {
     private String ip;
     private int port;
@@ -53,12 +65,20 @@ public class Client {
                 socketOut.flush();
 
                 //wait for project.server response
-                socketLine = socketIn.nextLine();
+                //socketLine = socketIn.nextLine();
                 //System.out.println(socketLine);
-                if(socketLine.equals("true")){
+                String[] serverResponse = socketIn.nextLine().split(";");
+                if(serverResponse[1].equals("true")){
                     System.out.println("registrazione avvenuta");//registrazione avvenuta       // <---------
 
-                    String[] playerturn = socketIn.nextLine().split(";");
+                    /*RECEIVE LIST OF PLAYERS */
+                    serverResponse = socketIn.nextLine().split(";");
+                    if(serverResponse[0].equals("-1")){
+                        System.out.println("Giocatori connessi: "+ serverResponse[1]+" "+serverResponse[2]+" "+serverResponse[3]);
+                    }
+                    /*-------------------------*/
+
+                 /*   String[] playerturn = socketIn.nextLine().split(";");
                     //System.out.println(playerturn[0]);
                     if(playerturn[1].equals(inputLineUsername)) {
                         if(Integer.parseInt(playerturn[0]) == 0){
@@ -80,6 +100,9 @@ public class Client {
                         }
                     }
 
+                    socketLine = socketIn.nextLine();
+                    System.out.println("Server: "+socketLine);*/
+
                     /*
                     * Chosing of 3 gods
                     * */
@@ -89,8 +112,7 @@ public class Client {
                 }
             }
 
-            socketLine = socketIn.nextLine();
-            System.out.println("Server: "+socketLine);
+
 
             //gameloop
         }
