@@ -87,7 +87,7 @@ public class PlayerInstance implements Runnable {
         player = new Player(playerInfo[0],Integer.parseInt(playerInfo[1]));
 
         System.out.println("Player "+ playerInfo[0] + " connected with age: " + playerInfo[1]);
-        game.addPlayer(player);
+        game.addPlayer(player,playerid);
         out.println("true");
         out.flush();
 

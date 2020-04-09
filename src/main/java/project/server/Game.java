@@ -54,19 +54,25 @@ public class Game extends Observable {
 
     /*
      * Adds a new player to the list and notifies the observer. false if player name already exists.
+     * sends a full list of the players to the clients once 3 are connected.
      */
-    public synchronized boolean addPlayer(Player p){
+    public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
             if(playerList.get(i).getName().equals(p.getName())){
-                notifyObserver("false");
+                notifyObserver(socketId + ";false");
                 return false;
             }
         }
         playerList.add(p);
         System.out.println("added to playerlist: " + p.getName());
-        if (playerList.size() > 2) { roomIsFull = true;
+
+        notifyObserver(socketId + ";true");
+        if (playerList.size() > 2) {
+            String response = "-1;" + playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+            notifyObserver(response);
+            roomIsFull = true;
         }
-        notifyObserver("true");
+
         return true;
     }
 

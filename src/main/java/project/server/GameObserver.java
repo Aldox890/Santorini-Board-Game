@@ -12,9 +12,11 @@ import java.util.Observer;
 public class GameObserver implements Observer {
     Socket socket;
     PrintWriter out;
+    private int socketId;
 
-    public GameObserver(Socket socket) throws IOException {
+    public GameObserver(Socket socket,int socketId) throws IOException {
         this.socket = socket;
+        this.socketId = socketId;
         out = new PrintWriter(socket.getOutputStream());
     }
 
@@ -24,6 +26,10 @@ public class GameObserver implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof String){
+            String parsedArg[] = ((String) arg).split(";");
+            if(Integer.parseInt(parsedArg[0]) != socketId && Integer.parseInt(parsedArg[0]) >=0) {
+                return;
+            }
             out.println((String)arg);
             out.flush();
         }
