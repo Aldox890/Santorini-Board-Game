@@ -13,44 +13,10 @@ import java.util.*;
 public class Game extends Observable {
 
     private List<Observer> observers = new ArrayList<>();
-
-    public void addObserver(Observer arg) {
-        this.observers.add(arg);
-    }
-
-    public void notifyObserver(Object obj){
-        for (Observer observer : this.observers) {
-            observer.update(this,obj);
-        }
-    }
-
-    public synchronized boolean addPlayer(Player p){ // adds a new player to the list and
-        for(int i = 0; i < playerList.size(); i++){
-            if(playerList.get(i).getName().equals(p.getName())){
-                notifyObserver("false");
-                return false;
-            }
-        }
-        playerList.add(p);
-        System.out.println("added to playerlist: " + p.getName());
-        if (playerList.size() > 2) { roomIsFull = true;
-        }
-        notifyObserver("true");
-        return true;
-    }
-
-    public ArrayList<Player> getPlayerList() {
-        return playerList;
-    }
-
-    /** OLD DATA ***/
-    private boolean roomIsFull;
+    private ArrayList<Player> playerList;
     private Board gameBoard;
     private Player turnOf;
-    private ArrayList<Player> playerList;
-    private ArrayList<String> allowedGods;
-    private int turnNumber;
-    private ArrayList<String> godsList;
+    private boolean roomIsFull;
 
     public Game(){
         gameBoard = new Board();
@@ -70,6 +36,62 @@ public class Game extends Observable {
 
     }
 
+    /*
+     * Adds a new observer to the list.
+     */
+    public void addObserver(Observer arg) {
+        this.observers.add(arg);
+    }
+
+    /*
+     * Notifies the observers about changes.
+     */
+    public void notifyObserver(Object obj){
+        for (Observer observer : this.observers) {
+            observer.update(this,obj);
+        }
+    }
+
+    /*
+     * Adds a new player to the list and notifies the observer. false if player name already exists.
+     */
+    public synchronized boolean addPlayer(Player p){
+        for(int i = 0; i < playerList.size(); i++){
+            if(playerList.get(i).getName().equals(p.getName())){
+                notifyObserver("false");
+                return false;
+            }
+        }
+        playerList.add(p);
+        System.out.println("added to playerlist: " + p.getName());
+        if (playerList.size() > 2) { roomIsFull = true;
+        }
+        notifyObserver("true");
+        return true;
+    }
+
+    /*
+     * TRUE if the worker is added inside the game board
+     * FALSE if the worker isn't added inside the game board
+     */
+    public boolean addWorker(Player p,int x, int y){
+        return this.gameBoard.createWorker(p,x,y);
+    }
+
+    public Player getTurnOf() {
+        return turnOf;
+    }
+
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
+
+
+
+    /** OLD DATA ***/
+    private ArrayList<String> allowedGods;
+    private int turnNumber;
+    private ArrayList<String> godsList;
 
     public boolean setGods( String[] gList) {
         if (gList!= null && gList[0] != null && gList[1] != null && gList[2] != null) {
@@ -106,14 +128,6 @@ public class Game extends Observable {
         System.out.println("turnof " + p.getName());
     }
 
-    public Player getTurnOf() {
-        return turnOf;
-    }
 
-    /*
-    * TRUE if the worker is added inside the game board
-    * FALSE if the worker isn't added inside the game board*/
-    public boolean addWorker(Player p,int x, int y){
-        return this.gameBoard.createWorker(p,x,y);
-    }
+
 }

@@ -14,11 +14,13 @@ public class GameObserver implements Observer {
     PrintWriter out;
 
     public GameObserver(Socket socket) throws IOException {
-
         this.socket = socket;
         out = new PrintWriter(socket.getOutputStream());
-
     }
+
+    /*
+     * update function simply output strings to the socket by now.
+     */
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof String){
