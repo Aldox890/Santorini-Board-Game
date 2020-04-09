@@ -1,5 +1,7 @@
 package project;
 
+import project.server.Player;
+
 public class Board {
     Cell board [][];
 
@@ -20,7 +22,17 @@ public class Board {
 
     public void printBoard(){}
 
-    public void createWorker(){}
+    /*
+    * returns true if there is no worker already in the selected cell
+    * returns false if there is already a worker inside the cell*/
+    public boolean createWorker(Player p, int x, int y){
+        if(this.board[x][y].isOccupiedBy().equals(null)){   //if there is no worker inside, puts the new worker in the cell at x and y
+            Worker w = new Worker(p,this.board[x][y]);
+            this.board[x][y].setOccupiedBy(w);
+            return true;
+        }
+        return false;
+    }
 
     public void buildInPos(Worker worker,int posX,int posY){
         board[posX][posY].setLevel(board[posX][posY].getLevel()+1);

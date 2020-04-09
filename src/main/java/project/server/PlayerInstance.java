@@ -30,7 +30,8 @@ public class PlayerInstance implements Runnable {
             // Close socket stream
             out.println("quit");
             out.flush();
-            System.out.println("Closing sockets"); in.close();
+            System.out.println("Closing sockets");
+            in.close();
             out.close();
             socket.close();
         } catch (IOException | InterruptedException e) {

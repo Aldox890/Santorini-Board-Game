@@ -22,8 +22,18 @@ public class GameController {
 
     /*
      * This method changes the turn.
+     * If the current turn is the turn of the eldest player, sets the next turn to the youngest player.
      * */
-    public void changeTurn(){}
+    public void changeTurn(){
+        if(this.game.getTurnOf().equals( this.game.getPlayerList().get(this.game.getPlayerList().size())) ){    //check if the current turn == eldest's turn -> next turn = youngest's turn
+            this.game.setTurnOf(this.game.getPlayerList().get(0));
+        }
+        else{
+            this.game.setTurnOf(
+                    this.game.getPlayerList()
+                            .get(this.game.getPlayerList().indexOf(this.game.getTurnOf())+1));
+        }
+    }
 
     /*
      * This method adds a new player inside the game if there are less than 3 player already in.
@@ -35,7 +45,9 @@ public class GameController {
     /*
      * This method adds a new player's worker in a certain position on the board .
      * */
-    public void addWorker(){}
+    public boolean addWorker(Player p, int x, int y){
+        return this.game.addWorker(p,x,y);
+    }
 
     /*
      * This method moves a player's worker in a certain position.

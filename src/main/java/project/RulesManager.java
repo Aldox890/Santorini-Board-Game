@@ -16,7 +16,7 @@ public class RulesManager {
 
         worker=b.board[x][y].isOccupiedBy();
 
-        if(worker.getPlayer()!=player) {
+        if(worker.getOwner()!=player) {
             //ECCEZIONE
         }
 
@@ -64,7 +64,7 @@ public class RulesManager {
 
         worker = b.board[x][y].isOccupiedBy();
 
-        if(worker.getPlayer()!=player){
+        if(worker.getOwner()!=player){
             //ECCEZIONE
         }
 

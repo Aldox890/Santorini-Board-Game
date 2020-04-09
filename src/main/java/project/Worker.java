@@ -3,19 +3,19 @@ package project;
 import project.server.Player;
 
 public class Worker {
-    private Player player;
+    private Player owner;
     private Cell cell;
     public Worker(Player p, Cell c){
-        this.player = p;
+        this.owner = p;
         this.cell = c;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getOwner() {
+        return owner;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 
     public Cell getCell() {

@@ -4,6 +4,12 @@ import project.Board;
 
 import java.util.*;
 
+
+/*
+* "Subject" class that contains all of the Model status attributes,
+* and to be observed by the Observers.
+*  */
+
 public class Game extends Observable {
 
     private List<Observer> observers = new ArrayList<>();
@@ -20,7 +26,7 @@ public class Game extends Observable {
 
     public synchronized boolean addPlayer(Player p){ // adds a new player to the list and
         for(int i = 0; i < playerList.size(); i++){
-            if(playerList.get(i).getName() == p.getName()){
+            if(playerList.get(i).getName().equals(p.getName())){
                 notifyObserver("false");
                 return false;
             }
@@ -33,11 +39,14 @@ public class Game extends Observable {
         return true;
     }
 
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
 
     /** OLD DATA ***/
     private boolean roomIsFull;
     private Board gameBoard;
-    private String turnOf;
+    private Player turnOf;
     private ArrayList<Player> playerList;
     private ArrayList<String> allowedGods;
     private int turnNumber;
@@ -69,7 +78,7 @@ public class Game extends Observable {
                 allowedGods.add(gList[1]);
                 allowedGods.add(gList[2]);
                 turnNumber = 1;
-                turnOf = playerList.get(0).getName();
+                turnOf = playerList.get(0);
                 return true;
             }
         }
@@ -84,20 +93,27 @@ public class Game extends Observable {
         return turnNumber;
     }
 
-    public synchronized void setTurnOf (String p){
+    public synchronized void setTurnOf (Player p){
         turnOf = p;
     }
 
     public void init() throws InterruptedException { // orders playerlist by age and lets the first player talk
         while(!roomIsFull){ Thread.sleep(100); }
         Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));
-        Player p = (Player) playerList.get(2);
-        turnOf = p.getName();
+        Player p = playerList.get(2);
+        turnOf = p;
         turnNumber = 0;
         System.out.println("turnof " + p.getName());
     }
 
-    public String getTurnOf() {
+    public Player getTurnOf() {
         return turnOf;
+    }
+
+    /*
+    * TRUE if the worker is added inside the game board
+    * FALSE if the worker isn't added inside the game board*/
+    public boolean addWorker(Player p,int x, int y){
+        return this.gameBoard.createWorker(p,x,y);
     }
 }
