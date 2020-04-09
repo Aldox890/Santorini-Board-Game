@@ -18,6 +18,21 @@ public class Game extends Observable {
         }
     }
 
+    public synchronized boolean addPlayer(Player p){ // adds a new player to the list and
+        for(int i = 0; i < playerList.size(); i++){
+            if(playerList.get(i).getName() == p.getName()){
+                notifyObserver("false");
+                return false;
+            }
+        }
+        playerList.add(p);
+        System.out.println("added to playerlist: " + p.getName());
+        if (playerList.size() > 2) { roomIsFull = true;
+        }
+        notifyObserver(p);
+        return true;
+    }
+
 
     /** OLD DATA ***/
     private boolean roomIsFull;
@@ -46,13 +61,6 @@ public class Game extends Observable {
 
     }
 
-    public synchronized void addPlayer(Player p){ // adds a new player to the list and
-        playerList.add(p);
-        System.out.println("added to playerlist: " + p.getName());
-        if(playerList.size()>2){
-            roomIsFull = true;
-        }
-    }
 
     public boolean setGods( String[] gList) {
         if (gList!= null && gList[0] != null && gList[1] != null && gList[2] != null) {

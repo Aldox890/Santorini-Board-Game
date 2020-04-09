@@ -16,6 +16,7 @@ public class ClientObserver implements Runnable {
     Socket socket;
     Scanner in;
     PrintWriter out;
+    Player player;
 
     public ClientObserver(GameController gameController, Socket socket) throws IOException {
         this.gameController = gameController;
@@ -27,11 +28,20 @@ public class ClientObserver implements Runnable {
 
     @Override
     public void run() {
-        String input = in.nextLine();
+        initPlayer();
     }
 
     /*
-    * on update of client status, makes the Controller act
+    * Setup name and age of the player
     * */
+    public void initPlayer(){
+
+        //Saves initial player information
+        String line = in.nextLine(); // the first message recived should be "username;age"
+        String[] playerInfo = line.split(";");
+        player = new Player(playerInfo[0],Integer.parseInt(playerInfo[1]));
+
+        gameController.addPlayer(player);
+    }
 
 }

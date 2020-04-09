@@ -28,7 +28,9 @@ public class GameController {
     /*
      * This method adds a new player inside the game if there are less than 3 player already in.
      * */
-    public void addPlayer(){}
+    public void addPlayer(Player player){
+        game.addPlayer(player);
+    }
 
     /*
      * This method adds a new player's worker in a certain position on the board .
