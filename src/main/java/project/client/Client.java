@@ -29,6 +29,12 @@ public class Client {
     }
 
     public void startClient() throws IOException{
+        System.out.println("   _____           _   _  _______  ____   _____   _____  _   _  _____\n" +
+                            "  / ____|   /\\    | \\ | ||__   __|/ __ \\ |  __ \\ |_   _|| \\ | ||_   _|\n" +
+                            " | (___    /  \\   |  \\| |   | |  | |  | || |__) |  | |  |  \\| |  | |\n" +
+                            "  \\___ \\  / /\\ \\  | . ` |   | |  | |  | ||  _  /   | |  | . ` |  | |\n" +
+                            "  ____) |/ ____ \\ | |\\  |   | |  | |__| || | \\ \\  _| |_ | |\\  | _| |_\n" +
+                            " |_____//_/    \\_\\|_| \\_|   |_|   \\____/ |_|  \\_\\|_____||_| \\_||_____|");
         Socket socket = new Socket(ip,port);
         System.out.println("Connection established");
 
