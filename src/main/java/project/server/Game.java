@@ -35,7 +35,7 @@ public class Game extends Observable {
         System.out.println("added to playerlist: " + p.getName());
         if (playerList.size() > 2) { roomIsFull = true;
         }
-        notifyObserver(p);
+        notifyObserver("true");
         return true;
     }
 
