@@ -17,10 +17,12 @@ public class ClientObserver implements Runnable {
     Scanner in;
     PrintWriter out;
     Player player;
+    private int socketId;
 
-    public ClientObserver(GameController gameController, Socket socket) throws IOException {
+    public ClientObserver(GameController gameController, Socket socket, int socketId) throws IOException {
         this.gameController = gameController;
         this.socket = new Socket();
+        this.socketId = socketId;
 
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream());
@@ -41,7 +43,7 @@ public class ClientObserver implements Runnable {
         String[] playerInfo = line.split(";");
         player = new Player(playerInfo[0],Integer.parseInt(playerInfo[1]));
 
-        gameController.addPlayer(player);
+        gameController.addPlayer(player,socketId);
     }
 
 }
