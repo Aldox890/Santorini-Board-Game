@@ -20,7 +20,7 @@ public class Game extends Observable {
 
     public synchronized boolean addPlayer(Player p){ // adds a new player to the list and
         for(int i = 0; i < playerList.size(); i++){
-            if(playerList.get(i).getName() == p.getName()){
+            if(playerList.get(i).getName().equals(p.getName())){
                 notifyObserver("false");
                 return false;
             }
