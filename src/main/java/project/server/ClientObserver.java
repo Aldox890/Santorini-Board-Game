@@ -23,6 +23,7 @@ public class ClientObserver implements Runnable {
         this.gameController = gameController;
         this.socket = new Socket();
         this.socketId = socketId;
+        String playerName;
 
         in = new Scanner(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream());
@@ -31,18 +32,40 @@ public class ClientObserver implements Runnable {
     @Override
     public void run() {
         initPlayer();
+
+        while(true) {
+            String line = in.nextLine();
+            String parsedLine[] = line.split(";");
+            switch (Integer.parseInt(parsedLine[0])) {
+                case 0:
+                    // Select 3 gods cards
+                    gameController.setGods(parsedLine,socketId);
+                case 1:
+                    // Select 1 god card
+                    gameController.setGod();
+                case 2:
+                    // Set workers position;
+                    gameController.addWorker(player, Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]));
+                case 3:
+                    gameController.moveWorker();
+                case 4:
+                    gameController.build();
+            }
+        }
     }
 
     /*
     * Setup name and age of the player
     * */
+
+
     public void initPlayer(){
         //Saves initial player information
         do {
             String line = in.nextLine(); // the first message recived should be "username;age"
             String[] playerInfo = line.split(";");
             player = new Player(playerInfo[0], Integer.parseInt(playerInfo[1]));
-        }while (!gameController.addPlayer(player,socketId));
+        } while (!gameController.addPlayer(player,socketId));
     }
 
 }

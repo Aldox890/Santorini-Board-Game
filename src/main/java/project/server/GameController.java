@@ -18,7 +18,9 @@ public class GameController {
     /*
      * This method sets the Gods chosen by the eldest player, that will be used in the Game.
      */
-    public void setGods(){}
+    public void setGods(String[] parsedInput,int socketId){
+        game.setGods(parsedInput,socketId);
+    }
 
     /*
      * This method changes the turn.
@@ -58,4 +60,7 @@ public class GameController {
      * This method builds a new level inside a certain cell of the game board
      */
     public void build(){}
+
+    public void setGod() {
+    }
 }

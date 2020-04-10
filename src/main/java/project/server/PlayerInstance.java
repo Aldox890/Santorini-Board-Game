@@ -70,7 +70,7 @@ public class PlayerInstance implements Runnable {
         String line = in.nextLine();
         String[] godsList = line.split(";");
 
-        if(game.setGods(godsList)){
+        if(game.setGods(godsList,playerid)){
             out.println("true");
         }
         else{

@@ -96,6 +96,27 @@ public class Game extends Observable {
         return this.gameBoard.createWorker(p,x,y);
     }
 
+    /*
+     * Sets the 3 allowed gods to allowedGods list. sends false if fails.
+     * Broadcast list to all players if it works.
+     */
+    public boolean setGods( String[] gList, int socketId) {
+        if (gList!= null && gList[1] != null && gList[2] != null && gList[3] != null) {
+            if (godsList.contains(gList[1]) && godsList.contains(gList[2]) && godsList.contains(gList[3])) {
+                allowedGods.add(gList[1]);
+                allowedGods.add(gList[2]);
+                allowedGods.add(gList[3]);
+                turnNumber = 1;
+                turnOf = playerList.get(0);
+                System.out.println("dei aggiunti");
+                notifyObserver("-1;1;" + gList[1] + ";" + gList[2] + ";" + gList[3]);
+                return true;
+            }
+        }
+        notifyObserver(socketId + ";" + "false");
+        return false;
+    }
+
     public Player getTurnOf() {
         return turnOf;
     }
@@ -104,26 +125,10 @@ public class Game extends Observable {
         return playerList;
     }
 
-
-
     /** OLD DATA ***/
     private ArrayList<String> allowedGods;
     private int turnNumber;
     private ArrayList<String> godsList;
-
-    public boolean setGods( String[] gList) {
-        if (gList!= null && gList[0] != null && gList[1] != null && gList[2] != null) {
-            if (godsList.contains(gList[0]) && godsList.contains(gList[0]) && godsList.contains(gList[0])) {
-                allowedGods.add(gList[0]);
-                allowedGods.add(gList[1]);
-                allowedGods.add(gList[2]);
-                turnNumber = 1;
-                turnOf = playerList.get(0);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void addGod(String s){
         allowedGods.add(s);
