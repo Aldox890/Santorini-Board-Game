@@ -37,13 +37,12 @@ public class ClientObserver implements Runnable {
     * Setup name and age of the player
     * */
     public void initPlayer(){
-
         //Saves initial player information
-        String line = in.nextLine(); // the first message recived should be "username;age"
-        String[] playerInfo = line.split(";");
-        player = new Player(playerInfo[0],Integer.parseInt(playerInfo[1]));
-
-        gameController.addPlayer(player,socketId);
+        do {
+            String line = in.nextLine(); // the first message recived should be "username;age"
+            String[] playerInfo = line.split(";");
+            player = new Player(playerInfo[0], Integer.parseInt(playerInfo[1]));
+        }while (!gameController.addPlayer(player,socketId));
     }
 
 }

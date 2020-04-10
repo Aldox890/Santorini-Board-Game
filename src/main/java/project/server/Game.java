@@ -54,7 +54,7 @@ public class Game extends Observable {
 
     /*
      * Adds a new player to the list and notifies the observer. false if player name already exists.
-     * sends a full list of the players to the clients once 3 are connected.
+     * calls init() once 3 players are connected.
      */
     public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
@@ -68,12 +68,24 @@ public class Game extends Observable {
 
         notifyObserver(socketId + ";true");
         if (playerList.size() > 2) {
-            String response = "-1;" + playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
-            notifyObserver(response);
             roomIsFull = true;
+            init();
         }
 
         return true;
+    }
+
+    /*
+     * Orders the playerList and sets turnOf. Sends playerList to the clients
+     */
+    public void init(){
+        Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));
+        Player p = playerList.get(2);
+        turnOf = p;
+        turnNumber = 0;
+        System.out.println("turnof " + p.getName());
+        String response = "-1;" + playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+        notifyObserver(response);
     }
 
     /*
@@ -125,14 +137,7 @@ public class Game extends Observable {
         turnOf = p;
     }
 
-    public void init() throws InterruptedException { // orders playerlist by age and lets the first player talk
-        while(!roomIsFull){ Thread.sleep(100); }
-        Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));
-        Player p = playerList.get(2);
-        turnOf = p;
-        turnNumber = 0;
-        System.out.println("turnof " + p.getName());
-    }
+
 
 
 

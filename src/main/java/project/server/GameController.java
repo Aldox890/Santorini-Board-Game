@@ -38,8 +38,8 @@ public class GameController {
     /*
      * This method adds a new player inside the game if there are less than 3 player already in.
      */
-    public void addPlayer(Player player,int socketId){
-        game.addPlayer(player,socketId);
+    public boolean addPlayer(Player player,int socketId){
+        return game.addPlayer(player,socketId);
     }
 
     /*

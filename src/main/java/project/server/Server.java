@@ -47,12 +47,6 @@ public class Server {
             }
         }
         serverSocket.close();
-
-        try {
-            game.init(); // initialize game
-        }
-        catch(InterruptedException e){
-        }
         //executor.shutdown();
     }
 }
