@@ -108,13 +108,24 @@ public class Game extends Observable {
                 allowedGods.add(gList[3]);
                 turnNumber = 1;
                 turnOf = playerList.get(0);
-                System.out.println("dei aggiunti");
                 notifyObserver("-1;1;" + gList[1] + ";" + gList[2] + ";" + gList[3]);
                 return true;
             }
         }
         notifyObserver(socketId + ";" + "false");
         return false;
+    }
+
+    public void addGod(String[] god, Player player, int socketId){
+        if(god[1] != null && allowedGods.contains(god[1])){
+            player.selectGod(god[1]);
+            allowedGods.remove(god[1]);
+            turnOf = playerList.get(turnNumber - 1);
+            turnNumber ++;
+            notifyObserver("-1;2;" + player.getName() + " picked " + god[1]);
+            return;
+        }
+        notifyObserver(socketId + ";false");
     }
 
     public Player getTurnOf() {
@@ -141,9 +152,5 @@ public class Game extends Observable {
     public synchronized void setTurnOf (Player p){
         turnOf = p;
     }
-
-
-
-
 
 }

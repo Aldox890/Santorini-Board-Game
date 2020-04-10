@@ -61,6 +61,11 @@ public class GameController {
      */
     public void build(){}
 
-    public void setGod() {
+    /*
+     * lets the player chose his god card.
+     */
+    public void setGod(String[] parsedLine,Player player,int socketid) {
+        game.addGod(parsedLine,player,socketid);
+
     }
 }

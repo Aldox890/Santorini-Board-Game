@@ -40,16 +40,20 @@ public class ClientObserver implements Runnable {
                 case 0:
                     // Select 3 gods cards
                     gameController.setGods(parsedLine,socketId);
+                    break;
                 case 1:
                     // Select 1 god card
-                    gameController.setGod();
+                    gameController.setGod(parsedLine,player,socketId);
+                    break;
                 case 2:
-                    // Set workers position;
                     gameController.addWorker(player, Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]));
+                    break;
                 case 3:
                     gameController.moveWorker();
+                    break;
                 case 4:
                     gameController.build();
+                    break;
             }
         }
     }
@@ -57,8 +61,6 @@ public class ClientObserver implements Runnable {
     /*
     * Setup name and age of the player
     * */
-
-
     public void initPlayer(){
         //Saves initial player information
         do {

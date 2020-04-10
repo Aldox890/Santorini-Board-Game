@@ -6,6 +6,7 @@ public class Player {
 
     private String name;
     private int age;
+    private String god;
 
     public Player(String name, int age){
 
@@ -21,7 +22,9 @@ public class Player {
         return name;
     }
 
-    public void selectGod(){}
+    public void selectGod(String god){
+        this.god = god;
+    }
 
     public void setInitWorkerPos(){}
 
