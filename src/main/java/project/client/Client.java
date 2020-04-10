@@ -42,11 +42,13 @@ public class Client {
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
         Scanner stdin = new Scanner(System.in);
 
-        System.out.print("Insert username: ");
+        //System.out.print("Insert username: ");
+        //String inputLineUsername = stdin.nextLine();
         try{
             String socketLine = "";
             while(!socketLine.equals("true")){
 
+                System.out.print("Insert username: ");
                 String inputLineUsername = stdin.nextLine();
                 System.out.println();
                 while((inputLineUsername.length()<3) || inputLineUsername.contains(";")){
@@ -57,12 +59,10 @@ public class Client {
 
                 System.out.print("Insert your age: ");
                 String inputLineAge = stdin.nextLine();
-                int age = Integer.parseInt(inputLineAge);
 
-                while((age<5 || age>120) || (inputLineAge.contains(";"))){
+                while(checkAge(inputLineAge)){
                     System.out.print("Input error re-insert your age: ");
                     inputLineAge = stdin.nextLine();
-                    age = Integer.parseInt(inputLineAge);
                     System.out.println();
                 }
 
@@ -80,37 +80,40 @@ public class Client {
                     /*RECEIVE LIST OF PLAYERS */
                     serverResponse = socketIn.nextLine().split(";");
                     if(serverResponse[0].equals("-1")){
-                        System.out.println("Giocatori connessi: "+ serverResponse[1]+" "+serverResponse[2]+" "+serverResponse[3]);
+                        System.out.println("Giocatori connessi: "+ "1st-"+serverResponse[1]+" 2nd-"+serverResponse[2]+" 3rd-"+serverResponse[3]);
                     }
                     /*-------------------------*/
 
-                 /*   String[] playerturn = socketIn.nextLine().split(";");
-                    //System.out.println(playerturn[0]);
-                    if(playerturn[1].equals(inputLineUsername)) {
-                        if(Integer.parseInt(playerturn[0]) == 0){
-                            System.out.println("Seleziona 3 divinità:");
-                            String inputGodsSelected="";
-                            int gods_selection=1;
-                            while(gods_selection<=3){
-                                System.out.print("Divinità "+gods_selection+": ");    //input gods (aggiungere controlli)
-                                String input= stdin.nextLine();
-                                if(gods_selection!=3){
-                                    inputGodsSelected = (inputGodsSelected + (input+";"));
-                                }else{inputGodsSelected = (inputGodsSelected +input);}
 
-                                gods_selection++;
-                            }
-                            System.out.println("Client: "+inputGodsSelected);
-                            socketOut.println(inputGodsSelected);
-                            socketOut.flush();                                                  // <---------
+                    /*--SCELTA 3 DEI--*/
+
+                    if(serverResponse[3].equals(inputLineUsername)){
+                       System.out.println("Sei il giocatore più anziano, scegli 3 dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
+
+                        //System.out.println("Seleziona 3 divinità:");
+                        String inputGodsSelected="";
+                        int gods_selection=1;
+                        while(gods_selection<=3){
+                            System.out.print("Divinità "+gods_selection+": ");    //input gods (aggiungere controlli)
+                            String input= stdin.nextLine();
+                            if(gods_selection!=3){
+                                inputGodsSelected = (inputGodsSelected + (input+";"));
+                            }else{inputGodsSelected = (inputGodsSelected +input);}
+
+                            gods_selection++;
                         }
+                        //System.out.println("Client: "+inputGodsSelected);
+                        socketOut.println(("0;"+inputGodsSelected));
+                        socketOut.flush();
                     }
 
-                    socketLine = socketIn.nextLine();
-                    System.out.println("Server: "+socketLine);*/
+                    String[] serverGodList = socketIn.nextLine().split(";");
+                    System.out.println("LISTA DEI SCELTI: "+ serverGodList[2]+ " " + serverGodList[3]+ " " +serverGodList[4]);
+
+                    /*-------------------------*/
 
                     /*
-                    * Chosing of 3 gods
+                    * Chosing of 3 gods by each player
                     * */
                 }
                 else{
@@ -131,4 +134,11 @@ public class Client {
             socket.close();
         }
     }
+
+    /* strategy method to control if the input of the age is correct*/
+    boolean checkAge(String inputAge){
+        int age = Integer.parseInt(inputAge);
+        return ( (age<5 || age>120) || (inputAge.contains(";")) );
+    }
+
 }
