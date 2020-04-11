@@ -7,9 +7,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RulesManagerTest {
 
+    RulesManager rulesManager;
+
     @BeforeEach
     void setUp() {
-
+        rulesManager=new RulesManager();
     }
 
     @Test
