@@ -112,7 +112,7 @@ public class Game extends Observable {
                 allowedGods.add(gList[2]);
                 allowedGods.add(gList[3]);
                 turnNumber = 1;
-                turnOf = playerList.get(0);
+                turnOf = getPlayerList().get(0);
                 notifyObserver("-1;1;" + gList[1] + ";" + gList[2] + ";" + gList[3]);
                 return true;
             }
@@ -139,6 +139,11 @@ public class Game extends Observable {
 
     public ArrayList<Player> getPlayerList() {
         return playerList;
+    }
+
+    //PER TESTING
+    public ArrayList<String> getGodList() {
+        return allowedGods;
     }
 
     /** OLD DATA ***/

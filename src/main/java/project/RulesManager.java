@@ -55,6 +55,7 @@ public class RulesManager {
 
     }
 
+    //x,y coordinate del worker che costruisce, x1,y1 coordinate in cui costruire
     public void build(Player player,int x, int y, int x1, int y1){
         Worker worker;
 
@@ -73,6 +74,10 @@ public class RulesManager {
         }
 
         if(b.board[x1][y1].getLevel()>4){
+            //ECCEZIONE
+        }
+
+        if(b.board[x1][y1].isOccupiedBy()!=null){
             //ECCEZIONE
         }
 

@@ -3,6 +3,7 @@ package project.client;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -22,10 +23,14 @@ public class Client {
     private String ip;
     private int port;
     static final String[] GODS= {"Apollo", "Artemis","Athena", "Atlas","Demeter", "Hephaestus","Minotaur", "Pan", "Prometheus"};    //<--- per test
+    ArrayList<String> players;
+    ArrayList<String> availableGods;
 
     public Client(String ip, int port){
         this.ip = ip;
         this.port = port;
+        players = new ArrayList<String>();
+        availableGods = new ArrayList<String>();
     }
 
     public void startClient() throws IOException{
@@ -77,10 +82,18 @@ public class Client {
                 if(serverResponse[1].equals("true")){
                     System.out.println("registrazione avvenuta");//registrazione avvenuta       // <---------
 
+                    /*-- "in attesa di altri player...." --*/
+
                     /*RECEIVE LIST OF PLAYERS */
                     serverResponse = socketIn.nextLine().split(";");
+
+
                     if(serverResponse[0].equals("-1")){
                         System.out.println("Giocatori connessi: "+ "1st-"+serverResponse[1]+" 2nd-"+serverResponse[2]+" 3rd-"+serverResponse[3]);
+
+                        for(int i=1;i<=serverResponse.length-1;i++){
+                            players.add(serverResponse[i]);
+                        }
                     }
                     /*-------------------------*/
 
@@ -110,11 +123,28 @@ public class Client {
                     String[] serverGodList = socketIn.nextLine().split(";");
                     System.out.println("LISTA DEI SCELTI: "+ serverGodList[2]+ " " + serverGodList[3]+ " " +serverGodList[4]);
 
+                    for(int i=1;i<=serverGodList.length-1;i++){
+                        availableGods.add(serverGodList[i]);
+                    }
+
                     /*-------------------------*/
 
                     /*
                     * Chosing of 3 gods by each player
                     * */
+                    int turn=0;
+                    while(turn<=2){
+                        if(players.get(turn).equals(inputLineUsername)) {
+                            System.out.print("Seleziona il Dio: ");
+                            String input = stdin.nextLine();
+
+                            /*- aggiungere controlli -*/
+                            socketOut.println("1;" + input);
+                            socketOut.flush();
+                        }
+                            turn++;
+                            System.out.println("Server: "+ socketIn.nextLine());
+                    }
                 }
                 else{
                     System.out.println("registrazione fallita");//registrazione fallita
