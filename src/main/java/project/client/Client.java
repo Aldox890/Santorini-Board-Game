@@ -1,7 +1,7 @@
 package project.client;
+import project.Message;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -45,6 +45,8 @@ public class Client {
 
         Scanner socketIn = new Scanner(socket.getInputStream());
         PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream());   //per ricevere oggetto serializzato da server
+        ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());   //per inviare oggetto serializzato a server
         Scanner stdin = new Scanner(System.in);
 
         //System.out.print("Insert username: ");
@@ -72,26 +74,29 @@ public class Client {
                 }
 
                 //send message to the project.server
-                socketOut.println((inputLineUsername+";"+inputLineAge));    //send to server client's data
-                socketOut.flush();
+                objectOutputStream.writeObject(new Message(0,0,(inputLineUsername+";"+inputLineAge)));
+                objectOutputStream.flush();
+                //socketOut.println((inputLineUsername+";"+inputLineAge));    //send to server client's data
 
                 //wait for project.server response
                 //socketLine = socketIn.nextLine();
                 //System.out.println(socketLine);
-                String[] serverResponse = socketIn.nextLine().split(";");
-                if(serverResponse[1].equals("true")){
+                Message mex = (Message) objectInputStream.readObject();
+                if(mex.getData().equals("true")){
                     System.out.println("registrazione avvenuta");//registrazione avvenuta       // <---------
 
                     /*-- "in attesa di altri player...." --*/
 
                     /*RECEIVE LIST OF PLAYERS */
-                    serverResponse = socketIn.nextLine().split(";");
+
+                    mex = (Message) objectInputStream.readObject();
+                    String[] serverResponse = mex.getData().split(";");
 
 
-                    if(serverResponse[0].equals("-1")){
-                        System.out.println("Giocatori connessi: "+ "1st-"+serverResponse[1]+" 2nd-"+serverResponse[2]+" 3rd-"+serverResponse[3]);
+                    if(mex.getTypeOfMessage() == 3){
+                        System.out.println("Giocatori connessi: "+ "1st-"+serverResponse[0]+" 2nd-"+serverResponse[1]+" 3rd-"+serverResponse[2]);
 
-                        for(int i=1;i<=serverResponse.length-1;i++){
+                        for(int i=0;i<=serverResponse.length-1;i++){
                             players.add(serverResponse[i]);
                         }
                     }
@@ -100,7 +105,7 @@ public class Client {
 
                     /*--SCELTA 3 DEI--*/
 
-                    if(serverResponse[3].equals(inputLineUsername)){
+                    if(serverResponse[2].equals(inputLineUsername)){
                        System.out.println("Sei il giocatore più anziano, scegli 3 dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
 
                         //System.out.println("Seleziona 3 divinità:");
@@ -116,14 +121,15 @@ public class Client {
                             gods_selection++;
                         }
                         //System.out.println("Client: "+inputGodsSelected);
-                        socketOut.println(("0;"+inputGodsSelected));
-                        socketOut.flush();
+                        objectOutputStream.writeObject(new Message(0,0,inputGodsSelected));
+                        objectOutputStream.flush();
                     }
 
-                    String[] serverGodList = socketIn.nextLine().split(";");
-                    System.out.println("LISTA DEI SCELTI: "+ serverGodList[2]+ " " + serverGodList[3]+ " " +serverGodList[4]);
+                    mex = (Message) objectInputStream.readObject();
+                    String[] serverGodList = mex.getData().split(";");
+                    System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
 
-                    for(int i=1;i<=serverGodList.length-1;i++){
+                    for(int i=0;i<=serverGodList.length-1;i++){
                         availableGods.add(serverGodList[i]);
                     }
 
@@ -133,17 +139,27 @@ public class Client {
                     * Chosing of 3 gods by each player
                     * */
                     int turn=0;
+                    String lastselectedgod="";
                     while(turn<=2){
+                        String input="";
                         if(players.get(turn).equals(inputLineUsername)) {
                             System.out.print("Seleziona il Dio: ");
-                            String input = stdin.nextLine();
+                            input = stdin.nextLine();
+                            while(!availableGods.contains(input) ||  ((Message) objectInputStream.readObject()).getData().equals("false")/*socketIn.nextLine().contains("false")*/){
+                                System.out.print("Errore di input,seleziona il Dio: ");
+                                input = stdin.nextLine();
+                            }
 
                             /*- aggiungere controlli -*/
-                            socketOut.println("1;" + input);
-                            socketOut.flush();
+
+                            objectOutputStream.writeObject(new Message(0,1,input));
+                            objectOutputStream.flush();
                         }
                             turn++;
-                            System.out.println("Server: "+ socketIn.nextLine());
+
+                            mex = (Message) objectInputStream.readObject();
+                            System.out.println("God Selected: " + mex.getData());
+                            //System.out.println("Server: "+ socketIn.nextLine());
                     }
                 }
                 else{
@@ -157,6 +173,9 @@ public class Client {
         }
         catch(NoSuchElementException e){
             System.out.println("Connection closed");
+        }
+        catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
         finally { stdin.close();
             socketIn.close();
