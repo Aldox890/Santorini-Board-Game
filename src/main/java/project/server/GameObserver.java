@@ -1,6 +1,9 @@
 package project.server;
 
+import project.Message;
+
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
@@ -13,11 +16,13 @@ public class GameObserver implements Observer {
     Socket socket;
     PrintWriter out;
     private int socketId;
+    ObjectOutputStream oos;
 
     public GameObserver(Socket socket,int socketId) throws IOException {
         this.socket = socket;
         this.socketId = socketId;
         out = new PrintWriter(socket.getOutputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
     }
 
     /*
@@ -25,13 +30,17 @@ public class GameObserver implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof String){
-            String parsedArg[] = ((String) arg).split(";");
-            if(Integer.parseInt(parsedArg[0]) != socketId && Integer.parseInt(parsedArg[0]) >=0) {
+        if(arg instanceof Message){
+            Message msg = (Message) arg;
+            if(msg.getDest() != socketId && msg.getDest()  >=0) {
                 return;
             }
-            out.println((String)arg);
-            out.flush();
+            try {
+                oos.writeObject(msg);
+                oos.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

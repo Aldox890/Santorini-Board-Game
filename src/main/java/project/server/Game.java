@@ -1,6 +1,7 @@
 package project.server;
 
 import project.Board;
+import project.Message;
 
 import java.util.*;
 
@@ -59,14 +60,14 @@ public class Game extends Observable {
     public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
             if(playerList.get(i).getName().equals(p.getName())){
-                notifyObserver(socketId + ";false");
+                notifyObserver(new Message(socketId,0,"false"));
                 return false;
             }
         }
         playerList.add(p);
         System.out.println("added to playerlist: " + p.getName());
 
-        notifyObserver(socketId + ";true");
+        notifyObserver(new Message(socketId,0,"true"));
         if (playerList.size() > 2) {
             roomIsFull = true;
             init();

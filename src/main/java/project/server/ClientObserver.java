@@ -1,6 +1,9 @@
 package project.server;
 
+import project.Message;
+
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Observable;
@@ -17,6 +20,7 @@ public class ClientObserver implements Runnable {
     Scanner in;
     PrintWriter out;
     Player player;
+    ObjectInputStream ois;
     private int socketId;
 
     public ClientObserver(GameController gameController, Socket socket, int socketId) throws IOException {
@@ -26,12 +30,19 @@ public class ClientObserver implements Runnable {
         String playerName;
 
         in = new Scanner(socket.getInputStream());
+        ois = new ObjectInputStream(socket.getInputStream());
         out = new PrintWriter(socket.getOutputStream());
     }
 
     @Override
     public void run() {
-        initPlayer();
+        try {
+            initPlayer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         while(true) {
             String line = in.nextLine();
@@ -61,11 +72,11 @@ public class ClientObserver implements Runnable {
     /*
     * Setup name and age of the player
     * */
-    public void initPlayer(){
+    public void initPlayer() throws IOException, ClassNotFoundException {
         //Saves initial player information
         do {
-            String line = in.nextLine(); // the first message recived should be "username;age"
-            String[] playerInfo = line.split(";");
+            Message msg = (Message) ois.readObject(); // the first message recived should be "username;age"
+            String[] playerInfo = msg.getData().split(";");
             player = new Player(playerInfo[0], Integer.parseInt(playerInfo[1]));
         } while (!gameController.addPlayer(player,socketId));
     }

@@ -9,7 +9,7 @@ public class Message implements Serializable {
     String data;
     String gameBoard[][];
 
-    public Message(int typeOfMessage, int dest, String data){
+    public Message(int dest, int typeOfMessage, String data){
         this.typeOfMessage = typeOfMessage;
         this.dest = dest;
         gameBoard = new String[5][5];
@@ -18,5 +18,13 @@ public class Message implements Serializable {
 
     public void addBoard(String gameBoard[][]){
         this.gameBoard = gameBoard;
+    }
+
+    public int getDest(){
+        return dest;
+    }
+
+    public String getData(){
+        return data;
     }
 }
