@@ -59,12 +59,12 @@ class GameTest {
         g.addPlayer(p2,1);
         g.addPlayer(p3,2);
         String gList[]={"2","Apollo","Athena","Pan"};
-        String gChoice[]={"1","Apollo"};
+        String gChoice="Apollo";
         g.setGods(gList,3);
         g.addGod(gChoice,p1,0);
-        assertEquals(p1.getGod(),gChoice[1]);
+        assertEquals(p1.getGod(),gChoice);
         g.addGod(gChoice,p2,1);
-        assertNotEquals(p2.getGod(),gChoice[1]);
+        assertNotEquals(p2.getGod(),gChoice);
 
     }
 }

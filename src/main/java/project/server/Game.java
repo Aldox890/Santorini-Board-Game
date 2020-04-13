@@ -109,7 +109,7 @@ public class Game extends Observable {
      */
     public boolean setGods( String[] gList, int socketId) {
         if (gList!= null && gList[0] != null && gList[1] != null && gList[2] != null) {
-            if (godsList.contains(gList[0]) && godsList.contains(gList[1]) && godsList.contains(gList[3])) {
+            if (godsList.contains(gList[0]) && godsList.contains(gList[1]) && godsList.contains(gList[2])) {
                 allowedGods.add(gList[0]);
                 allowedGods.add(gList[1]);
                 allowedGods.add(gList[2]);

@@ -22,7 +22,7 @@ public class GameObserver implements Observer {
         this.socket = socket;
         this.socketId = socketId;
         out = new PrintWriter(socket.getOutputStream());
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        oos = new ObjectOutputStream(socket.getOutputStream());
     }
 
     /*
