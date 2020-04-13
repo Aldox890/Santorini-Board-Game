@@ -46,7 +46,7 @@ public class ClientObserver implements Runnable {
                     gameController.setGod(parsedLine,player,socketId);
                     break;
                 case 2:
-                    gameController.addWorker(player, Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]));
+                    gameController.addWorker(player, Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]),socketId);
                     break;
                 case 3:
                     gameController.moveWorker();

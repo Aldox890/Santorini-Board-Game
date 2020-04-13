@@ -92,8 +92,13 @@ public class Game extends Observable {
      * TRUE if the worker is added inside the game board
      * FALSE if the worker isn't added inside the game board
      */
-    public boolean addWorker(Player p,int x, int y){
-        return this.gameBoard.createWorker(p,x,y);
+    public boolean addWorker(Player p,int x, int y, int socketid){
+        if  (gameBoard.createWorker(p,x,y)){
+            notifyObserver("-1;3;ADDED NEW WORKER");
+            return true;
+        }
+        notifyObserver(socketid + ";" + "false");
+        return false;
     }
 
     /*
