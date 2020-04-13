@@ -45,26 +45,35 @@ public class ClientObserver implements Runnable {
         }
 
         while(true) {
-            String line = in.nextLine();
-            String parsedLine[] = line.split(";");
-            switch (Integer.parseInt(parsedLine[0])) {
-                case 0:
-                    // Select 3 gods cards
-                    gameController.setGods(parsedLine,socketId);
-                    break;
-                case 1:
-                    // Select 1 god card
-                    gameController.setGod(parsedLine,player,socketId);
-                    break;
-                case 2:
-                    gameController.addWorker(player, Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]),socketId);
-                    break;
-                case 3:
-                    gameController.moveWorker();
-                    break;
-                case 4:
-                    gameController.build();
-                    break;
+            try {
+                Message msg = (Message) ois.readObject();
+
+                String parsedLine[];
+                switch (msg.getTypeOfMessage()) {
+                    case 0:
+                        // Select 3 gods cards
+                        parsedLine = msg.getData().split(";");
+                        gameController.setGods(parsedLine,socketId);
+                        break;
+                    case 1:
+                        // Select 1 god card
+                        gameController.setGod(msg.getData(),player,socketId);
+                        break;
+                    case 2:
+                        parsedLine = msg.getData().split(";");
+                        gameController.addWorker(player, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]),socketId);
+                        break;
+                    case 3:
+                        gameController.moveWorker();
+                        break;
+                    case 4:
+                        gameController.build();
+                        break;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }

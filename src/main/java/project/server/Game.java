@@ -85,8 +85,9 @@ public class Game extends Observable {
         turnOf = p;
         turnNumber = 0;
         System.out.println("turnof " + p.getName());
-        String response = "-1;" + playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
-        notifyObserver(response);
+
+        String response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+        notifyObserver(new Message(-1,3,response));
     }
 
     /*
@@ -107,31 +108,33 @@ public class Game extends Observable {
      * Broadcast list to all players if it works.
      */
     public boolean setGods( String[] gList, int socketId) {
-        if (gList!= null && gList[1] != null && gList[2] != null && gList[3] != null) {
-            if (godsList.contains(gList[1]) && godsList.contains(gList[2]) && godsList.contains(gList[3])) {
+        if (gList!= null && gList[0] != null && gList[1] != null && gList[2] != null) {
+            if (godsList.contains(gList[0]) && godsList.contains(gList[1]) && godsList.contains(gList[3])) {
+                allowedGods.add(gList[0]);
                 allowedGods.add(gList[1]);
                 allowedGods.add(gList[2]);
-                allowedGods.add(gList[3]);
                 turnNumber = 1;
                 turnOf = getPlayerList().get(0);
-                notifyObserver("-1;1;" + gList[1] + ";" + gList[2] + ";" + gList[3]);
+                notifyObserver(new Message(-1,1,gList[0] + ";" + gList[1] + ";" + gList[2]));
+                //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
                 return true;
             }
         }
-        notifyObserver(socketId + ";" + "false");
+        notifyObserver(new Message(socketId,0,"false"));
         return false;
     }
 
-    public void addGod(String[] god, Player player, int socketId){
-        if(god[1] != null && allowedGods.contains(god[1])){
-            player.selectGod(god[1]);
-            allowedGods.remove(god[1]);
+    public void addGod(String god, Player player, int socketId){
+        if(god != null && allowedGods.contains(god)){
+            player.selectGod(god);
+            allowedGods.remove(god);
             turnOf = playerList.get(turnNumber - 1);
             turnNumber ++;
-            notifyObserver("-1;2;" + player.getName() + " picked " + god[1]);
+            notifyObserver(new Message(-1,2,player.getName() + ";" + god));
+            //notifyObserver("-1;2;" + player.getName() + " picked " + god); OLD
             return;
         }
-        notifyObserver(socketId + ";false");
+        notifyObserver(new Message(socketId,0,"false"));
     }
 
     public Player getTurnOf() {

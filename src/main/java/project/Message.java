@@ -24,7 +24,10 @@ public class Message implements Serializable {
         return dest;
     }
 
+    public int getTypeOfMessage(){return typeOfMessage;}
+
     public String getData(){
         return data;
     }
+
 }
