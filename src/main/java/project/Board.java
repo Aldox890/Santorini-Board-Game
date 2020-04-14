@@ -27,11 +27,13 @@ public class Board {
     * returns true if there is no worker already in the selected cell
     * returns false if there is already a worker inside the cell*/
     public boolean createWorker(Player p, int x, int y){
-        if(this.board[x][y].isOccupiedBy()==null){   //if there is no worker inside, puts the new worker in the cell at x and y
-            Worker w = new Worker(p,this.board[x][y]);
-            p.addWorker(w);
-            this.board[x][y].setOccupiedBy(w);
-            return true;
+        if(x >= 0 && x <= 4 && y >= 0 && y <= 4) {
+            if (this.board[x][y].isOccupiedBy() == null) {   //if there is no worker inside, puts the new worker in the cell at x and y
+                Worker w = new Worker(p, this.board[x][y]);
+                p.addWorker(w);
+                this.board[x][y].setOccupiedBy(w);
+                return true;
+            }
         }
         return false;
     }

@@ -106,12 +106,12 @@ public class Game extends Observable {
                 return true;
             }
             else {                                                                                   //ERROR : if a player choose a wrong position
-                notifyObserver(new Message(socketid,1,"false",turnOf.getName()));
+                notifyObserver(new Message(socketid,0,"false",turnOf.getName()));
                 return false;
             }
         }
         else{                                                                                       //ERROR : if a player has more than two worker
-            notifyObserver(new Message(socketid,1,"false",turnOf.getName()));
+            notifyObserver(new Message(socketid,0,"false",turnOf.getName()));
             return false;
         }
     }
