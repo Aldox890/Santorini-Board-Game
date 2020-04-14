@@ -6,12 +6,14 @@ public class Message implements Serializable {
     int typeOfMessage;
     int dest;
 
+    String turnOf;
     String data;
     String gameBoard[][];
 
-    public Message(int dest, int typeOfMessage, String data){
+    public Message(int dest, int typeOfMessage, String data, String turnOf){
         this.typeOfMessage = typeOfMessage;
         this.dest = dest;
+        this.turnOf = turnOf;
         gameBoard = new String[5][5];
         this.data = data;
     }
@@ -29,5 +31,7 @@ public class Message implements Serializable {
     public String getData(){
         return data;
     }
+
+    public String getTurnOf(){return turnOf;}
 
 }

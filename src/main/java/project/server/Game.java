@@ -60,14 +60,14 @@ public class Game extends Observable {
     public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
             if(playerList.get(i).getName().equals(p.getName())){
-                notifyObserver(new Message(socketId,0,"false"));
+                notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
                 return false;
             }
         }
         playerList.add(p);
         System.out.println("added to playerlist: " + p.getName());
 
-        notifyObserver(new Message(socketId,0,"true"));
+        notifyObserver(new Message(socketId,0,"true", turnOf.getName()));
         if (playerList.size() > 2) {
             roomIsFull = true;
             init();
@@ -87,7 +87,7 @@ public class Game extends Observable {
         System.out.println("turnof " + p.getName());
 
         String response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
-        notifyObserver(new Message(-1,3,response));
+        notifyObserver(new Message(-1,3,response, turnOf.getName()));
     }
 
     /*
@@ -115,12 +115,12 @@ public class Game extends Observable {
                 allowedGods.add(gList[2]);
                 turnNumber = 1;
                 turnOf = getPlayerList().get(0);
-                notifyObserver(new Message(-1,1,gList[0] + ";" + gList[1] + ";" + gList[2]));
+                notifyObserver(new Message(-1,1,gList[0] + ";" + gList[1] + ";" + gList[2], turnOf.getName()));
                 //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
                 return true;
             }
         }
-        notifyObserver(new Message(socketId,0,"false"));
+        notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
         return false;
     }
 
@@ -130,11 +130,13 @@ public class Game extends Observable {
             allowedGods.remove(god);
             turnOf = playerList.get(turnNumber - 1);
             turnNumber ++;
-            notifyObserver(new Message(-1,2,player.getName() + ";" + god));
+            notifyObserver(new Message(-1,2,player.getName() + ";" + god, turnOf.getName()));
             //notifyObserver("-1;2;" + player.getName() + " picked " + god); OLD
+            System.out.println(god + " TRUE");
             return;
         }
-        notifyObserver(new Message(socketId,0,"false"));
+        System.out.println(god + " FALSE");
+        notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
     }
 
     public Player getTurnOf() {
