@@ -169,4 +169,10 @@ public class Game extends Observable {
         turnOf = p;
     }
 
+    private void passTurn(){
+        int indexOfP = playerList.indexOf(turnOf);
+        if (indexOfP < 3) { turnOf = playerList.get(indexOfP + 1); }
+        else{ turnOf = playerList.get(0);}
+    }
+
 }
