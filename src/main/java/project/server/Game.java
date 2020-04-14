@@ -23,6 +23,7 @@ public class Game extends Observable {
         gameBoard = new Board();
         playerList = new ArrayList();
         roomIsFull = false;
+        this.turnOf = new Player("",0);
         godsList = new ArrayList<String>();
         allowedGods = new ArrayList<String>();
         godsList.add("Apollo");
@@ -84,7 +85,6 @@ public class Game extends Observable {
         Player p = playerList.get(2);
         turnOf = p;
         turnNumber = 0;
-        System.out.println("turnof " + p.getName());
 
         String response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
@@ -125,17 +125,17 @@ public class Game extends Observable {
     }
 
     public void addGod(String god, Player player, int socketId){
+
         if(god != null && allowedGods.contains(god)){
             player.selectGod(god);
             allowedGods.remove(god);
-            turnOf = playerList.get(turnNumber - 1);
             turnNumber ++;
+            if (turnNumber <=3) { turnOf = playerList.get(turnNumber - 1);}
+            else { turnOf = playerList.get(0);}
             notifyObserver(new Message(-1,2,player.getName() + ";" + god, turnOf.getName()));
             //notifyObserver("-1;2;" + player.getName() + " picked " + god); OLD
-            System.out.println(god + " TRUE");
             return;
         }
-        System.out.println(god + " FALSE");
         notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
     }
 

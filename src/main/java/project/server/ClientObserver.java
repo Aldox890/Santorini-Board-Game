@@ -47,7 +47,6 @@ public class ClientObserver implements Runnable {
         while(true) {
             try {
                 Message msg = (Message) ois.readObject();
-
                 String parsedLine[];
                 switch (msg.getTypeOfMessage()) {
                     case 0:

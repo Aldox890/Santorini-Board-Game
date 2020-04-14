@@ -74,7 +74,7 @@ public class Client {
                 }
 
                 //send message to the project.server
-                objectOutputStream.writeObject(new Message(0,0,(inputLineUsername+";"+inputLineAge)));
+                objectOutputStream.writeObject(new Message(0,0,(inputLineUsername+";"+inputLineAge), null));
                 objectOutputStream.flush();
                 //socketOut.println((inputLineUsername+";"+inputLineAge));    //send to server client's data
 
@@ -121,7 +121,7 @@ public class Client {
                             gods_selection++;
                         }
                         //System.out.println("Client: "+inputGodsSelected);
-                        objectOutputStream.writeObject(new Message(0,0,inputGodsSelected));
+                        objectOutputStream.writeObject(new Message(0,0,inputGodsSelected, null));
                         objectOutputStream.flush();
                     }
 
@@ -154,7 +154,7 @@ public class Client {
                             input = stdin.nextLine();
                         }
                         //- aggiungere controlli -
-                        objectOutputStream.writeObject(new Message(0,1,input));
+                        objectOutputStream.writeObject(new Message(0,1,input, null));
                         objectOutputStream.flush();
                         mex = (Message) objectInputStream.readObject();
                             System.out.println("debug: "+mex.getData());
