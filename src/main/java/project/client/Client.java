@@ -145,15 +145,25 @@ public class Client {
                             String[] selectedGod = mex.getData().split(";");
                             availableGods.remove(selectedGod[1]);
                         }
-                        if(mex.getTypeOfMessage()==0 || mex.getTypeOfMessage()==1 || mex.getTypeOfMessage()==2){
+                        if(mex.getTypeOfMessage()==0 || mex.getTypeOfMessage()==1 || mex.getTypeOfMessage()==2){    //typeOfMessage: 0 == "true/false"
                             if(mex.getTurnOf().equals(inputLineUsername) && !availableGods.isEmpty()){  //tocca a me
                                 System.out.print("Seleziona il Dio: ");
                                 input = stdin.nextLine();
                                 //inserire controllo input
                                 objectOutputStream.writeObject(new Message(0,1,input,null));
                                 objectOutputStream.flush();
-
                             }
+
+                        }
+                        if ( (mex.getTypeOfMessage()==4 || mex.getTypeOfMessage()==0 || mex.getTypeOfMessage()==2) && mex.getTurnOf().equals(inputLineUsername) && availableGods.isEmpty()){ //ricevuto board
+                            System.out.println("Inserisci X e Y (tra 0 e 4): ");
+                            System.out.print("Inserisci X: ");
+                            String x = stdin.nextLine();
+                            System.out.print("Inserisci Y: ");
+                            String y = stdin.nextLine();
+                            //inserire controllo input
+                            objectOutputStream.writeObject(new Message(0,2,(x +";"+ y),null));
+                            objectOutputStream.flush();
                         }
 
                         mex = (Message) objectInputStream.readObject();
