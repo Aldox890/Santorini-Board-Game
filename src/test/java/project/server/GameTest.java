@@ -17,16 +17,19 @@ class GameTest {
         p1 = new Player("Giovanni",22);
         p2 = new Player("Mattia",23);
         p3 = new Player("Aldo",35);
+        g.addPlayer(p1,0);
+        g.addPlayer(p2,1);
+        g.addPlayer(p3,2);
     }
 
     //Game.addPlayer() and Game.init() test
     @Test
     void addPlayer() {
         ArrayList<Player> playerList;
-        assertTrue(g.addPlayer(p1,0));
-        assertFalse(g.addPlayer(p1,1));
-        assertTrue(g.addPlayer(p2,1));
-        assertTrue(g.addPlayer(p3,2));
+        //assertTrue(g.addPlayer(p1,0));
+        //assertFalse(g.addPlayer(p1,1));
+        //assertTrue(g.addPlayer(p2,1));
+        //assertTrue(g.addPlayer(p3,2));
         playerList=g.getPlayerList();
         assertEquals(playerList.get(0).getName(),"Giovanni");
         assertEquals(playerList.get(1).getName(),"Mattia");
@@ -36,15 +39,13 @@ class GameTest {
     @Test
     void addWorker(){
         assertTrue(g.addWorker(p1,0,1,0));
+        assertTrue(g.addWorker(p1,0,2,0));
         assertFalse(g.addWorker(p2,0,1,0));
     }
 
     @Test
     void setGods(){
-        g.addPlayer(p1,0);
-        g.addPlayer(p2,1);
-        g.addPlayer(p3,2);
-        String gList[]={"3","Apollo","Athena","Pan"};
+        String gList[]={"Apollo","Athena","Pan"};
         g.setGods(gList,3);
         assertEquals(g.getGodList().get(0),"Apollo");
         assertEquals(g.getGodList().get(1),"Athena");
@@ -55,10 +56,7 @@ class GameTest {
 
     @Test
     void addGod(){
-        g.addPlayer(p1,0);
-        g.addPlayer(p2,1);
-        g.addPlayer(p3,2);
-        String gList[]={"2","Apollo","Athena","Pan"};
+        String gList[]={"Apollo","Athena","Pan"};
         String gChoice="Apollo";
         g.setGods(gList,3);
         g.addGod(gChoice,p1,0);

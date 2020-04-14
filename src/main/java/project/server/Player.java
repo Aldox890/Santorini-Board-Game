@@ -1,11 +1,14 @@
 package project.server;
 
+import project.Worker;
+
 import java.util.ArrayList;
 
 public class Player {
 
     private String name;
     private int age;
+    private ArrayList<Worker> workers = new ArrayList<>();
 
 
     private String god;
@@ -32,7 +35,13 @@ public class Player {
         return god;
     }
 
-    public void setInitWorkerPos(){}
+    public void addWorker(Worker w){
+        workers.add(w);
+    }
+
+    public int getNumberOfWorker(){
+        return workers.size();
+    }
 
     public void move(){}
 

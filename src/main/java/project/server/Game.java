@@ -95,13 +95,28 @@ public class Game extends Observable {
      * FALSE if the worker isn't added inside the game board
      */
     public boolean addWorker(Player p,int x, int y, int socketid){
-        if  (gameBoard.createWorker(p,x,y)){
-            notifyObserver("-1;3;ADDED NEW WORKER");
-            return true;
+        if(p.getNumberOfWorker()<2) {
+            if (gameBoard.createWorker(p, x, y)) {
+                if(p.getNumberOfWorker()==2){           //If a player has two worker change turn and print the board
+                    passTurn();
+                    notifyObserver(new Message(-1,4,"",turnOf.getName()));
+                    return true;
+                }
+                notifyObserver(new Message(-1,4,"",turnOf.getName()));      //If a player add a worker print the board
+                return true;
+            }
+            else {                                                                                   //ERROR : if a player choose a wrong position
+                notifyObserver(new Message(socketid,1,"false",turnOf.getName()));
+                return false;
+            }
         }
-        notifyObserver(socketid + ";" + "false");
-        return false;
+        else{                                                                                       //ERROR : if a player has more than two worker
+            notifyObserver(new Message(socketid,1,"false",turnOf.getName()));
+            return false;
+        }
     }
+
+
 
     /*
      * Sets the 3 allowed gods to allowedGods list. sends false if fails.
@@ -152,6 +167,12 @@ public class Game extends Observable {
         return allowedGods;
     }
 
+    private void passTurn(){
+        int indexOfP = playerList.indexOf(turnOf);
+        if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
+        else{ turnOf = playerList.get(0);}
+    }
+
     /** OLD DATA ***/
     private ArrayList<String> allowedGods;
     private int turnNumber;
@@ -169,10 +190,6 @@ public class Game extends Observable {
         turnOf = p;
     }
 
-    private void passTurn(){
-        int indexOfP = playerList.indexOf(turnOf);
-        if (indexOfP < 3) { turnOf = playerList.get(indexOfP + 1); }
-        else{ turnOf = playerList.get(0);}
-    }
+
 
 }

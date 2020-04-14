@@ -127,7 +127,7 @@ public class Client {
 
                     mex = (Message) objectInputStream.readObject();
                     String[] serverGodList = mex.getData().split(";");
-                    System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
+                   System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
 
                     for(int i=0;i<=serverGodList.length-1;i++){
                         availableGods.add(serverGodList[i]);
