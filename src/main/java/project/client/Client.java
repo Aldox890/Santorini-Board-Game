@@ -138,58 +138,30 @@ public class Client {
                     /*
                     * Chosing of 3 gods by each player
                     * */
-                    int turn=0;
+
                     String input="";
-                    boolean checked=false;
-                    /*------------------------------------------------------------*/
-                    while(turn<=2 && !players.get(turn).equals(inputLineUsername)){
-                        turn++;
-                    }
-
-                    System.out.print("Seleziona il Dio: ");
-                    input = stdin.nextLine();
                     do{
-                        while(!availableGods.contains(input)){
-                            System.out.print("Errore di input,seleziona il Dio: ");
-                            input = stdin.nextLine();
+                        if(mex.getTypeOfMessage()==2){
+                            String[] selectedGod = mex.getData().split(";");
+                            availableGods.remove(selectedGod[1]);
                         }
-                        //- aggiungere controlli -
-                        objectOutputStream.writeObject(new Message(0,1,input, null));
-                        objectOutputStream.flush();
-                        mex = (Message) objectInputStream.readObject();
-                            System.out.println("debug: "+mex.getData());
-                    }while(mex.getData().equals("false"));
-
-                    System.out.println("God Selected: " + mex.getData());
-
-                    /*------------------------------------------------------------*/
-
-                /*    while(turn<=2 && checked==false){
-                        String input="";
-                        if(players.get(turn).equals(inputLineUsername)) {
-                            System.out.print("Seleziona il Dio: ");
-                            input = stdin.nextLine();
-                            do{
-                                while(!availableGods.contains(input)){
-                                    System.out.print("Errore di input,seleziona il Dio: ");
-                                    input = stdin.nextLine();
-                                }
-                                //- aggiungere controlli -
-                                objectOutputStream.writeObject(new Message(0,1,input));
+                        if(mex.getTypeOfMessage()==0 || mex.getTypeOfMessage()==1 || mex.getTypeOfMessage()==2){
+                            if(mex.getTurnOf().equals(inputLineUsername) && !availableGods.isEmpty()){  //tocca a me
+                                System.out.print("Seleziona il Dio: ");
+                                input = stdin.nextLine();
+                                //inserire controllo input
+                                objectOutputStream.writeObject(new Message(0,1,input,null));
                                 objectOutputStream.flush();
-                                mex = (Message) objectInputStream.readObject();
-                                    System.out.println("debug: "+mex.getData());
-                            }while(mex.getData().equals("false"));
 
-                            checked=true;
+                            }
                         }
-                            System.out.println("God Selected: " + mex.getData());
-                            turn++;
 
-                            //mex = (Message) objectInputStream.readObject();
-                            //System.out.println("God Selected: " + mex.getData());
-                            //System.out.println("Server: "+ socketIn.nextLine());
-                    }*/
+                        mex = (Message) objectInputStream.readObject();
+                        System.out.println("Server response: "+ mex.getData());
+
+                    }while(true);
+
+                   
                 }
                 else{
                     System.out.println("registrazione fallita");//registrazione fallita
