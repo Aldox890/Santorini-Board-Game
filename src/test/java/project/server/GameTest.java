@@ -38,9 +38,14 @@ class GameTest {
 
     @Test
     void addWorker(){
-        assertTrue(g.addWorker(p1, new String[]{"0;1"},0));
-        assertTrue(g.addWorker(p1, new String[]{"0;2"},0));
-        assertFalse(g.addWorker(p2, new String[]{"0;1"},0));
+        String s1[] = {"0","1"};
+        String s2[] = {"0","2"};
+        assertTrue(g.addWorker(p1,s1,0));
+        assertTrue(g.addWorker(p1,s2,0));
+        assertFalse(g.addWorker(p1,s2,0));
+        assertFalse(g.addWorker(null,s1,0));
+        assertFalse(g.addWorker(p2,s1,1));
+        assertFalse(g.addWorker(p2,null,1));
     }
 
     @Test
@@ -65,4 +70,16 @@ class GameTest {
         assertNotEquals(p2.getGod(),gChoice);
 
     }
+
+    @Test
+    void move(){
+
+    }
+
+
+    @Test
+    void build(){
+
+    }
+
 }

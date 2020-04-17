@@ -15,7 +15,11 @@ public class Board {
 
     }
 
-    public void moveWorker(Worker worker,int posX,int posY){
+    public Cell[][] getBoard() {
+        return board;
+    }
+
+    public void moveWorker(Worker worker, int posX, int posY){
         worker.getCell().setOccupiedBy(null);
         worker.setCell(board[posX][posY]);
         board[posX][posY].setOccupiedBy(worker);
