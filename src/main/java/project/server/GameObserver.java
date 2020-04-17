@@ -23,6 +23,8 @@ public class GameObserver implements Observer {
         this.socketId = socketId;
         out = new PrintWriter(socket.getOutputStream());
         oos = new ObjectOutputStream(socket.getOutputStream());
+        oos.writeObject(new Message(socketId,0,"true",""));
+        oos.flush();
     }
 
     /*

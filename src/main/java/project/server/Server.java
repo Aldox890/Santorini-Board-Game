@@ -17,8 +17,6 @@ public class Server {
 
     private int playerid;
     private ServerSocket serverSocket;
-    ObjectOutputStream oos;
-
     public Server(int port){
         this.port = port;
         playerid = 0;
@@ -41,9 +39,6 @@ public class Server {
         while(playerid < 3){ // server waits for 3 players to connect to the game
             try {
                 Socket socket = serverSocket.accept();
-                oos = new ObjectOutputStream(socket.getOutputStream());
-                oos.writeObject(new Message(playerid,0,"false", ""));
-                oos.flush();
                 GameObserver gameObserver = new GameObserver(socket,playerid);
                 game.addObserver(gameObserver);
                 executor.submit(new ClientObserver(gameController, socket, playerid));

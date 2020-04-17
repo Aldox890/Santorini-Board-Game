@@ -1,5 +1,7 @@
 package project.client;
 
+import project.Message;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -31,7 +33,8 @@ public class ServerObserver extends Observable {
 
     public void waitFromServer() throws IOException, ClassNotFoundException {
         while(true){
-            Object obj = ois.readObject();
+            Message obj = (Message)ois.readObject();
+            System.out.println(obj.getData());
             notifyObserver(obj);
         }
     }
