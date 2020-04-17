@@ -60,7 +60,7 @@ public class ClientObserver implements Runnable {
                         break;
                     case 2:
                         parsedLine = msg.getData().split(";");
-                        gameController.addWorker(player, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]),socketId);
+                        gameController.addWorker(player, parsedLine,socketId);
                         break;
                     case 3:
                         gameController.moveWorker();

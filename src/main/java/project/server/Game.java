@@ -94,29 +94,32 @@ public class Game extends Observable {
      * TRUE if the worker is added inside the game board
      * FALSE if the worker isn't added inside the game board
      */
-    public boolean addWorker(Player p,int x, int y, int socketid){
-        if(p.getNumberOfWorker()<2) {
-            if (gameBoard.createWorker(p, x, y)) {
-                if(p.getNumberOfWorker()==2){           //If a player has two worker change turn and print the board
-                    passTurn();
-                    notifyObserver(new Message(-1,4,"",turnOf.getName()));
+    public boolean addWorker(Player p,String[] parsedLine, int socketId){
+        if(p!= null && p.getNumberOfWorker()<2) {
+            if (parsedLine != null && parsedLine[0] != null && parsedLine[1] != null) {
+                if (gameBoard.createWorker(p, Integer.parseInt(parsedLine[0]),Integer.parseInt(parsedLine[1]))) {
+                    if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board
+                        passTurn();
+                        notifyObserver(new Message(-1, 4, "", turnOf.getName()));
+                        return true;
+                    }
+                    notifyObserver(new Message(-1, 4, "", turnOf.getName()));      //If a player add a worker print the board
                     return true;
+                } else {                                                                                   //ERROR : if a player choose a wrong position
+                    notifyObserver(new Message(socketId, 4, "false", turnOf.getName()));
+                    return false;
                 }
-                notifyObserver(new Message(-1,4,"",turnOf.getName()));      //If a player add a worker print the board
-                return true;
             }
-            else {                                                                                   //ERROR : if a player choose a wrong position
-                notifyObserver(new Message(socketid,0,"false",turnOf.getName()));
-                return false;
+            else{
+                notifyObserver(new Message(socketId, 4, "false", turnOf.getName()));
             }
         }
         else{                                                                                       //ERROR : if a player has more than two worker
-            notifyObserver(new Message(socketid,0,"false",turnOf.getName()));
+            notifyObserver(new Message(socketId,4,"false",turnOf.getName()));
             return false;
         }
+        return false;
     }
-
-
 
     /*
      * Sets the 3 allowed gods to allowedGods list. sends false if fails.
@@ -135,7 +138,7 @@ public class Game extends Observable {
                 return true;
             }
         }
-        notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
+        notifyObserver(new Message(socketId,1,"false", turnOf.getName()));
         return false;
     }
 
@@ -151,7 +154,13 @@ public class Game extends Observable {
             //notifyObserver("-1;2;" + player.getName() + " picked " + god); OLD
             return;
         }
-        notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
+        notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
+    }
+
+    private void passTurn(){
+        int indexOfP = playerList.indexOf(turnOf);
+        if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
+        else{ turnOf = playerList.get(0);}
     }
 
     public Player getTurnOf() {
@@ -167,11 +176,6 @@ public class Game extends Observable {
         return allowedGods;
     }
 
-    private void passTurn(){
-        int indexOfP = playerList.indexOf(turnOf);
-        if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
-        else{ turnOf = playerList.get(0);}
-    }
 
     /** OLD DATA ***/
     private ArrayList<String> allowedGods;

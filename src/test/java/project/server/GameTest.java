@@ -38,9 +38,9 @@ class GameTest {
 
     @Test
     void addWorker(){
-        assertTrue(g.addWorker(p1,0,1,0));
-        assertTrue(g.addWorker(p1,0,2,0));
-        assertFalse(g.addWorker(p2,0,1,0));
+        assertTrue(g.addWorker(p1, new String[]{"0;1"},0));
+        assertTrue(g.addWorker(p1, new String[]{"0;2"},0));
+        assertFalse(g.addWorker(p2, new String[]{"0;1"},0));
     }
 
     @Test

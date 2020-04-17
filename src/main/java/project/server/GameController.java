@@ -47,8 +47,8 @@ public class GameController {
     /*
      * This method adds a new player's worker in a certain position on the board .
      */
-    public boolean addWorker(Player p, int x, int y,int socketid){
-        return this.game.addWorker(p,x,y,socketid);
+    public boolean addWorker(Player p, String[] parsedLine,int socketid){
+        return this.game.addWorker(p,parsedLine,socketid);
     }
 
     /*
