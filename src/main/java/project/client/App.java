@@ -16,7 +16,7 @@ public class App // !! QUESTO E' SOLO UN TEST !!
         Socket socket = new Socket("127.0.0.1",26175); //82.48.25.174     127.0.0.1   95.248.176.145
         System.out.println("Connection established");
 
-        ClientView clientView = new ClientView();
+        ClientView clientView = new ClientView(socket);
         ServerObserver serverObserver = new ServerObserver(socket);
 
         serverObserver.addObserver(clientView);

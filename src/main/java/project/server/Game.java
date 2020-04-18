@@ -69,7 +69,7 @@ public class Game extends Observable {
         playerList.add(p);
         System.out.println("added to playerlist: " + p.getName());
 
-        notifyObserver(new Message(socketId,0,"true", turnOf.getName()));
+        notifyObserver(new Message(socketId,0,"registered", turnOf.getName()));
         if (playerList.size() > 2) {
             roomIsFull = true;
             init();
@@ -139,7 +139,7 @@ public class Game extends Observable {
                 return true;
             }
         }
-        notifyObserver(new Message(socketId,1,"false", turnOf.getName()));
+        notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
         return false;
     }
 
