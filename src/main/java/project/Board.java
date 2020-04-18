@@ -19,6 +19,95 @@ public class Board {
         return board;
     }
 
+    //controls if is possible to move from (x,y) in (x1,y1)
+    public boolean move(Player player, int x, int y, int x1, int y1,int socketId){
+        Worker worker;
+
+        if(x<0 || x>4 || y<0 || y>4){
+            return false;
+        }
+
+        worker=board[x][y].isOccupiedBy();
+
+        if(worker.getOwner()!=player) {
+            return false;
+        }
+
+        if(x1<0 || x1>4 || y1<0 || y1>4){
+            return false;
+        }
+
+        if(board[x1][y1].isOccupiedBy()!=null){
+            return false;
+        }
+
+        if(x==x1 && y==y1){
+            return false;
+        }
+
+        if(board[x1][y1].getLevel()>board[x][y].getLevel()+1){
+            return false;
+        }
+
+        if(board[x1][y1].getLevel()>3){
+            return false;
+        }
+
+
+        int distanceX = Math.abs(x-x1);
+        int distanceY = Math.abs(y-y1);
+
+        if(distanceX > 1 || distanceY > 1){
+            return false;
+        }
+
+        this.moveWorker(worker,x1,y1);
+        if(board[x1][y1].getLevel()>3){
+            ///WIN
+        }
+        //passTurn();  TODO un giocatore dopo aver mosso deve poter costruire prima di passare il turno
+        return true;
+    }
+
+    //controls if is possible to builds in (x1,y1)
+    public boolean build(Player player,int x, int y, int x1, int y1,int socketId){
+        Worker worker;
+
+        if(x<0 || x>4 || y<0 || y>4){
+            return false;
+        }
+
+        worker = board[x][y].isOccupiedBy();
+
+        if(worker.getOwner()!=player){
+            return false;
+        }
+
+        if(x1<0 || x1>4 || y1<0 || y1>4){
+            return false;
+        }
+
+        if(board[x1][y1].getLevel()>4){
+            return false;
+        }
+
+        if(board[x1][y1].isOccupiedBy()!=null){
+            return false;
+        }
+
+        int distanceX = Math.abs(x-x1);
+        int distanceY = Math.abs(y-y1);
+
+        if(distanceX > 1 || distanceY > 1) {
+            return false;
+        }
+
+        this.buildInPos(worker,x1,y1);
+        //passTurn();
+        return false;
+    }
+
+    //move the worker in (posX,posY)
     public void moveWorker(Worker worker, int posX, int posY){
         worker.getCell().setOccupiedBy(null);
         worker.setCell(board[posX][posY]);
@@ -42,6 +131,7 @@ public class Board {
         return false;
     }
 
+    //build in (posX,posY)
     public void buildInPos(Worker worker,int posX,int posY){
         board[posX][posY].setLevel(board[posX][posY].getLevel()+1);
     }
