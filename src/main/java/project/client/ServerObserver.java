@@ -34,7 +34,6 @@ public class ServerObserver extends Observable {
     public void waitFromServer() throws IOException, ClassNotFoundException {
         while(true){
             Message obj = (Message)ois.readObject();
-            System.out.println(obj.getData());
             notifyObserver(obj);
         }
     }
