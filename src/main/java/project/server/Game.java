@@ -139,7 +139,7 @@ public class Game extends Observable {
                 return true;
             }
         }
-        notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
+        notifyObserver(new Message(socketId,3,"false", turnOf.getName()));
         return false;
     }
 
@@ -151,11 +151,16 @@ public class Game extends Observable {
             turnNumber ++;
             if (turnNumber <=3) { turnOf = playerList.get(turnNumber - 1);}
             else { turnOf = playerList.get(0);}
+
             notifyObserver(new Message(-1,2,player.getName() + ";" + god, turnOf.getName()));
             //notifyObserver("-1;2;" + player.getName() + " picked " + god); OLD
             return;
         }
         notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
+    }
+
+    public void move(){
+
     }
 
     private void passTurn(){
