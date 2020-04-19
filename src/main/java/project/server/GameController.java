@@ -1,5 +1,7 @@
 package project.server;
 
+import project.Worker;
+
 /*
 * This class plays the role of the controller in the MVC Pattern.
 * */
@@ -54,12 +56,16 @@ public class GameController {
     /*
      * This method moves a player's worker in a certain position.
      */
-    public void moveWorker(){}
+    public boolean moveWorker(Worker worker, int posX, int posY){ // <------ DA MODIFICARE
+        return game.moveWorker();
+    }
 
     /*
      * This method builds a new level inside a certain cell of the game board
      */
-    public void build(){}
+    public boolean build(Worker worker, int posX, int posY){    // <------ DA MODIFICARE
+        return game.build();
+    }
 
     /*
      * lets the player chose his god card.

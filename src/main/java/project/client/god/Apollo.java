@@ -7,9 +7,6 @@ public class Apollo {
     public Apollo(String n) {
     }
 
-    public void test(){
-        System.out.println("CIAO SONO Apollo");
-    }
 
     public void move (){
 

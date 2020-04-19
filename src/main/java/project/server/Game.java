@@ -164,6 +164,25 @@ public class Game extends Observable {
         else{ turnOf = playerList.get(0);}
     }
 
+    public boolean moveWorker(Player p,String[] parsedLine, int socketId){ // <------ DA MODIFICARE
+        gameBoard.move(p,Integer.parseInt(parsedLine[1]),
+                Integer.parseInt(parsedLine[1]),
+                Integer.parseInt(parsedLine[1]),
+                Integer.parseInt(parsedLine[1]));
+
+        //gameBoard.moveWorker(worker,posX,posY);
+
+        return true;
+    }
+
+    public boolean build(Player p,String[] parsedLine, int socketId){   // <------ DA MODIFICARE
+        gameBoard.build(p,Integer.parseInt(parsedLine[1]),
+                Integer.parseInt(parsedLine[1]),
+                Integer.parseInt(parsedLine[1]),
+                Integer.parseInt(parsedLine[1]));
+
+        return true;
+    }
 
 
     public Player getTurnOf() {
