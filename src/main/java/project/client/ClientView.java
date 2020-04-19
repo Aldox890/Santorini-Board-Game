@@ -17,36 +17,63 @@ public class ClientView implements Observer {
     ObjectOutputStream objectOutputStream;
     Scanner stdin;
     ArrayList<String> players;
+    ArrayList<String> availableGods;
     String username;
 
     public ClientView(Socket s) throws IOException {
         objectOutputStream = new ObjectOutputStream(s.getOutputStream());
         stdin = new Scanner(System.in);
         players = new ArrayList<String>();
+        availableGods = new ArrayList<String>();
     }
 
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
+        try {
+            switch(mex.getTypeOfMessage()){
+                case (0):
+                    if (mex.getData().equals("registered")) {
+                        System.out.println("Successfully registered!");
+                    }
+                    else {
+                        register();
+                    }
+                    break;
 
-        switch(mex.getTypeOfMessage()){
-            case(0):
-                try {
-                    if(mex.getData().equals("registered")){ System.out.println("Successfully registered!"); }
-                    else{ register(); }
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
-            case(3):
-                printPlayerList(mex);
-                try {
+                case (3):
+                    if (!mex.getData().equals("false")) {
+                        printPlayerList(mex);
+                    }
+                    if (mex.getData().equals("false")) {
+                        System.out.println("Bad input");
+                    }
                     choseAllowedGods();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                break;
+                    break;
+
+                case (1):
+                    addAllowedGods(mex);
+                    choseGod(mex);
+                    break;
+
+                case (2):
+                    removeAllowedGod(mex);
+                    if(availableGods.isEmpty()){
+                        createWorker(mex);
+                        break;
+                    }
+                    if (mex.getData().equals("false")) {
+                        System.out.println("Bad input");
+                    }
+                    choseGod(mex);
+                    break;
+                case(4):
+                    createWorker(mex);
+                    break;
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -97,12 +124,52 @@ public class ClientView implements Observer {
         }
     }
 
+    public void addAllowedGods(Message mex){
+        String[] serverGodList = mex.getData().split(";");
+        System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
+
+        for(int i=0;i<=serverGodList.length-1;i++){
+            availableGods.add(serverGodList[i]);
+        }
+    }
+
+    public void choseGod(Message mex) throws IOException {
+        if(mex.getTurnOf().equals(username) && !availableGods.isEmpty()){  //tocca a me
+            System.out.print("Seleziona il Dio: ");
+            String input = stdin.nextLine();
+            //inserire controllo input
+            objectOutputStream.writeObject(new Message(0,1,input,null));
+            objectOutputStream.flush();
+        }
+    }
+
+    public void removeAllowedGod(Message mex){
+        if(!mex.getData().equals("false")){
+            String[] selectedGod = mex.getData().split(";");
+            System.out.println(selectedGod[0] + " has selected " + selectedGod[1]);
+            availableGods.remove(selectedGod[1]);
+        }
+    }
+
     public void printPlayerList(Message mex){
         String[] serverResponse = mex.getData().split(";");
         System.out.println("Giocatori connessi: "+ "1st-"+serverResponse[0]+" 2nd-"+serverResponse[1]+" 3rd-"+serverResponse[2]);
 
         for(int i=0;i<=serverResponse.length-1;i++){
             players.add(serverResponse[i]);
+        }
+    }
+
+    public void createWorker(Message mex) throws IOException {
+        if (mex.getTurnOf().equals(username)) {
+            System.out.println("Inserisci X e Y (tra 0 e 4): ");
+            System.out.print("Inserisci X: ");
+            String x = stdin.nextLine();
+            System.out.print("Inserisci Y: ");
+            String y = stdin.nextLine();
+            //inserire controllo input
+            objectOutputStream.writeObject(new Message(0, 2, (x + ";" + y), null));
+            objectOutputStream.flush();
         }
     }
 
