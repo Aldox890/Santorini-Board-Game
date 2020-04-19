@@ -15,25 +15,25 @@ public class Board {
 
     }
 
-    public Cell[][] getBoard() {
-        return board;
-    }
-
     //controls if is possible to move from (x,y) in (x1,y1)
     public boolean move(Player player, int x, int y, int x1, int y1,int socketId){
         Worker worker;
 
-        if(x<0 || x>4 || y<0 || y>4){
+        if(!inBoard(x,y)){
             return false;
         }
 
         worker=board[x][y].isOccupiedBy();
 
+        if(worker == null ){
+            return false;
+        }
+
         if(worker.getOwner()!=player) {
             return false;
         }
 
-        if(x1<0 || x1>4 || y1<0 || y1>4){
+        if(!inBoard(x1,y1)){
             return false;
         }
 
@@ -41,15 +41,11 @@ public class Board {
             return false;
         }
 
-        if(x==x1 && y==y1){
+        if(tooHighToMove(x,y,x1,y1)){
             return false;
         }
 
-        if(board[x1][y1].getLevel()>board[x][y].getLevel()+1){
-            return false;
-        }
-
-        if(board[x1][y1].getLevel()>3){
+        if(thereIsADome(x1,y1)){
             return false;
         }
 
@@ -62,7 +58,7 @@ public class Board {
         }
 
         this.moveWorker(worker,x1,y1);
-        if(board[x1][y1].getLevel()>3){
+        if(board[x1][y1].getLevel()==3){
             ///WIN
         }
         //passTurn();  TODO un giocatore dopo aver mosso deve poter costruire prima di passare il turno
@@ -73,21 +69,25 @@ public class Board {
     public boolean build(Player player,int x, int y, int x1, int y1,int socketId){
         Worker worker;
 
-        if(x<0 || x>4 || y<0 || y>4){
+        if(!inBoard(x,y)){
             return false;
         }
 
         worker = board[x][y].isOccupiedBy();
 
+        if(worker==null){
+            return false;
+        }
+
         if(worker.getOwner()!=player){
             return false;
         }
 
-        if(x1<0 || x1>4 || y1<0 || y1>4){
+        if(!inBoard(x1,y1)){
             return false;
         }
 
-        if(board[x1][y1].getLevel()>4){
+        if(thereIsADome(x1,y1)){
             return false;
         }
 
@@ -104,7 +104,7 @@ public class Board {
 
         this.buildInPos(worker,x1,y1);
         //passTurn();
-        return false;
+        return true;
     }
 
     //move the worker in (posX,posY)
@@ -139,6 +139,27 @@ public class Board {
     public boolean checkStuck(){ return false; }
 
     public void removeWorker(Worker worker){}
+
+    //This method checks if a cell is inside the board
+    public boolean inBoard(int x,int y){
+        if(x<0 || x>4 || y<0 || y>4)
+            return false;
+        else
+            return true;
+    }
+
+    public boolean tooHighToMove(int x,int y,int x1,int y1){
+        if(board[x1][y1].getLevel()>board[x][y].getLevel()+1)
+            return true;
+        else return false;
+    }
+
+    public boolean thereIsADome(int x,int y){
+        if(board[x][y].getLevel()==4)
+            return true;
+        else
+            return false;
+    }
 
     }
 

@@ -158,6 +158,10 @@ public class Game extends Observable {
         notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
     }
 
+    public void move(){
+
+    }
+
     private void passTurn(){
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
