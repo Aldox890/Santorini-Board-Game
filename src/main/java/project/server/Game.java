@@ -159,32 +159,33 @@ public class Game extends Observable {
         notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
     }
 
-    private void passTurn(){
+    public void passTurn(){
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
     }
 
     public boolean moveWorker(Player p,String[] parsedLine, int socketId){ // <------ DA MODIFICARE
-        gameBoard.move(p,Integer.parseInt(parsedLine[1]),
-                Integer.parseInt(parsedLine[1]),
-                Integer.parseInt(parsedLine[1]),
-                Integer.parseInt(parsedLine[1]));
-
+        if(gameBoard.move(p,Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))){
+            //sends the board to the client
+            passTurn();
+            Message mex = new Message(-1,5,"true", turnOf.getName());
+            //mex.addBoard(gameBoard.getBoard());
+        }
+        notifyObserver(new Message(socketId,5,"false", turnOf.getName()));
         //gameBoard.moveWorker(worker,posX,posY);
 
         return true;
     }
 
-    public boolean build(Player p,String[] parsedLine, int socketId){   // <------ DA MODIFICARE
-        gameBoard.build(p,Integer.parseInt(parsedLine[1]),
-                Integer.parseInt(parsedLine[1]),
-                Integer.parseInt(parsedLine[1]),
-                Integer.parseInt(parsedLine[1]));
-
+    public boolean build(Player p,String[] parsedLine,int level, int socketId){   // <------ DA MODIFICARE
+        if(gameBoard.build(p,level,Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))){
+            Message mex = new Message(-1,6,"true", turnOf.getName());
+            //send the board to the clinet
+        }
+        notifyObserver(new Message(socketId,6,"false", turnOf.getName()));
         return true;
     }
-
 
     public Player getTurnOf() {
         return turnOf;

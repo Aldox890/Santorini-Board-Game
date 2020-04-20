@@ -32,7 +32,7 @@ public class ClientView implements Observer {
         Message mex = (Message) arg;
         try {
             switch(mex.getTypeOfMessage()){
-                case (0):
+                case (0): // required player registration
                     if (mex.getData().equals("registered")) {
                         System.out.println("Successfully registered!");
                     }
@@ -41,7 +41,7 @@ public class ClientView implements Observer {
                     }
                     break;
 
-                case (3):
+                case (3): // recived player list
                     if (!mex.getData().equals("false")) {
                         printPlayerList(mex);
                     }
@@ -51,15 +51,15 @@ public class ClientView implements Observer {
                     choseAllowedGods();
                     break;
 
-                case (1):
+                case (1): // recived chosen gods list
                     addAllowedGods(mex);
                     choseGod(mex);
                     break;
 
-                case (2):
+                case (2): // recived god chosen by a player
                     removeAllowedGod(mex);
                     if(availableGods.isEmpty()){
-                        createWorker(mex);
+                        createWorker(mex); // setup my workers position if it's my turn
                         break;
                     }
                     if (mex.getData().equals("false")) {
@@ -67,8 +67,8 @@ public class ClientView implements Observer {
                     }
                     choseGod(mex);
                     break;
-                case(4):
-                    createWorker(mex);
+                case(4): //recived any player worker positions
+                    createWorker(mex); // setup my workers position if it's my turn
                     break;
             }
         }

@@ -141,7 +141,7 @@ public class Board {
     }
 
     //controls if is possible to builds in (x1,y1)
-    public boolean build(Player player,int x, int y, int x1, int y1){
+    public boolean build(Player player,int level,int x, int y, int x1, int y1){
         Worker worker;
 
         if(x<0 || x>4 || y<0 || y>4){
@@ -173,7 +173,7 @@ public class Board {
             return false;
         }
 
-        this.buildInPos(worker,x1,y1);
+        this.buildInPos(worker,level,x1,y1);
         //passTurn();
         return false;
     }
@@ -196,8 +196,13 @@ public class Board {
     }
 
     //build in (posX,posY)
-    public void buildInPos(Worker worker,int posX,int posY){
-        board[posX][posY].setLevel(board[posX][posY].getLevel()+1);
+    public void buildInPos(Worker worker,int level, int posX,int posY){
+        if(level == 1) {
+            board[posX][posY].setLevel(board[posX][posY].getLevel() + 1);
+        }
+        else{
+            board[posX][posY].setLevel(4);
+        }
     }
 
     public boolean checkStuck(){ return false; }

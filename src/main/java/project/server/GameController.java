@@ -56,15 +56,19 @@ public class GameController {
     /*
      * This method moves a player's worker in a certain position.
      */
-    public boolean moveWorker(Worker worker, int posX, int posY){ // <------ DA MODIFICARE
-        return game.moveWorker();
+    public boolean moveWorker(Player player, String parsedLine[],int socketid){ // <------ DA MODIFICARE
+        return game.moveWorker(player,parsedLine,socketid);
     }
 
     /*
      * This method builds a new level inside a certain cell of the game board
      */
-    public boolean build(Worker worker, int posX, int posY){    // <------ DA MODIFICARE
-        return game.build();
+    public void build(Player player, String parsedLine[],int level,int socketid){    // <------ DA MODIFICARE
+        game.build(player,parsedLine,level,socketid);
+    }
+
+    public void buildAtlas(Player player, String parsedLine[],int level,int socketid){    // <------ DA MODIFICARE
+        game.build(player,parsedLine,level,socketid);
     }
 
     /*

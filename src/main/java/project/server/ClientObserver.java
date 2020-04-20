@@ -63,10 +63,25 @@ public class ClientObserver implements Runnable {
                         gameController.addWorker(player, parsedLine,socketId);
                         break;
                     case 3:
-                        gameController.moveWorker();
+                        parsedLine = msg.getData().split(";");
+                        gameController.moveWorker(player,parsedLine,socketId);
                         break;
                     case 4:
-                        gameController.build();
+                        parsedLine = msg.getData().split(";");
+                        gameController.build(player,parsedLine,1,socketId);
+                        break;
+                    case 5:
+                        //Move Artemis
+                        break;
+                    case 6:
+                        //Build Demeter;
+                        break;
+                    case 7:
+                        parsedLine = msg.getData().split(";");
+                        gameController.build(player,parsedLine,4,socketId);
+                        break;
+                    case 8:
+                        //Build Prometheus
                         break;
                 }
             } catch (IOException e) {
