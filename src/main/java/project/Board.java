@@ -48,7 +48,9 @@ public class Board {
         if(Math.abs(x_start-x_dest) > 1 || Math.abs(y_start-y_dest) > 1){ //can't move into a cell which is not adjacent to starting position
             return 0;
         }
-
+        if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel() && !canMoveUp){ //Athena check
+            return 0;
+        }
 
         Worker worker=board[x_start][y_start].isOccupiedBy();
 
@@ -79,16 +81,17 @@ public class Board {
                         this.moveWorker(temp, xNew, yNew);    //moves other worker into my previous position (xNew, yNew)
                         return 1;
                     }
-
-
                 }
-                return 0;
             }
-            return 0;
+            else if (player.getGod().equals("Athena")){
+                if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Athena check
+                    canMoveUp = false;
+                }
+            }
         }
 
-
         this.moveWorker(worker,x_dest,y_dest);
+
         if(board[x_dest][y_dest].getLevel()==3 || ((player.getGod().equals("Pan"))&&
                 ((board[x_start][y_start].getLevel()-board[x_dest][y_dest].getLevel())>=2)) ){  //check if worker has moved on top of a level 3
 
@@ -170,6 +173,10 @@ public class Board {
             }
         }
         return false;
+    }
+
+    public void resetCanMoveUp(){
+        canMoveUp = true;
     }
 
     //build in (posX,posY)

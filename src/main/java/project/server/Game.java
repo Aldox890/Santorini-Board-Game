@@ -164,7 +164,7 @@ public class Game extends Observable {
         if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
         if(turnOf.getGod().equals("Athena")){
-            //gameBoard.resetCanMoveUp();
+            gameBoard.resetCanMoveUp();
         }
     }
 
