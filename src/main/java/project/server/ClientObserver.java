@@ -74,7 +74,8 @@ public class ClientObserver implements Runnable {
                         //Move Artemis
                         break;
                     case 6:
-                        //Build Demeter;
+                        parsedLine = msg.getData().split(";");
+                        gameController.build(player,parsedLine,2,socketId);
                         break;
                     case 7:
                         parsedLine = msg.getData().split(";");

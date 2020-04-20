@@ -197,8 +197,8 @@ public class Board {
 
     //build in (posX,posY)
     public void buildInPos(Worker worker,int level, int posX,int posY){
-        if(level == 1) {
-            board[posX][posY].setLevel(board[posX][posY].getLevel() + 1);
+        if(level < 4) {
+            board[posX][posY].setLevel(board[posX][posY].getLevel() + level);
         }
         else{
             board[posX][posY].setLevel(4);
