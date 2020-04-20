@@ -64,7 +64,7 @@ public class Board {
 
 
         if(board[x_dest][y_dest].isOccupiedBy()!=null) { //can't move into an occupied cell with the exception of those players who have Apollo or Minotaur as God.
-            if(player.getGod().equals("Apollo")){   //
+            if(player.getGod().equals("Apollo")){   //TODO NON FUNZIONA
                 Worker temp = board[x_dest][y_dest].isOccupiedBy();
                 this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
                 this.moveWorker(temp, x_start, y_start);    //moves other worker into my previous position (x_start, y_start)
@@ -120,7 +120,7 @@ public class Board {
     public boolean build(Player player,int level, int xPos, int yPos, int xBuild, int yBuild){
         Worker worker;
 
-        if(xPos<0 || xPos>4 || yPos<0 || yPos>4){   // Ha senso controllare che il worker è fuori dalla board se l'ho già fatto nella move?
+        if(xPos<0 || xPos>4 || yPos<0 || yPos>4){
             return false;
         }
 
@@ -134,7 +134,7 @@ public class Board {
             return false;
         }
 
-        if(board[xBuild][yBuild].getLevel()>4){ //can't add a building upon a dome
+        if(board[xBuild][yBuild].getLevel()>=4){ //can't add a building upon a dome
             return false;
         }
 
