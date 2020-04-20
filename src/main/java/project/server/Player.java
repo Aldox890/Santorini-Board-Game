@@ -19,9 +19,9 @@ public class Player {
         this.age = age;
     }
 
-    public void test (){
+    /*public void test (){
         System.out.println("CIAO SONO PLAYER");
-    }
+    }*/
 
     public String getName() {
         return name;
