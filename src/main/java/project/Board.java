@@ -94,7 +94,7 @@ public class Board {
 
             return -1;  //win
         }
-        
+
         return 1;
     }
 
