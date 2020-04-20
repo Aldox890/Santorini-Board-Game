@@ -114,7 +114,7 @@ public class Board {
     /*
     * adds a level on the cell at position (xBuild, yBuild) based on worker current position (xPos, yPos)
     * */
-    public boolean build(Player player,int xPos, int yPos, int xBuild, int yBuild){
+    public boolean build(Player player,int level, int xPos, int yPos, int xBuild, int yBuild){
         Worker worker;
 
         if(xPos<0 || xPos>4 || yPos<0 || yPos>4){   // Ha senso controllare che il worker è fuori dalla board se l'ho già fatto nella move?
@@ -151,7 +151,7 @@ public class Board {
         }
 
 
-        this.buildInPos(worker,xBuild,yBuild);
+        this.buildInPos(worker,level,xBuild,yBuild);
         return true;
     }
 
@@ -173,8 +173,13 @@ public class Board {
     }
 
     //build in (posX,posY)
-    public void buildInPos(Worker worker,int posX,int posY){
-        board[posX][posY].setLevel(board[posX][posY].getLevel()+1);
+    public void buildInPos(Worker worker,int level,int posX,int posY){
+        if(level < 4) {
+            board[posX][posY].setLevel(board[posX][posY].getLevel() + level);
+        }
+        else if (level == 4) {
+            board[posX][posY].setLevel(level);
+        }
     }
 
     public boolean checkStuck(){ return false; }

@@ -164,17 +164,18 @@ public class Game extends Observable {
         if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
         if(turnOf.getGod().equals("Athena")){
-            gameBoard.resetCanMoveUp();
+            //gameBoard.resetCanMoveUp();
         }
     }
 
     public boolean moveWorker(Player p,String[] parsedLine, int socketId){ // <------ DA MODIFICARE
-        if(gameBoard.move(p,Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))){
+        if(gameBoard.move(p,Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3])) == 1){
             //sends the board to the client
             passTurn();
             Message mex = new Message(-1,5,"true", turnOf.getName());
             //mex.addBoard(gameBoard.getBoard());
         }
+        else
         notifyObserver(new Message(socketId,5,"false", turnOf.getName()));
         //gameBoard.moveWorker(worker,posX,posY);
 

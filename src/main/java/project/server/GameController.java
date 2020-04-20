@@ -67,10 +67,6 @@ public class GameController {
         game.build(player,parsedLine,level,socketid);
     }
 
-    public void buildAtlas(Player player, String parsedLine[],int level,int socketid){    // <------ DA MODIFICARE
-        game.build(player,parsedLine,level,socketid);
-    }
-
     /*
      * lets the player chose his god card.
      */
