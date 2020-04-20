@@ -48,6 +48,11 @@ public class Board {
 
 
         Worker worker=board[x_start][y_start].isOccupiedBy();
+
+        if(worker == null){             //check if there is a worker in (x_start,y_start)
+            return false;
+        }
+
         if(worker.getOwner()!=player) { //check if the worker considered by coordinates (x_starr, y_start)is owned by the player
             return false;
         }

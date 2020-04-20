@@ -24,16 +24,16 @@ class BoardTest {
 
     @Test
     void moveWorker() {
-        assertTrue(b.move(p,0,1,0,2,0));    //Corretto
-        assertFalse(b.move(p,1,1,0,2,0));   //Posizione senza worker
-        assertFalse(b.move(p,0,2,2,2,0));   //Troppo distante
-        assertFalse(b.move(p,1,5,0,2,0));   //Fuori dai bordi
-        assertFalse(b.move(p,0,2,5,2,0));   //Fuori dai bordi
-        assertFalse(b.move(p,0,2,0,2,0));   //Posizione uguale
+        assertTrue(b.move(p,0,1,0,2));    //Corretto
+        assertFalse(b.move(p,1,1,0,2));   //Posizione senza worker
+        assertFalse(b.move(p,0,2,2,2));   //Troppo distante
+        assertFalse(b.move(p,1,5,0,2));   //Fuori dai bordi
+        assertFalse(b.move(p,0,2,5,2));   //Fuori dai bordi
+        assertFalse(b.move(p,0,2,0,2));   //Posizione uguale
         b.board[0][3].setLevel(4);
-        assertFalse(b.move(p,0,2,0,3,0));   //Troppo alto
-        assertFalse(b.move(p,1,2,0,2,0));   //Spostare un worker non tuo
-        assertFalse(b.move(p,0,2,1,2,0));   //Posizione occupata
+        assertFalse(b.move(p,0,2,0,3));   //Troppo alto
+        assertFalse(b.move(p,1,2,0,2));   //Spostare un worker non tuo
+        assertFalse(b.move(p,0,2,1,2));   //Posizione occupata
 
         assertNotNull(b.board[0][2].isOccupiedBy());
         assertNull(b.board[0][1].isOccupiedBy());
@@ -41,15 +41,15 @@ class BoardTest {
 
     @Test
     void build(){
-        assertTrue(b.build(p,0,1,0,2,0));
+        assertTrue(b.build(p,0,1,0,2));
         assertEquals(b.board[0][2].getLevel(),1);
-        assertFalse(b.build(p,0,5,0,2,0));  //Fuori dai bordi
-        assertFalse(b.build(p,1,2,0,2,0));  //Worker non tuo
-        assertFalse(b.build(p,0,1,0,5,0));  //Fuori dai bordi
+        assertFalse(b.build(p,0,5,0,2));  //Fuori dai bordi
+        assertFalse(b.build(p,1,2,0,2));  //Worker non tuo
+        assertFalse(b.build(p,0,1,0,5));  //Fuori dai bordi
         b.board[0][2].setLevel(4);
-        assertFalse(b.build(p,0,1,0,2,0));  //Cupola
-        assertFalse(b.build(p,0,1,1,2,0));  //Posizione occupata
-        assertFalse(b.build(p,0,1,0,4,0));  //Troppo distante
+        assertFalse(b.build(p,0,1,0,2));  //Cupola
+        assertFalse(b.build(p,0,1,1,2));  //Posizione occupata
+        assertFalse(b.build(p,0,1,0,4));  //Troppo distante
 
     }
 
