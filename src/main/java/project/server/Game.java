@@ -163,6 +163,9 @@ public class Game extends Observable {
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
+        if(turnOf.getGod().equals("Athena")){
+            gameBoard.resetCanMoveUp();
+        }
     }
 
     public boolean moveWorker(Player p,String[] parsedLine, int socketId){ // <------ DA MODIFICARE
