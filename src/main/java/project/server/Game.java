@@ -168,27 +168,33 @@ public class Game extends Observable {
         }
     }
 
-    public boolean moveWorker(Player p,String[] parsedLine, int socketId){ // <------ DA MODIFICARE
-        if(gameBoard.move(p,Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3])) == 1){
-            //sends the board to the client
-            passTurn();
-            Message mex = new Message(-1,5,"true", turnOf.getName());
-            //mex.addBoard(gameBoard.getBoard());
+    public void moveWorker(Player p,String[] parsedLine, int socketId) { // <------ DA MODIFICARE
+        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
+            if (gameBoard.move(p, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3])) == 1) {
+                passTurn();
+                //sends the board to the client
+                Message mex = new Message(-1, 5, "true", turnOf.getName());
+                mex.addBoard(gameBoard.getBoard());
+                notifyObserver(mex);
+            }
         }
-        else
-        notifyObserver(new Message(socketId,5,"false", turnOf.getName()));
-        //gameBoard.moveWorker(worker,posX,posY);
-
-        return true;
+        else{
+            notifyObserver(new Message(socketId, 5, "false", turnOf.getName()));
+            //gameBoard.moveWorker(worker,posX,posY);
+        }
     }
 
-    public boolean build(Player p,String[] parsedLine,int level, int socketId){   // <------ DA MODIFICARE
-        if(gameBoard.build(p,level,Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))){
-            Message mex = new Message(-1,6,"true", turnOf.getName());
-            //send the board to the clinet
+    public void build(Player p,String[] parsedLine,int level, int socketId){   // <------ DA MODIFICARE
+        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
+            if (gameBoard.build(p, level, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))) {
+                //send the board to the clinet
+                Message mex = new Message(-1, 6, "true", turnOf.getName());
+                mex.addBoard(gameBoard.getBoard());
+                notifyObserver(mex);
+                return;
+            }
         }
         notifyObserver(new Message(socketId,6,"false", turnOf.getName()));
-        return true;
     }
 
     public Player getTurnOf() {
