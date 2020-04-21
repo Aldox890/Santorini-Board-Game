@@ -19,14 +19,14 @@ import java.util.Scanner;
 * */
 
 
-public class Client {
+public class old_Client {
     private String ip;
     private int port;
     static final String[] GODS= {"Apollo", "Artemis","Athena", "Atlas","Demeter", "Hephaestus","Minotaur", "Pan", "Prometheus"};    //<--- per test
     ArrayList<String> players;
     ArrayList<String> availableGods;
 
-    public Client(String ip, int port){
+    public old_Client(String ip, int port){
         this.ip = ip;
         this.port = port;
         players = new ArrayList<String>();

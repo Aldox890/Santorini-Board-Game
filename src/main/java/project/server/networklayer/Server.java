@@ -1,13 +1,13 @@
-package project.server;
+package project.server.networklayer;
 
-import project.Message;
+import project.server.GameController;
+import project.server.model.Game;
+import project.server.networklayer.ClientObserver;
+import project.server.networklayer.GameObserver;
 
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.util.Scanner;
-import java.io.PrintWriter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

@@ -1,6 +1,7 @@
 package project.server;
 
-import project.Worker;
+import project.server.model.Game;
+import project.server.model.Player;
 
 /*
 * This class plays the role of the controller in the MVC Pattern.
@@ -42,7 +43,7 @@ public class GameController {
     /*
      * This method adds a new player inside the game if there are less than 3 player already in.
      */
-    public boolean addPlayer(Player player,int socketId){
+    public boolean addPlayer(Player player, int socketId){
         return game.addPlayer(player,socketId);
     }
 

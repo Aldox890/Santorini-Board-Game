@@ -1,6 +1,6 @@
 package project;
 
-import project.server.Player;
+import project.server.model.Player;
 
 public class Worker {
     private Player owner;

@@ -2,8 +2,8 @@ package project;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import project.server.Player;
-import project.Board;
+import project.server.model.Player;
+import project.server.model.Board;
 
 import static org.junit.jupiter.api.Assertions.*;
 

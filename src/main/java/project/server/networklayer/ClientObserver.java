@@ -1,13 +1,13 @@
-package project.server;
+package project.server.networklayer;
 
 import project.Message;
+import project.server.GameController;
+import project.server.model.Player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Scanner;
 
 

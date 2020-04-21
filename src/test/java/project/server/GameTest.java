@@ -1,9 +1,9 @@
 package project.server;
 
-import org.junit.Before;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import project.server.model.Game;
+import project.server.model.Player;
 
 import java.util.ArrayList;
 

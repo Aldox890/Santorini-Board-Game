@@ -1,4 +1,4 @@
-package project.server;
+package project.server.networklayer;
 
 import project.Message;
 

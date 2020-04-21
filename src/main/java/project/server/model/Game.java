@@ -1,6 +1,5 @@
-package project.server;
+package project.server.model;
 
-import project.Board;
 import project.Message;
 import project.Worker;
 
@@ -167,6 +166,7 @@ public class Game extends Observable {
         if(turnOf.getGod().equals("Athena")){
             gameBoard.resetCanMoveUp();
         }
+        gameBoard.resetCurrentWorker();
     }
 
 
