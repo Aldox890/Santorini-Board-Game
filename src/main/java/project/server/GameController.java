@@ -56,8 +56,8 @@ public class GameController {
     /*
      * This method moves a player's worker in a certain position.
      */
-    public boolean moveWorker(Player player, String parsedLine[],int socketid){ // <------ DA MODIFICARE
-        return game.moveWorker(player,parsedLine,socketid);
+    public void moveWorker(Player player, String parsedLine[],int socketid){ // <------ DA MODIFICARE
+        game.moveWorker(player,parsedLine,socketid);
     }
 
     /*

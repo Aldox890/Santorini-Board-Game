@@ -18,6 +18,7 @@ public class Game extends Observable {
     private ArrayList<Player> playerList;
     private Board gameBoard;
     private Player turnOf;
+    private Worker worker;
     private boolean roomIsFull;
 
     public Game(){
@@ -36,7 +37,7 @@ public class Game extends Observable {
         godsList.add("Minotaur");
         godsList.add("Pan");
         godsList.add("Prometheus");
-
+        worker = null;
     }
 
     /*
@@ -167,6 +168,7 @@ public class Game extends Observable {
             gameBoard.resetCanMoveUp();
         }
     }
+
 
     public void moveWorker(Player p,String[] parsedLine, int socketId) { // <------ DA MODIFICARE
         if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {

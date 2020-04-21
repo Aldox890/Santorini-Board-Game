@@ -5,7 +5,7 @@ import project.server.Player;
 public class Board {
     Cell board [][];
     private boolean canMoveUp;  //flag to check if it's possibile to move into a cell on a higher level.
-
+    private Worker currentWorker;
 
     public Board(){    //board constructor
         board = new Cell[5][5];
@@ -15,13 +15,20 @@ public class Board {
             }
         }
         canMoveUp=true;
-
+        currentWorker = null;
     }
 
     public Cell[][] getBoard() {
         return board;
     }
 
+    public void setCurrentWorker(int x,int y){
+        currentWorker = board[x][y].isOccupiedBy();
+    }
+
+    public void resetCurrentWorker(){
+        currentWorker = null;
+    }
 
     /*checks if it's possible to move from (x_start, y_start) to (x_dest, y_dest)
      * checks if the requested position is already occupied by another worker
@@ -59,6 +66,13 @@ public class Board {
         }
 
         if(worker.getOwner()!=player) { //check if the worker considered by coordinates (x_starr, y_start)is owned by the player
+            return 0;
+        }
+
+        if(currentWorker == null){
+            setCurrentWorker(x_start,y_start);
+        }
+        else if (currentWorker != worker){
             return 0;
         }
 
@@ -132,6 +146,13 @@ public class Board {
         worker = board[xPos][yPos].isOccupiedBy();
 
         if(worker.getOwner()!=player){
+            return false;
+        }
+
+        if(currentWorker == null){
+            setCurrentWorker(xPos,yPos);
+        }
+        else if (currentWorker != worker){
             return false;
         }
 
