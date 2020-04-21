@@ -43,12 +43,6 @@ public class Player {
         return workers.size();
     }
 
-    public void move(){}
-
-    public void build(){}
-
-    public void endTurn(){}
-
     public int getAge(){
         return age;
     }

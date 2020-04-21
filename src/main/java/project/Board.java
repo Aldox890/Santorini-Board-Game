@@ -82,6 +82,9 @@ public class Board {
                         this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
                         return 1;
                     }
+                    else {
+                        return 0;
+                    }
                 }
             }
             else if (player.getGod().equals("Athena")){
