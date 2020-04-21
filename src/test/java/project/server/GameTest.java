@@ -1,5 +1,7 @@
 package project.server;
 
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +22,7 @@ class GameTest {
         g.addPlayer(p1,0);
         g.addPlayer(p2,1);
         g.addPlayer(p3,2);
+
     }
 
     //Game.addPlayer() and Game.init() test
@@ -36,17 +39,7 @@ class GameTest {
         assertEquals(playerList.get(2).getName(),"Aldo");
     }
 
-    @Test
-    void addWorker(){
-        String s1[] = {"0","1"};
-        String s2[] = {"0","2"};
-        assertTrue(g.addWorker(p1,s1,0));
-        assertTrue(g.addWorker(p1,s2,0));
-        assertFalse(g.addWorker(p1,s2,0));
-        assertFalse(g.addWorker(null,s1,0));
-        assertFalse(g.addWorker(p2,s1,1));
-        assertFalse(g.addWorker(p2,null,1));
-    }
+
 
     @Test
     void setGods(){
@@ -69,6 +62,19 @@ class GameTest {
         g.addGod(gChoice,p2,1);
         assertNotEquals(p2.getGod(),gChoice);
 
+    }
+
+
+    @Test
+    void addWorker(){
+        String s1[] = {"0","1"};
+        String s2[] = {"0","2"};
+        assertTrue(g.addWorker(p1,s1,0));
+        assertTrue(g.addWorker(p1,s2,0));
+        assertFalse(g.addWorker(p1,s2,0));
+        assertFalse(g.addWorker(null,s1,0));
+        assertFalse(g.addWorker(p2,s1,1));
+        assertFalse(g.addWorker(p2,null,1));
     }
 
     @Test

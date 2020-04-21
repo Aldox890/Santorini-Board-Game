@@ -44,7 +44,8 @@ class BoardTest {
         assertEquals(b.move(p2,2,1,2,2),0);   //Posizione occupata
         assertEquals(b.move(p2,2,1,2,0),-1);   //MOVE DI PAN
 
-        assertNotNull(b.board[0][2].isOccupiedBy());
+        assertNotNull(b.board[1][2].isOccupiedBy());
+        assertNull(b.board[0][2].isOccupiedBy());
         assertNull(b.board[0][1].isOccupiedBy());
     }
 

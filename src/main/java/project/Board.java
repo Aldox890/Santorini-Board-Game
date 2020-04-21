@@ -64,10 +64,11 @@ public class Board {
 
 
         if(board[x_dest][y_dest].isOccupiedBy()!=null) { //can't move into an occupied cell with the exception of those players who have Apollo or Minotaur as God.
-            if(player.getGod().equals("Apollo")){   //TODO NON FUNZIONA
+            if(player.getGod().equals("Apollo")){
                 Worker temp = board[x_dest][y_dest].isOccupiedBy();
                 this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
-                this.moveWorker(temp, x_start, y_start);    //moves other worker into my previous position (x_start, y_start)
+                temp.setCell(board[x_start][y_start]);
+                board[x_start][y_start].setOccupiedBy(temp);    //moves other worker into my previous position (x_start, y_start)
                 return 1;
             }
             else if(player.getGod().equals("Minotaur")){
@@ -77,8 +78,8 @@ public class Board {
                     int yNew = y_dest - (y_start-y_dest);
 
                     if(board[xNew][yNew].isOccupiedBy()==null){
-                        this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
                         this.moveWorker(temp, xNew, yNew);    //moves other worker into my previous position (xNew, yNew)
+                        this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
                         return 1;
                     }
                 }
@@ -88,6 +89,7 @@ public class Board {
                     canMoveUp = false;
                 }
             }
+            else return 0;
         }
 
         this.moveWorker(worker,x_dest,y_dest);
