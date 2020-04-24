@@ -92,6 +92,10 @@ public class Board {
                     int xNew = x_dest - (x_start-x_dest);
                     int yNew = y_dest - (y_start-y_dest);
 
+                    if(xNew<0 || xNew>4 || yNew<0 || yNew>4){
+                        return 0;
+                    }
+
                     if(board[xNew][yNew].isOccupiedBy()==null){
                         this.moveWorker(temp, xNew, yNew);    //moves other worker into my previous position (xNew, yNew)
                         this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
