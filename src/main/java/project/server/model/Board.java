@@ -106,12 +106,12 @@ public class Board {
                     }
                 }
             }
-            else return 0;
+            else return 0;  //can't move into cell
         }
 
         if (player.getGod().equals("Athena")){
-            if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Athena check
-                canMoveUp = false;
+            if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Check if a worker who has Athena's power is moving up
+                canMoveUp = false;  //Athena's power enabled, the other players can't move up till it's Athena's player turn again.
             }
         }
 
@@ -123,7 +123,7 @@ public class Board {
             return -1;  //win
         }
 
-        return 1;
+        return 1;   //moved into a new cell correctly
     }
 
     /*
@@ -190,8 +190,6 @@ public class Board {
         return true;
     }
 
-    public void printBoard(){}
-
     /*
     * returns true if there is no worker already in the selected cell
     * returns false if there is already a worker inside the cell*/
@@ -221,11 +219,12 @@ public class Board {
         }
     }
 
-    //Given (x,y) a worker position, returns true if the worker is stuck in his position
+    /*Given (x,y) a worker position, returns true if the worker is stuck in his position
+    * */
     public boolean checkStuck(int x, int y){
         int i=0,j=0,n,m;
         n=(x==4)? x : x+1;
-        m=(x==4)? x : x+1;
+        m=(y==4)? y : y+1;
         boolean stuck=true;
         for(i=(x>0)? x-1 : x ; i < n ; i++){
             for(j=(y>0)? y-1 : y ; j < m ; j++){
@@ -239,16 +238,15 @@ public class Board {
 
     /*
     * Set the cell previously occupied by a worker to empty
+    * & calls the removeWorker() method from Player class, to remove the worker from it's Workers list.
     * */
     public void removeWorker(Worker worker){
-
+        worker.getOwner().removeWorker(worker);
     }
 
     public boolean tooHighToMove(int x_start,int y_start,int x_dest,int y_dest){
-        if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()+1){ //can't move up more than one level
-            return true;
-        }
-        return false;
+        //can't move up more than one level
+        return (board[x_dest][y_dest].getLevel() > board[x_start][y_start].getLevel() + 1);
     }
 
     }

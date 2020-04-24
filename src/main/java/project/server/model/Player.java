@@ -19,10 +19,6 @@ public class Player {
         this.age = age;
     }
 
-    /*public void test (){
-        System.out.println("CIAO SONO PLAYER");
-    }*/
-
     public String getName() {
         return name;
     }
@@ -37,6 +33,13 @@ public class Player {
 
     public void addWorker(Worker w){
         workers.add(w);
+    }
+
+    /*
+    * Removes from the Player's array list of workers the removed worker.
+    * */
+    public void  removeWorker(Worker w){
+            workers.remove(w);
     }
 
     public int getNumberOfWorker(){
