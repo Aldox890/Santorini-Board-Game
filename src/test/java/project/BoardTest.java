@@ -25,6 +25,8 @@ class BoardTest {
         b.createWorker(p,0,1);
         b.createWorker(p1,1,2);
         b.createWorker(p2,2,1);
+        //b.createWorker(p,4,4);
+        b.createWorker(p2,3,3);
     }
 
     @Test
@@ -39,8 +41,10 @@ class BoardTest {
         assertEquals(b.move(p,0,2,0,3),0);   //Troppo alto
         assertEquals(b.move(p,1,2,0,2),0);   //Spostare un worker non tuo
         assertEquals(b.move(p,0,2,1,2),1);    //MOVE DI APOLLO
+        b.resetCurrentWorker();
         assertEquals(b.move(p1,0,2,1,2),1);   //MOVE DI MINOTAURO
         b.board[2][1].setLevel(2);
+        b.resetCurrentWorker();
         assertEquals(b.move(p2,2,1,2,2),0);   //Posizione occupata
         assertEquals(b.move(p2,2,1,2,0),-1);   //MOVE DI PAN
 
@@ -68,6 +72,19 @@ class BoardTest {
         b.createWorker(p,0,3);
         assertTrue(b.board[0][3].isOccupiedBy()!=null);
 
+    }
+
+    @Test
+    void checkStuck(){
+        b.board[2][2].setLevel(3);
+        b.board[2][3].setLevel(3);
+        b.board[2][4].setLevel(3);
+        b.board[3][2].setLevel(3);
+        b.board[3][4].setLevel(3);
+        b.board[4][2].setLevel(3);
+        b.board[4][3].setLevel(3);
+        b.board[4][4].setLevel(3);
+        assertTrue(b.checkStuck(3,3));
     }
 
 

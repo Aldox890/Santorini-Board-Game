@@ -69,6 +69,10 @@ class GameTest {
     void addWorker(){
         String s1[] = {"0","1"};
         String s2[] = {"0","2"};
+        String gList[]={"Apollo","Athena","Pan"};
+        String gChoice="Apollo";
+        g.setGods(gList,3);
+        g.addGod(gChoice,p1,0);
         assertTrue(g.addWorker(p1,s1,0));
         assertTrue(g.addWorker(p1,s2,0));
         assertFalse(g.addWorker(p1,s2,0));
