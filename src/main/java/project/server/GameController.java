@@ -1,5 +1,6 @@
 package project.server;
 
+import project.Message;
 import project.server.model.Game;
 import project.server.model.Player;
 
@@ -22,7 +23,12 @@ public class GameController {
      * This method sets the Gods chosen by the eldest player, that will be used in the Game.
      */
     public void setGods(String[] parsedInput,int socketId){
-        game.setGods(parsedInput,socketId);
+        if (parsedInput!= null && parsedInput[0] != null && parsedInput[1] != null && parsedInput[2] != null) {
+            game.setGods(parsedInput, socketId);
+        }
+        else{
+            game.badInputException(socketId,3,"false");
+        }
     }
 
     /*
@@ -39,7 +45,7 @@ public class GameController {
                             .get(this.game.getPlayerList().indexOf(this.game.getTurnOf())+1));
         }
     }
-
+    
     /*
      * This method adds a new player inside the game if there are less than 3 player already in.
      */
@@ -50,15 +56,26 @@ public class GameController {
     /*
      * This method adds a new player's worker in a certain position on the board .
      */
-    public boolean addWorker(Player p, String[] parsedLine,int socketid){
-        return this.game.addWorker(p,parsedLine,socketid);
+    public void addWorker(Player p, String[] parsedLine,int socketId){
+        if(p!= null && p.getNumberOfWorker()<2) {
+            if (parsedLine != null && parsedLine[0] != null && parsedLine[1] != null) {
+                game.addWorker(p, parsedLine, socketId);
+                return;
+            }
+        }
+        game.badInputException(socketId,4,"false");
+        return;
     }
 
     /*
      * This method moves a player's worker in a certain position.
      */
-    public void moveWorker(Player player, String parsedLine[],int socketid){ // <------ DA MODIFICARE
-        game.moveWorker(player,parsedLine,socketid);
+    public void moveWorker(Player player, String parsedLine[],int socketId){ // <------ DA MODIFICARE
+        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
+            game.moveWorker(player, parsedLine, socketId);
+            return;
+        }
+        game.badInputException(socketId,5,"false");
     }
 
     /*
@@ -71,8 +88,12 @@ public class GameController {
     /*
      * lets the player chose his god card.
      */
-    public void setGod(String god,Player player,int socketid) {
-        game.addGod(god,player,socketid);
-
+    public void setGod(String god,Player player,int socketId) {
+        if(god != null){
+            game.addGod(god,player,socketId);
+            return;
+        }
+        game.badInputException(socketId,2,"false");
+        return;
     }
 }
