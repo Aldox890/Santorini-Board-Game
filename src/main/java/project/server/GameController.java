@@ -45,7 +45,7 @@ public class GameController {
                             .get(this.game.getPlayerList().indexOf(this.game.getTurnOf())+1));
         }
     }
-    
+
     /*
      * This method adds a new player inside the game if there are less than 3 player already in.
      */
@@ -81,8 +81,13 @@ public class GameController {
     /*
      * This method builds a new level inside a certain cell of the game board
      */
-    public void build(Player player, String parsedLine[],int level,int socketid){    // <------ DA MODIFICARE
-        game.build(player,parsedLine,level,socketid);
+    public void build(Player player, String parsedLine[],int level,int socketId){    // <------ DA MODIFICARE
+        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
+                game.build(player, parsedLine, level, socketId);
+            return;
+        }
+        game.badInputException(socketId,6,"false");
+
     }
 
     /*

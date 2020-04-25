@@ -103,7 +103,10 @@ public class Game extends Observable {
         if (gameBoard.createWorker(p, Integer.parseInt(parsedLine[0]),Integer.parseInt(parsedLine[1]))) {
             if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board
                 passTurn();
-                notifyObserver(new Message(-1, 4, "", turnOf.getName()));
+
+                Message mex = new Message(-1, 4, "true", turnOf.getName());
+                mex.addBoard(gameBoard.getBoard());
+                notifyObserver(mex);
                 return true;
             }
             notifyObserver(new Message(-1, 4, "", turnOf.getName()));      //If a player add a worker print the board
@@ -170,14 +173,12 @@ public class Game extends Observable {
     }
 
     public void build(Player p,String[] parsedLine,int level, int socketId){   // <------ DA MODIFICARE
-        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
-            if (gameBoard.build(p, level, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))) {
-                //send the board to the clinet
-                Message mex = new Message(-1, 6, "true", turnOf.getName());
-                mex.addBoard(gameBoard.getBoard());
-                notifyObserver(mex);
-                return;
-            }
+        if (gameBoard.build(p, level, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))) {
+            //send the board to the clinet
+            Message mex = new Message(-1, 6, "true", turnOf.getName());
+            mex.addBoard(gameBoard.getBoard());
+            notifyObserver(mex);
+            return;
         }
         notifyObserver(new Message(socketId,6,"false", turnOf.getName()));
     }
