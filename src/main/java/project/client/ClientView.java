@@ -67,8 +67,8 @@ public class ClientView implements Observer {
                     choseGod(mex);
                     break;
                 case(4): //recived any player worker positions
-                    createWorker(mex); // setup my workers position if it's my turn
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
+                    createWorker(mex); // setup my workers position if it's my turn
                     break;
             }
         }
@@ -175,18 +175,19 @@ public class ClientView implements Observer {
 
     public void printBoard(Message mex){
         //Cell[][] board = mex.getBoard();
-
         for(int i = 0;i<5;i++){
             for(int j = 0;j<5;j++){
                 if(mex.getCell(i,j).isOccupiedBy() != null) {
-                    System.out.print("P");
+                    System.out.print(" P ");
                 }
                 else{
-                    System.out.print(mex.getCell(i,j).getLevel());
+                    System.out.print(" " + mex.getCell(i,j).getLevel() + " ");
                 }
             }
             System.out.println("");
         }
+        System.out.println("turnof: "+ mex.getTurnOf());
+        System.out.println("");
     }
 
     /* strategy method to control if the input of the age is correct*/

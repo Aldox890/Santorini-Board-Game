@@ -105,7 +105,7 @@ public class Game extends Observable {
                 passTurn();
                 Message mex = new Message(-1, 4, "true", turnOf.getName());
                 mex.addBoard(gameBoard.getBoard());
-                System.out.println(mex.getCell(2,2).getLevel());
+                printBoard(mex);
                 notifyObserver(mex);
                 return true;
             }
@@ -116,6 +116,23 @@ public class Game extends Observable {
             notifyObserver(new Message(socketId, 4, "false", turnOf.getName()));
             return false;
         }
+    }
+
+    public void printBoard(Message mex){
+        //Cell[][] board = mex.getBoard();
+
+        for(int i = 0;i<5;i++){
+            for(int j = 0;j<5;j++){
+                if(mex.getCell(i,j).isOccupiedBy() != null) {
+                    System.out.print(" P ");
+                }
+                else{
+                    System.out.print(" " + mex.getCell(i,j).getLevel() + " ");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.println("");
     }
 
     /*
