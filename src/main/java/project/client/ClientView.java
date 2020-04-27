@@ -178,7 +178,9 @@ public class ClientView implements Observer {
         for(int i = 0;i<5;i++){
             for(int j = 0;j<5;j++){
                 if(board[i][j].isOccupiedBy() != null) {
-                    System.out.print(" P ");
+                    String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player
+                    String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level
+                    System.out.print(player+lvl+" ");
                 }
                 else{
                     System.out.print(" " + board[i][j].getLevel() + " ");
