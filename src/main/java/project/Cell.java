@@ -1,6 +1,8 @@
 package project;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
     private int x; //X coordinates
     private int y; //Y coordinates
     private int level;

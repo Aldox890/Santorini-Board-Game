@@ -103,9 +103,9 @@ public class Game extends Observable {
         if (gameBoard.createWorker(p, Integer.parseInt(parsedLine[0]),Integer.parseInt(parsedLine[1]))) {
             if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board
                 passTurn();
-
                 Message mex = new Message(-1, 4, "true", turnOf.getName());
                 mex.addBoard(gameBoard.getBoard());
+                System.out.println(mex.getCell(2,2).getLevel());
                 notifyObserver(mex);
                 return true;
             }

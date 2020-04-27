@@ -2,7 +2,9 @@ package project;
 
 import project.server.model.Player;
 
-public class Worker {
+import java.io.Serializable;
+
+public class Worker implements Serializable {
     private Player owner;
     private Cell cell;
     public Worker(Player p, Cell c){

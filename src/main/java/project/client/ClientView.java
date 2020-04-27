@@ -1,5 +1,6 @@
 package project.client;
 
+import project.Cell;
 import project.Message;
 
 import java.io.IOException;
@@ -67,6 +68,7 @@ public class ClientView implements Observer {
                     break;
                 case(4): //recived any player worker positions
                     createWorker(mex); // setup my workers position if it's my turn
+                    if(!mex.boardIsEmpty()){ printBoard(mex); }
                     break;
             }
         }
@@ -168,6 +170,22 @@ public class ClientView implements Observer {
             //inserire controllo input
             objectOutputStream.writeObject(new Message(0, 2, (x + ";" + y), null));
             objectOutputStream.flush();
+        }
+    }
+
+    public void printBoard(Message mex){
+        //Cell[][] board = mex.getBoard();
+
+        for(int i = 0;i<5;i++){
+            for(int j = 0;j<5;j++){
+                if(mex.getCell(i,j).isOccupiedBy() != null) {
+                    System.out.print("P");
+                }
+                else{
+                    System.out.print(mex.getCell(i,j).getLevel());
+                }
+            }
+            System.out.println("");
         }
     }
 

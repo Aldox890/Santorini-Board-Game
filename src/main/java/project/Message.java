@@ -34,4 +34,13 @@ public class Message implements Serializable {
 
     public String getTurnOf(){return turnOf;}
 
+    public Cell getCell(int i, int j){
+        return gameBoard[i][j];
+    }
+
+    public boolean boardIsEmpty(){
+        if (gameBoard[0][0] == null) return true;
+        return false;
+    }
+
 }
