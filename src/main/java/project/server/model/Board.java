@@ -226,10 +226,12 @@ public class Board {
         n=(x==4)? x : x+1;
         m=(y==4)? y : y+1;
         boolean stuck=true;
-        for(i=(x>0)? x-1 : x ; i < n ; i++){
-            for(j=(y>0)? y-1 : y ; j < m ; j++){
-                if(!tooHighToMove(x,y,i,j) && x!=i && x!=j){
-                    stuck=false;
+        for(i=(x>0)? x-1 : x ; i <= n ; i++){
+            for(j=(y>0)? y-1 : y ; j <= m ; j++){
+                if(!tooHighToMove(x,y,i,j) && x!=i && y!=j){
+                    if(board[i][j].isOccupiedBy()==null) {
+                        stuck = false;
+                    }
                 }
             }
         }
