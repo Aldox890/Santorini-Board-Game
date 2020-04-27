@@ -70,9 +70,14 @@ public class GameController {
     /*
      * This method moves a player's worker in a certain position.
      */
-    public void moveWorker(Player player, String parsedLine[],int socketId){ // <------ DA MODIFICARE
+    public void moveWorker(Player player, String parsedLine[],int socketId){
         if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
-            game.moveWorker(player, parsedLine, socketId);
+            if(game.isCanMove()) {
+                game.moveWorker(player, parsedLine, socketId);
+            }
+            else{
+                game.badInputException(socketId,5,"false");
+            }
             return;
         }
         game.badInputException(socketId,5,"false");
@@ -81,9 +86,14 @@ public class GameController {
     /*
      * This method builds a new level inside a certain cell of the game board
      */
-    public void build(Player player, String parsedLine[],int level,int socketId){    // <------ DA MODIFICARE
+    public void build(Player player, String parsedLine[],int level,int socketId){
         if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
+            if(game.isCanBuild()) {
                 game.build(player, parsedLine, level, socketId);
+            }
+            else{
+                game.badInputException(socketId,6,"false");
+            }
             return;
         }
         game.badInputException(socketId,6,"false");
