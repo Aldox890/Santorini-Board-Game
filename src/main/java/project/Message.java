@@ -43,4 +43,8 @@ public class Message implements Serializable {
         return false;
     }
 
+    public Cell[][] getBoard(){
+        return gameBoard;
+    }
+
 }

@@ -174,20 +174,23 @@ public class ClientView implements Observer {
     }
 
     public void printBoard(Message mex){
-        //Cell[][] board = mex.getBoard();
+        Cell[][] board = mex.getBoard();
         for(int i = 0;i<5;i++){
             for(int j = 0;j<5;j++){
-                if(mex.getCell(i,j).isOccupiedBy() != null) {
+                if(board[i][j].isOccupiedBy() != null) {
                     System.out.print(" P ");
                 }
                 else{
-                    System.out.print(" " + mex.getCell(i,j).getLevel() + " ");
+                    System.out.print(" " + board[i][j].getLevel() + " ");
                 }
             }
             System.out.println("");
         }
         System.out.println("turnof: "+ mex.getTurnOf());
         System.out.println("");
+
+        mex.addBoard(null);
+        mex = null;
     }
 
     /* strategy method to control if the input of the age is correct*/

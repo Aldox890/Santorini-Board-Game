@@ -40,6 +40,7 @@ public class GameObserver implements Observer {
             try {
                 oos.writeObject(msg);
                 oos.flush();
+                oos.reset(); // Reset will disregard the state of any objects already written to the stream.
             } catch (IOException e) {
                 e.printStackTrace();
             }
