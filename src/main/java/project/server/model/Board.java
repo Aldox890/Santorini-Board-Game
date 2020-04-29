@@ -215,9 +215,16 @@ public class Board {
             return false;
         }
 
-        if(level==2 && !player.getGod().equals("Hepheastus") && (board[xBuild][yBuild].getLevel()+2)<4){
+        if(level==2 && !player.getGod().equals("Hephaestus")){
             return false;
         }
+
+        if(level==2 && player.getGod().equals("Hephaestus")){
+            if((board[xBuild][yBuild].getLevel()+2)>=4){
+                return false;
+            }
+        }
+
 
         if(level==4 && !player.getGod().equals("Atlas")){
             return false;
@@ -231,7 +238,7 @@ public class Board {
             return false;
         }
 
-        if(numberOfBuild == 1 && (!player.getGod().equals("Demeter") || !player.getGod().equals("Prometheus"))){
+        if(numberOfBuild == 1 && (!player.getGod().equals("Demeter") && !player.getGod().equals("Prometheus"))){
             return false;
         }
 
@@ -319,7 +326,9 @@ public class Board {
         oldBuild = new Cell(-1,-1);
     }
 
-
+    public void setNumberOfMoves(){
+        numberOfMoves=1;
+    }
 
 
 }
