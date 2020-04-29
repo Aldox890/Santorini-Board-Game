@@ -215,6 +215,14 @@ public class Board {
             return false;
         }
 
+        if(level==2 && !player.getGod().equals("Hepheastus") && (board[xBuild][yBuild].getLevel()+2)<4){
+            return false;
+        }
+
+        if(level==4 && !player.getGod().equals("Atlas")){
+            return false;
+        }
+
         if(numberOfMoves == 0 && !player.getGod().equals("Prometheus")){ //can't build if worker hasn't already moved && god isn't Prometheus
             return false;
         }

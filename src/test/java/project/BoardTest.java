@@ -25,7 +25,6 @@ class BoardTest {
         b.createWorker(p,0,1);
         b.createWorker(p1,1,2);
         b.createWorker(p2,2,1);
-        //b.createWorker(p,4,4);
         b.createWorker(p2,3,3);
     }
 
