@@ -7,10 +7,12 @@ public class Board {
     public Cell board [][];
     private boolean canMoveUp;  //flag to check if it's possibile to move into a cell on a higher level.
     private Worker currentWorker;
-
-
+    private Cell oldCell;   //used to saved where worker comes from
     private Cell oldBuild;
-    private int numberOfBuild;
+    private int numberOfMoves;  //counts how many times worker has moved.
+    private int numberOfBuild; //counts how many times worker has moved.
+
+
 
     public Board(){    //board constructor
         board = new Cell[5][5];
@@ -21,6 +23,9 @@ public class Board {
         }
         canMoveUp=true;
         currentWorker = null;
+        oldCell = null;
+        numberOfMoves = 0;
+        numberOfBuild = 0;
     }
 
     public Cell[][] getBoard() {
@@ -113,13 +118,32 @@ public class Board {
             else return 0;  //can't move into cell
         }
 
+        if (player.getGod().equals("Prometheus")){
+            if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Check if a worker who has Prometheus' power is moving up
+                if(numberOfBuild == 1){ return 0;}
+            }
+        }
+
         if (player.getGod().equals("Athena")){
             if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Check if a worker who has Athena's power is moving up
                 canMoveUp = false;  //Athena's power enabled, the other players can't move up till it's Athena's player turn again.
             }
         }
 
-        this.moveWorker(worker,x_dest,y_dest);
+        if(!player.getGod().equals("Arthemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
+            return 0;
+        }
+        if(player.getGod().equals("Arthemis") && numberOfMoves ==1){
+            if(oldCell.getX()== x_dest && (oldCell.getY()== y_dest)){
+                return 0;
+            }
+        }
+        if(numberOfMoves >=2){    // BUG: numberOfMoves ==2
+            return 0;
+        }
+
+        this.moveWorker(worker,x_dest,y_dest);  //effective move of the worker
+
 
         if(board[x_dest][y_dest].getLevel()==3 || ((player.getGod().equals("Pan"))&&
                 ((board[x_start][y_start].getLevel()-board[x_dest][y_dest].getLevel())>=2)) ){  //check if worker has moved on top of a level 3
@@ -135,9 +159,11 @@ public class Board {
      * sets the worker into the requested cell
      * */
     public boolean moveWorker(Worker worker, int posX, int posY){
+        oldCell = new Cell(worker.getCell().getX(), worker.getCell().getY());//previously occupied cell
         worker.getCell().setOccupiedBy(null);
         worker.setCell(board[posX][posY]);
         board[posX][posY].setOccupiedBy(worker);
+        this.numberOfMoves++;   //
         return true; //returns true if the worker got moved into a new position
         //board[worker.getCell().getX()][worker.getCell().getY()].setOccupiedBy(null);
     }
@@ -189,16 +215,23 @@ public class Board {
             return false;
         }
 
+        if(numberOfMoves == 0 && !player.getGod().equals("Prometheus")){ //can't build if worker hasn't already moved && god isn't Prometheus
+            return false;
+        }
+
         if(numberOfBuild >= 2){
             return false;
         }
 
-        if(numberOfBuild == 1 && !player.getGod().equals("Demeter")){
+        if(numberOfBuild == 1 && (!player.getGod().equals("Demeter") || !player.getGod().equals("Prometheus"))){
             return false;
         }
 
-        if(numberOfBuild == 1 && player.getGod().equals("Demeter")){
-            if(oldBuild.getX() == xBuild && oldBuild.getY() == yBuild){
+        if(numberOfBuild == 1){
+            if( (player.getGod().equals("Demeter")) && oldBuild.getX() == xBuild && oldBuild.getY() == yBuild){
+                return false;
+            }
+            if( (player.getGod().equals("Prometheus")) && numberOfMoves == 0){
                 return false;
             }
         }
@@ -272,9 +305,14 @@ public class Board {
     }
 
     public void resetState(){
+        numberOfMoves = 0;
         numberOfBuild = 0;
+        oldCell = new Cell(-1,-1);
         oldBuild = new Cell(-1,-1);
     }
 
-    }
+
+
+
+}
 
