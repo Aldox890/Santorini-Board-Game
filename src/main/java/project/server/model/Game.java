@@ -19,8 +19,6 @@ public class Game extends Observable {
     private Player turnOf;
     private Worker worker;
     private boolean roomIsFull;
-    private boolean canMove;
-    private boolean canBuild;
 
 
 
@@ -179,8 +177,6 @@ public class Game extends Observable {
     }
 
     public void passTurn(){
-        canMove = true;
-        canBuild = false;
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
@@ -188,13 +184,12 @@ public class Game extends Observable {
             gameBoard.resetCanMoveUp();
         }
         gameBoard.resetCurrentWorker();
+        gameBoard.resetState();
     }
 
     public void moveWorker(Player p,String[] parsedLine, int socketId) {
         if (gameBoard.move(p, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3])) == 1) {
             passTurn();
-            canBuild = true;
-            canMove = false;
             //sends the board to the client
             Message mex = new Message(-1, 5, "true", turnOf.getName());
             mex.addBoard(gameBoard.getBoard());
@@ -202,13 +197,6 @@ public class Game extends Observable {
         }
     }
 
-    public boolean isCanMove(){
-        return canMove;
-    }
-
-    public boolean isCanBuild(){
-        return canBuild;
-    }
 
     public void build(Player p,String[] parsedLine,int level, int socketId){   // <------ DA MODIFICARE
         if (gameBoard.build(p, level, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))) {

@@ -8,6 +8,10 @@ public class Board {
     private boolean canMoveUp;  //flag to check if it's possibile to move into a cell on a higher level.
     private Worker currentWorker;
 
+
+    private Cell oldBuild;
+    private int numberOfBuild;
+
     public Board(){    //board constructor
         board = new Cell[5][5];
         for(int i=0; i<5;i++){  //set up of coordinates of the cells
@@ -185,6 +189,20 @@ public class Board {
             return false;
         }
 
+        if(numberOfBuild >= 2){
+            return false;
+        }
+
+        if(numberOfBuild == 1 && !player.getGod().equals("Demeter")){
+            return false;
+        }
+
+        if(numberOfBuild == 1 && player.getGod().equals("Demeter")){
+            if(oldBuild.getX() == xBuild && oldBuild.getY() == yBuild){
+                return false;
+            }
+        }
+
 
         this.buildInPos(worker,level,xBuild,yBuild);
         return true;
@@ -217,6 +235,8 @@ public class Board {
         else if (level == 4) {
             board[posX][posY].setLevel(level);
         }
+        numberOfBuild ++;
+        oldBuild = new Cell(posX,posY);
     }
 
     /*Given (x,y) a worker position, returns true if the worker is stuck in his position
@@ -249,6 +269,11 @@ public class Board {
     public boolean tooHighToMove(int x_start,int y_start,int x_dest,int y_dest){
         //can't move up more than one level
         return (board[x_dest][y_dest].getLevel() > board[x_start][y_start].getLevel() + 1);
+    }
+
+    public void resetState(){
+        numberOfBuild = 0;
+        oldBuild = new Cell(-1,-1);
     }
 
     }

@@ -72,12 +72,7 @@ public class GameController {
      */
     public void moveWorker(Player player, String parsedLine[],int socketId){
         if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
-            if(game.isCanMove()) {
-                game.moveWorker(player, parsedLine, socketId);
-            }
-            else{
-                game.badInputException(socketId,5,"false");
-            }
+            game.moveWorker(player, parsedLine, socketId);
             return;
         }
         game.badInputException(socketId,5,"false");
@@ -88,12 +83,7 @@ public class GameController {
      */
     public void build(Player player, String parsedLine[],int level,int socketId){
         if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
-            if(game.isCanBuild()) {
-                game.build(player, parsedLine, level, socketId);
-            }
-            else{
-                game.badInputException(socketId,6,"false");
-            }
+            game.build(player, parsedLine, level, socketId);
             return;
         }
         game.badInputException(socketId,6,"false");
