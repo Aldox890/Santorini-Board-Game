@@ -10,6 +10,8 @@ public class Player implements Serializable {
     private String name;
     private int age;
     private ArrayList<Worker> workers = new ArrayList<>();
+    private Color color;
+
 
 
     private String god;
@@ -34,6 +36,14 @@ public class Player implements Serializable {
 
     public void addWorker(Worker w){
         workers.add(w);
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     /*

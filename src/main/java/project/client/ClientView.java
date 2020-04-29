@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class ClientView implements Observer {
 
+    public static final String reset = "\u001B[0m";
     ObjectOutputStream objectOutputStream;
     Scanner stdin;
     ArrayList<String> players;
@@ -179,8 +180,9 @@ public class ClientView implements Observer {
             for(int j = 0;j<5;j++){
                 if(board[i][j].isOccupiedBy() != null) {
                     String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player
+                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
                     String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level
-                    System.out.print(player+lvl+" ");
+                    System.out.print(color+player+lvl+" "+reset);
                 }
                 else{
                     System.out.print(" " + board[i][j].getLevel() + " ");

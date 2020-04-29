@@ -48,7 +48,7 @@ class GameTest {
         assertEquals(g.getGodList().get(0),"Apollo");
         assertEquals(g.getGodList().get(1),"Athena");
         assertEquals(g.getGodList().get(2),"Pan");
-        assertFalse(g.setGods(null,3));
+        assertFalse(g.setGods(new String[]{"", ""},3));
 
     }
 
@@ -70,26 +70,38 @@ class GameTest {
         String s1[] = {"0","1"};
         String s2[] = {"0","2"};
         String gList[]={"Apollo","Athena","Pan"};
-        String gChoice="Apollo";
         g.setGods(gList,3);
-        g.addGod(gChoice,p1,0);
+        g.addGod("Athena",p1,0);
+        g.addGod("Apollo",p2,1);
+        g.addGod("Pan",p3,2);
         assertTrue(g.addWorker(p1,s1,0));
         assertTrue(g.addWorker(p1,s2,0));
         assertFalse(g.addWorker(p1,s2,0));
         assertFalse(g.addWorker(null,s1,0));
         assertFalse(g.addWorker(p2,s1,1));
-        assertFalse(g.addWorker(p2,null,1));
     }
 
     @Test
     void move(){
-
+        String gList[]={"Apollo","Athena","Pan"};
+        g.setGods(gList,3);
+        g.addGod("Athena",p1,0);
+        g.addGod("Apollo",p2,1);
+        g.addGod("Pan",p3,2);
+        g.addWorker(p1, new String[]{"0", "0"},0);
+        g.moveWorker(p1, new String[]{"0", "0", "0", "1"},0);
     }
 
 
     @Test
     void build(){
-
+        String gList[]={"Apollo","Athena","Pan"};
+        g.setGods(gList,3);
+        g.addGod("Athena",p1,0);
+        g.addGod("Apollo",p2,1);
+        g.addGod("Pan",p3,2);
+        g.addWorker(p1, new String[]{"0", "0"},0);
+        g.moveWorker(p1, new String[]{"0", "0", "0", "1"},0);
     }
 
 }

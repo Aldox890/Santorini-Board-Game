@@ -12,7 +12,7 @@ import java.util.*;
 *  */
 
 public class Game extends Observable {
-
+    public static final String reset = "\u001B[0m";
     private List<Observer> observers = new ArrayList<>();
     private ArrayList<Player> playerList;
     private Board gameBoard;
@@ -21,6 +21,7 @@ public class Game extends Observable {
     private boolean roomIsFull;
     private boolean canMove;
     private boolean canBuild;
+
 
 
     public Game(){
@@ -96,6 +97,10 @@ public class Game extends Observable {
 
         String response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
+
+        playerList.get(0).setColor(Color.RED);
+        playerList.get(1).setColor(Color.YELLOW);
+        playerList.get(2).setColor(Color.GREEN);
     }
 
     /*
@@ -127,7 +132,8 @@ public class Game extends Observable {
         for(int i = 0;i<5;i++){
             for(int j = 0;j<5;j++){
                 if(mex.getCell(i,j).isOccupiedBy() != null) {
-                    System.out.print(" P ");
+                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
+                    System.out.print(color+" P "+reset);
                 }
                 else{
                     System.out.print(" " + mex.getCell(i,j).getLevel() + " ");
