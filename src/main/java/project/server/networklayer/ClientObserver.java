@@ -58,15 +58,15 @@ public class ClientObserver implements Runnable {
                         // Select 1 god card
                         gameController.setGod(msg.getData(),player,socketId);
                         break;
-                    case 2:
+                    case 2: //Client added a worker
                         parsedLine = msg.getData().split(";");
                         gameController.addWorker(player, parsedLine,socketId);
                         break;
-                    case 3:
+                    case 3: //client wants to move a worker in a certain position
                         parsedLine = msg.getData().split(";");
                         gameController.moveWorker(player,parsedLine,socketId);
                         break;
-                    case 4:
+                    case 4: // client wants to build in a certain position
                         parsedLine = msg.getData().split(";");
                         gameController.build(player,parsedLine,1,socketId);
                         break;

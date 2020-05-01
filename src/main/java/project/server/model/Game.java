@@ -198,7 +198,9 @@ public class Game extends Observable {
             Message mex = new Message(-1, 5, "true", turnOf.getName());
             mex.addBoard(gameBoard.getBoard());
             notifyObserver(mex);
+            return;
         }
+        notifyObserver(new Message(socketId, 5, "false", turnOf.getName()));
     }
 
 
