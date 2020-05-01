@@ -20,6 +20,10 @@ public class ClientView implements Observer {
     ArrayList<String> availableGods;
     String username;
 
+    int hasSetWorkers=0;
+    int hasMoved = 0;
+    int hasBuild = 0;
+
     public ClientView(Socket s) throws IOException {
         objectOutputStream = new ObjectOutputStream(s.getOutputStream());
         stdin = new Scanner(System.in);
@@ -32,6 +36,13 @@ public class ClientView implements Observer {
         Message mex = (Message) arg;
         try {
             switch(mex.getTypeOfMessage()){
+                case(20): //con quanti giocatori vuoi giocare
+                    System.out.println("Number of players of the game");
+                    String numOfPlayers = stdin.nextLine();
+                    objectOutputStream.writeObject(new Message(0,20,numOfPlayers, null));
+                    objectOutputStream.flush();
+                    break;
+
                 case (0): // required player registration
                     if (mex.getData().equals("registered")) {
                         System.out.println("Successfully registered!");
@@ -60,6 +71,7 @@ public class ClientView implements Observer {
                     removeAllowedGod(mex);
                     if(availableGods.isEmpty()){
                         createWorker(mex); // setup my workers position if it's my turn
+
                         break;
                     }
                     if (mex.getData().equals("false")) {
@@ -69,12 +81,54 @@ public class ClientView implements Observer {
                     break;
                 case(4): //recived any player worker positions
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
-                    createWorker(mex); // setup my workers position if it's my turn
+                    if(mex.getTurnOf().equals(username) && (hasSetWorkers<2 || mex.getData().equals("false"))){
+                        createWorker(mex);
+
+                    } // setup my workers position if it's my turn
+                    else{moveWorker(mex);}
+                    break;
+                case(5): //if someone has moved and it's me, i build
+                case(6):
+                    if(!mex.boardIsEmpty()){ printBoard(mex); }
+                    checkTurnPhase(mex);
                     break;
             }
         }
         catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /*
+    * method that checks if the player has to move or to build, based of what message receives from the server
+    * */
+    public void checkTurnPhase(Message mex) throws IOException {
+        if(mex.getTurnOf().equals(username)){
+            if(mex.getTypeOfMessage()==5){
+                if(mex.getData().equals("false")){
+                    moveWorker(mex);
+                }
+                else if(hasMoved==0) {
+                    moveWorker(mex);
+                    hasMoved--;
+                }
+                else if(hasMoved==1) {
+                    build(mex);
+                }
+            }
+
+            if(mex.getTypeOfMessage()==6){
+                if(mex.getData().equals("false")){
+                    build(mex);
+                    hasBuild--;
+                }
+                else if(hasBuild==0) {
+                    build(mex);
+                }
+                else if(hasBuild==1) {
+                    System.out.println("Turn finished");
+                }
+            }
         }
     }
 
@@ -171,6 +225,7 @@ public class ClientView implements Observer {
             //inserire controllo input
             objectOutputStream.writeObject(new Message(0, 2, (x + ";" + y), null));
             objectOutputStream.flush();
+            hasSetWorkers++;
         }
     }
 
@@ -197,9 +252,50 @@ public class ClientView implements Observer {
         mex = null;
     }
 
+    public void moveWorker(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
+        if (mex.getTurnOf().equals(username)) {
+            System.out.println("Insert worker's MOVING starting point coordinates: ");
+            String coordinates = insertCoordinates();
+
+            System.out.println("Insert worker's MOVING destination point coordinates: ");
+            coordinates+= ";"+insertCoordinates();
+            //inserire controllo input
+
+            objectOutputStream.writeObject(new Message(0, 3, coordinates, null));
+            objectOutputStream.flush();
+            hasMoved++;
+        }
+        else{
+
+        }
+    }
+
+    public void build(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
+        if (mex.getTurnOf().equals(username)) {
+            System.out.println("Insert worker's starting BUILDING point coordinates: ");
+            String coordinates = insertCoordinates();
+
+            System.out.println("Insert worker's destination BUILDING point coordinates: ");
+            coordinates+= ";"+insertCoordinates();
+            //inserire controllo input
+
+            objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+            objectOutputStream.flush();
+            hasBuild++;
+        }
+    }
+
     /* strategy method to control if the input of the age is correct*/
     boolean checkAge(String inputAge){
         int age = Integer.parseInt(inputAge);
         return ( (age<5 || age>120) || (inputAge.contains(";")) );
+    }
+
+    String insertCoordinates(){
+        System.out.print("Insert X: ");
+        String x = stdin.nextLine();
+        System.out.print("Insert Y: ");
+        String y = stdin.nextLine();
+        return (x+";"+y);
     }
 }
