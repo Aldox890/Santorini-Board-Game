@@ -18,11 +18,11 @@ public class GameObserver implements Observer {
     private int socketId;
     ObjectOutputStream oos;
 
-    public GameObserver(Socket socket,int socketId) throws IOException {
+    public GameObserver(Socket socket,ObjectOutputStream o,int socketId) throws IOException {
         this.socket = socket;
         this.socketId = socketId;
         out = new PrintWriter(socket.getOutputStream());
-        oos = new ObjectOutputStream(socket.getOutputStream());
+        oos = o;
         oos.writeObject(new Message(socketId,0,"true",""));
         oos.flush();
     }

@@ -19,7 +19,7 @@ public class Game extends Observable {
     private Player turnOf;
     private Worker worker;
     private boolean roomIsFull;
-
+    private int nPlayers;
 
 
     public Game(){
@@ -57,14 +57,18 @@ public class Game extends Observable {
         }
     }
 
-    /*
-     * Adds a new player to the list and notifies the observer. false if player name already exists.
-     * calls init() once 3 players are connected.
-     */
+
     public void badInputException(int socketId,int typeOfMessage,String data){
         notifyObserver(new Message(socketId,typeOfMessage,data, turnOf.getName()));
     }
 
+    public void setNPlayers(int nPlayers){
+        this.nPlayers = nPlayers;
+    }
+    /*
+     * Adds a new player to the list and notifies the observer. false if player name already exists.
+     * calls init() once 3 players are connected.
+     */
     public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
             if(playerList.get(i).getName().equals(p.getName())){
@@ -76,7 +80,7 @@ public class Game extends Observable {
         System.out.println("added to playerlist: " + p.getName());
 
         notifyObserver(new Message(socketId,0,"registered", turnOf.getName()));
-        if (playerList.size() > 2) {
+        if (playerList.size() > nPlayers - 1) {
             roomIsFull = true;
             init();
         }
@@ -178,7 +182,7 @@ public class Game extends Observable {
 
     public void passTurn(){
         int indexOfP = playerList.indexOf(turnOf);
-        if (indexOfP < 2) { turnOf = playerList.get(indexOfP + 1); }
+        if (indexOfP < nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
         if(turnOf.getGod().equals("Athena")){
             gameBoard.resetCanMoveUp();

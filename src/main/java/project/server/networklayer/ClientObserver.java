@@ -23,14 +23,14 @@ public class ClientObserver implements Runnable {
     ObjectInputStream ois;
     private int socketId;
 
-    public ClientObserver(GameController gameController, Socket socket, int socketId) throws IOException {
+    public ClientObserver(GameController gameController, Socket socket,ObjectInputStream i, int socketId) throws IOException {
         this.gameController = gameController;
         this.socket = new Socket();
         this.socketId = socketId;
         String playerName;
 
         in = new Scanner(socket.getInputStream());
-        ois = new ObjectInputStream(socket.getInputStream());
+        ois = i;
         out = new PrintWriter(socket.getOutputStream());
     }
 
