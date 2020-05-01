@@ -93,11 +93,16 @@ public class Game extends Observable {
      */
     public void init(){
         Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));
-        Player p = playerList.get(2);
+        Player p = playerList.get(nPlayers - 1);
         turnOf = p;
         turnNumber = 0;
-
-        String response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+        String response = "";
+        if (nPlayers == 3) {
+            response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+        }
+        else if (nPlayers == 2){
+            response = playerList.get(0).getName() + ";" + playerList.get(1).getName();
+        }
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
 
         playerList.get(0).setColor(Color.RED);
@@ -193,7 +198,6 @@ public class Game extends Observable {
 
     public void moveWorker(Player p,String[] parsedLine, int socketId) {
         if (gameBoard.move(p, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3])) == 1) {
-            passTurn();
             //sends the board to the client
             Message mex = new Message(-1, 5, "true", turnOf.getName());
             mex.addBoard(gameBoard.getBoard());
