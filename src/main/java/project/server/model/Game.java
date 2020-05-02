@@ -221,7 +221,7 @@ public class Game extends Observable {
 
     public void checkStuckPlayer(Player p){
         Worker w1 = p.getWorkers().get(0);
-        Worker w2 = p.getWorkers().get(0);
+        Worker w2 = p.getWorkers().get(1);
         if(gameBoard.checkStuckWorker(w1.getCell().getX(),w1.getCell().getY())){
             if (gameBoard.checkStuckWorker(w2.getCell().getX(),w2.getCell().getY())){
                 gameBoard.removeWorker(w1);
