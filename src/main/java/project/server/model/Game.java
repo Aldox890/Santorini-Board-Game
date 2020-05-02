@@ -249,7 +249,6 @@ public class Game extends Observable {
         return allowedGods;
     }
 
-
     /** OLD DATA ***/
     private ArrayList<String> allowedGods;
     private int turnNumber;

@@ -81,8 +81,8 @@ public class ClientObserver implements Runnable {
                         parsedLine = msg.getData().split(";");
                         gameController.build(player,parsedLine,4,socketId);
                         break;
-                    case 8:
-                        //Build Prometheus
+                    case 10:
+                        gameController.passTurn();
                         break;
                 }
             } catch (IOException e) {

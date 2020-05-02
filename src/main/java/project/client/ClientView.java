@@ -87,12 +87,13 @@ public class ClientView implements Observer {
                         createWorker(mex);
 
                     } // setup my workers position if it's my turn
-                    else{moveWorker(mex);}
+                    else{turnMenu(mex);}
                     break;
                 case(5): //if someone has moved and it's me, i build
                 case(6):
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
-                    checkTurnPhase(mex);
+                    turnMenu(mex);
+                    //checkTurnPhase(mex);
                     break;
             }
         }
@@ -104,6 +105,31 @@ public class ClientView implements Observer {
     /*
     * method that checks if the player has to move or to build, based of what message receives from the server
     * */
+    public void turnMenu(Message mex) throws IOException {
+        if(mex.getTurnOf().equals(username)) {
+            String in = "0";
+            while (!in.equals("1") || !in.equals("2") || !in.equals("3")) {
+                System.out.print("wha' will ye do next?");
+                System.out.print("1) Move");
+                System.out.print("2) Build");
+                System.out.print("3) End turn");
+                in = stdin.nextLine();
+            }
+            switch (in) {
+                case ("1"):
+                    moveWorker(mex);
+                    break;
+                case ("2"):
+                    build(mex);
+                    break;
+                case ("3"):
+                    objectOutputStream.writeObject(new Message(0, 10, "", null));
+                    objectOutputStream.flush();
+                    break;
+            }
+        }
+    }
+
     public void checkTurnPhase(Message mex) throws IOException {
         if(mex.getTurnOf().equals(username)){
             if(mex.getTypeOfMessage()==5){

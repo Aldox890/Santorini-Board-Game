@@ -31,6 +31,10 @@ public class GameController {
         }
     }
 
+    public void passTurn(){
+        game.passTurn();
+    }
+
     /*
      * This method changes the turn.
      * If the current turn is the turn of the eldest player, sets the next turn to the youngest player.
