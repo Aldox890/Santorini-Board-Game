@@ -85,7 +85,7 @@ public class ClientView implements Observer {
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
                     if(mex.getTurnOf().equals(username) && (hasSetWorkers<2 || mex.getData().equals("false"))){
                         createWorker(mex);
-
+                        if (mex.getData().equals("false")){hasSetWorkers--;}
                     } // setup my workers position if it's my turn
                     else{turnMenu(mex);}
                     break;
@@ -108,7 +108,7 @@ public class ClientView implements Observer {
     public void turnMenu(Message mex) throws IOException {
         if(mex.getTurnOf().equals(username)) {
             String in = "0";
-            while (!in.equals("1") || !in.equals("2") || !in.equals("3")) {
+            while (!in.equals("1") && !in.equals("2") && !in.equals("3")) {
                 System.out.print("wha' will ye do next?");
                 System.out.print("1) Move");
                 System.out.print("2) Build");
