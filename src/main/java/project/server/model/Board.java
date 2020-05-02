@@ -289,7 +289,7 @@ public class Board {
 
     /*Given (x,y) a worker position, returns true if the worker is stuck in his position
     * */
-    public boolean checkStuck(int x, int y){
+    public boolean checkStuckWorker(int x, int y){
         int i=0,j=0,n,m;
         n=(x==4)? x : x+1;
         m=(y==4)? y : y+1;
@@ -311,6 +311,7 @@ public class Board {
     * & calls the removeWorker() method from Player class, to remove the worker from it's Workers list.
     * */
     public void removeWorker(Worker worker){
+        worker.getCell().setOccupiedBy(null);
         worker.getOwner().removeWorker(worker);
     }
 

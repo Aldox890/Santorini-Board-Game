@@ -29,10 +29,6 @@ class GameTest {
     @Test
     void addPlayer() {
         ArrayList<Player> playerList;
-        //assertTrue(g.addPlayer(p1,0));
-        //assertFalse(g.addPlayer(p1,1));
-        //assertTrue(g.addPlayer(p2,1));
-        //assertTrue(g.addPlayer(p3,2));
         playerList=g.getPlayerList();
         assertEquals(playerList.get(0).getName(),"Giovanni");
         assertEquals(playerList.get(1).getName(),"Mattia");

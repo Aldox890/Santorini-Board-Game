@@ -53,6 +53,10 @@ public class Player implements Serializable {
             workers.remove(w);
     }
 
+    public ArrayList<Worker> getWorkers() {
+        return workers;
+    }
+
     public int getNumberOfWorker(){
         return workers.size();
     }
