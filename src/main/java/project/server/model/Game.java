@@ -107,7 +107,7 @@ public class Game extends Observable {
 
         playerList.get(0).setColor(Color.RED);
         playerList.get(1).setColor(Color.YELLOW);
-        playerList.get(2).setColor(Color.GREEN);
+        playerList.get(2).setColor(Color.CYAN);
     }
 
     /*

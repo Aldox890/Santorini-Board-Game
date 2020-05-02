@@ -210,7 +210,7 @@ public class ClientView implements Observer {
 
     public void printPlayerList(Message mex){
         String[] serverResponse = mex.getData().split(";");
-        System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+Color.GREEN.getColor()+" 3rd-"+serverResponse[2]+"\u001B[0m");
+        System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+Color.CYAN.getColor()+" 3rd-"+serverResponse[2]+"\u001B[0m");
 
         for(int i=0;i<=serverResponse.length-1;i++){
             players.add(serverResponse[i]);
