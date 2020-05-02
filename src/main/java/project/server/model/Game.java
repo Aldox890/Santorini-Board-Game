@@ -92,7 +92,7 @@ public class Game extends Observable {
      * Orders the playerList and sets turnOf. Sends playerList to the clients
      */
     public void init(){
-        Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));
+        Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));  //sorting of players
         Player p = playerList.get(nPlayers - 1);
         turnOf = p;
         turnNumber = 0;
@@ -185,6 +185,9 @@ public class Game extends Observable {
         notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
     }
 
+    /*
+    * method that ends the turn of the current player
+    * */
     public void passTurn(){
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }
@@ -220,6 +223,9 @@ public class Game extends Observable {
         notifyObserver(new Message(socketId,6,"false", turnOf.getName()));
     }
 
+    /*
+    * checks if a player has both the workers stucked
+    * */
     public void checkStuckPlayer(Player p){
         Worker w1 = p.getWorkers().get(0);
         Worker w2 = p.getWorkers().get(1);
