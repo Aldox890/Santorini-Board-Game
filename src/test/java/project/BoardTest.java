@@ -188,8 +188,8 @@ class BoardTest {
         b.board[4][2].setLevel(3);
         b.board[4][3].setLevel(3);
         b.board[4][4].setLevel(3);
-        assertTrue(b.checkStuck(3,3));
-        assertFalse(b.checkStuck(0,0));
+        assertTrue(b.checkStuckWorker(3,3));
+        assertFalse(b.checkStuckWorker(0,0));
     }
 
 
