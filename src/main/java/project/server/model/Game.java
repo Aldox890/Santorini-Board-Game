@@ -19,6 +19,11 @@ public class Game extends Observable {
     private Player turnOf;
     private Worker worker;
     private boolean roomIsFull;
+
+    public void setnPlayers(int nPlayers) {
+        this.nPlayers = nPlayers;
+    }
+
     private int nPlayers;
 
 

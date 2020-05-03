@@ -16,6 +16,7 @@ class GameTest {
     @BeforeEach
     void setUp() {
         g = new Game();
+        g.setNPlayers(3);
         p1 = new Player("Giovanni",22);
         p2 = new Player("Mattia",23);
         p3 = new Player("Aldo",35);
@@ -39,12 +40,12 @@ class GameTest {
 
     @Test
     void setGods(){
-        String gList[]={"Apollo","Athena","Pan"};
-        g.setGods(gList,3);
+        String gList[]={"Apollo","Athena"};
+        g.setGods(gList,2);
         assertEquals(g.getGodList().get(0),"Apollo");
         assertEquals(g.getGodList().get(1),"Athena");
         assertEquals(g.getGodList().get(2),"Pan");
-        assertFalse(g.setGods(new String[]{"", ""},3));
+        assertFalse(g.setGods(new String[]{"", ""},2));
 
     }
 
