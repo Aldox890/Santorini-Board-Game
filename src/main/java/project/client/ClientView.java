@@ -109,10 +109,10 @@ public class ClientView implements Observer {
         if(mex.getTurnOf().equals(username)) {
             String in = "0";
             while (!in.equals("1") && !in.equals("2") && !in.equals("3")) {
-                System.out.print("wha' will ye do next?");
-                System.out.print("1) Move");
-                System.out.print("2) Build");
-                System.out.print("3) End turn");
+                System.out.print("wha' will ye do next? ");
+                System.out.print("1) Move ");
+                System.out.print("2) Build ");
+                System.out.println("3) End turn:");
                 in = stdin.nextLine();
             }
             switch (in) {
@@ -234,10 +234,16 @@ public class ClientView implements Observer {
         }
     }
 
+    /*
+    * prints the list of players with their respective color assaigned by the server.
+    * */
     public void printPlayerList(Message mex){
         String[] serverResponse = mex.getData().split(";");
-        System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+Color.CYAN.getColor()+" 3rd-"+serverResponse[2]+"\u001B[0m");
-
+        if(serverResponse[2] != null){
+            System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+Color.CYAN.getColor()+" 3rd-"+serverResponse[2]+"\u001B[0m");
+        }else{
+            System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+"\u001B[0m");
+        }
         for(int i=0;i<=serverResponse.length-1;i++){
             players.add(serverResponse[i]);
         }
