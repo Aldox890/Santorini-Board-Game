@@ -194,7 +194,11 @@ public class Game extends Observable {
         }
         gameBoard.resetCurrentWorker();
         gameBoard.resetState();
-        Message mex = new Message(-1, 6, "true", turnOf.getName());
+    }
+
+    public void nextTurn(){
+        passTurn();
+        notifyObserver(new Message(-1, 6, "true", turnOf.getName()));
     }
 
     public void moveWorker(Player p,String[] parsedLine, int socketId) {

@@ -32,7 +32,7 @@ public class GameController {
     }
 
     public void passTurn(){
-        game.passTurn();
+        game.nextTurn();
     }
 
     /*

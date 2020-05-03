@@ -181,7 +181,7 @@ public class Board {
 
         worker = board[xPos][yPos].isOccupiedBy();
 
-        if(worker.getOwner()!=player){
+        if(worker == null || worker.getOwner()!=player){
             return false;
         }
 
