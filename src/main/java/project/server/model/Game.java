@@ -99,15 +99,18 @@ public class Game extends Observable {
         String response = "";
         if (nPlayers == 3) {
             response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+
+            playerList.get(0).setColor(Color.RED);
+            playerList.get(1).setColor(Color.YELLOW);
+            playerList.get(2).setColor(Color.CYAN);
         }
         else if (nPlayers == 2){
             response = playerList.get(0).getName() + ";" + playerList.get(1).getName();
+
+            playerList.get(0).setColor(Color.RED);
+            playerList.get(1).setColor(Color.YELLOW);
         }
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
-
-        playerList.get(0).setColor(Color.RED);
-        playerList.get(1).setColor(Color.YELLOW);
-        playerList.get(2).setColor(Color.CYAN);
     }
 
     /*
