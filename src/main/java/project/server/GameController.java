@@ -23,7 +23,7 @@ public class GameController {
      * This method sets the Gods chosen by the eldest player, that will be used in the Game.
      */
     public void setGods(String[] parsedInput,int socketId){
-        if (parsedInput!= null && parsedInput[0] != null && parsedInput[1] != null && parsedInput[2] != null) {
+        if (parsedInput!= null /*&& parsedInput[0] != null && parsedInput[1] != null && parsedInput[2] != null*/) {
             game.setGods(parsedInput, socketId);
         }
         else{

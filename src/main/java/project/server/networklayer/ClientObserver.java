@@ -81,7 +81,7 @@ public class ClientObserver implements Runnable {
                         parsedLine = msg.getData().split(";");
                         gameController.build(player,parsedLine,4,socketId);
                         break;
-                    case 10:
+                    case 10:    //end player turn
                         gameController.passTurn();
                         break;
                 }

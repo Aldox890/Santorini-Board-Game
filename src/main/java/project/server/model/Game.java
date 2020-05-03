@@ -156,16 +156,36 @@ public class Game extends Observable {
      * Broadcast list to all players if it works.
      */
     public boolean setGods( String[] gList, int socketId) {
-        if (godsList.contains(gList[0]) && godsList.contains(gList[1]) && godsList.contains(gList[2])) {
-            allowedGods.add(gList[0]);
-            allowedGods.add(gList[1]);
-            allowedGods.add(gList[2]);
-            turnNumber = 1;
-            turnOf = getPlayerList().get(0);
-            notifyObserver(new Message(-1,1,gList[0] + ";" + gList[1] + ";" + gList[2], turnOf.getName()));
-            //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
-            return true;
+        if(gList.length==3){
+            if (godsList.contains(gList[0]) && godsList.contains(gList[1]) && godsList.contains(gList[2])) {
+                allowedGods.add(gList[0]);
+                allowedGods.add(gList[1]);
+                allowedGods.add(gList[2]);
+                for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
+                    System.out.println(allowedGods.get(i));
+                }
+                turnNumber = 1;
+                turnOf = getPlayerList().get(0);
+                notifyObserver(new Message(-1,1,gList[0] + ";" + gList[1] + ";" + gList[2], turnOf.getName()));
+                //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
+                return true;
+            }
         }
+        else if(gList.length==2){
+            if (godsList.contains(gList[0]) && godsList.contains(gList[1])) {
+                allowedGods.add(gList[0]);
+                allowedGods.add(gList[1]);
+                for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
+                    System.out.println(allowedGods.get(i));
+                }
+                turnNumber = 1;
+                turnOf = getPlayerList().get(0);
+                notifyObserver(new Message(-1,1,gList[0] + ";" + gList[1], turnOf.getName()));
+                //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
+                return true;
+            }
+        }
+
         notifyObserver(new Message(socketId,3,"false", turnOf.getName()));
         return false;
     }
@@ -175,7 +195,7 @@ public class Game extends Observable {
             player.selectGod(god);
             allowedGods.remove(god);
             turnNumber ++;
-            if (turnNumber <=3) { turnOf = playerList.get(turnNumber - 1);}
+            if (turnNumber <=nPlayers) { turnOf = playerList.get(turnNumber - 1);}
             else { turnOf = playerList.get(0);}
 
             notifyObserver(new Message(-1,2,player.getName() + ";" + god, turnOf.getName()));
