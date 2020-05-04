@@ -144,7 +144,7 @@ public class Board {
 
         this.moveWorker(worker,x_dest,y_dest);  //effective move of the worker
 
-
+        //win condition
         if(board[x_dest][y_dest].getLevel()==3 || ((player.getGod().equals("pan"))&&
                 ((board[x_start][y_start].getLevel()-board[x_dest][y_dest].getLevel())>=2)) ){  //check if worker has moved on top of a level 3
 
@@ -317,7 +317,7 @@ public class Board {
 
     public boolean tooHighToMove(int x_start,int y_start,int x_dest,int y_dest){
         //can't move up more than one level
-        return (board[x_dest][y_dest].getLevel() > board[x_start][y_start].getLevel() + 1);
+        return (board[x_dest][y_dest].getLevel() - board[x_start][y_start].getLevel() > 1); //return (board[x_dest][y_dest].getLevel() > board[x_start][y_start].getLevel() + 1);
     }
 
     public void resetState(){

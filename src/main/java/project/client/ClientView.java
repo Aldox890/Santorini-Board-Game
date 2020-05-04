@@ -46,6 +46,12 @@ public class ClientView implements Observer {
                     objectOutputStream.flush();
                     break;
 
+                case(30):   //WIN
+                    printBoard(mex);
+                    System.out.println(mex.getTurnOf()+" has won the game!");
+                    System.exit(0);
+                    break;
+
                 case (0): // required player registration
                     if (mex.getData().equals("registered")) {
                         System.out.println("Successfully registered!");

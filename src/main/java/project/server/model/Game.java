@@ -229,9 +229,16 @@ public class Game extends Observable {
     }
 
     public void moveWorker(Player p,String[] parsedLine, int socketId) {
-        if (gameBoard.move(p, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3])) == 1) {
+        int ris = gameBoard.move(p, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]));
+        if (ris == 1) {
             //sends the board to the client
             Message mex = new Message(-1, 5, "true", turnOf.getName());
+            mex.addBoard(gameBoard.getBoard());
+            notifyObserver(mex);
+            return;
+        }
+        else if (ris == -1) { //win condition
+            Message mex = new Message(-1, 30, "true", turnOf.getName());
             mex.addBoard(gameBoard.getBoard());
             notifyObserver(mex);
             return;
