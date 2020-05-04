@@ -4,7 +4,7 @@ import project.Cell;
 import project.Message;
 import project.server.model.Color;
 
-import java.awt.*;
+import java.awt.*;      //<-- contrasto con lib SWING (?)
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -21,6 +21,7 @@ public class ClientView implements Observer {
     ArrayList<String> players;
     ArrayList<String> availableGods;
     String username;
+    String god;
 
     int hasSetWorkers=0;
     int hasMoved = 0;
@@ -119,7 +120,7 @@ public class ClientView implements Observer {
                 case ("1"):
                     moveWorker(mex);
                     break;
-                case ("2"):
+                case ("2"):     //controllo su
                     build(mex);
                     break;
                 case ("3"):
@@ -221,6 +222,7 @@ public class ClientView implements Observer {
             System.out.print("Seleziona il Dio: ");
             String input = stdin.nextLine();
             //inserire controllo input
+            input = input.toLowerCase();
             objectOutputStream.writeObject(new Message(0,1,input,null));
             objectOutputStream.flush();
         }
