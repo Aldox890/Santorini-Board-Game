@@ -187,22 +187,22 @@ public class ClientView implements Observer {
     }
 
     public void choseAllowedGods() throws IOException {
-        if(players.get(players.size()-1).equals(username)){
-            System.out.println("Sei il giocatore più anziano, scegli 3 dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
+        if(players.get(players.size()-1).equals(username)){ //last player in list (eldest) choses the gods
+            System.out.println("Sei il giocatore più anziano, scegli "+ players.size() +" dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
 
             //System.out.println("Seleziona 3 divinità:");
             String inputGodsSelected="";
             int gods_selection=1;
-            while(gods_selection<=3){
+            while(gods_selection<=players.size()){
                 System.out.print("Divinità "+gods_selection+": ");    //input gods (aggiungere controlli)
                 String input= stdin.nextLine();
-                if(gods_selection!=3){
+                if(gods_selection!=players.size()){
                     inputGodsSelected = (inputGodsSelected + (input+";"));
                 }else{inputGodsSelected = (inputGodsSelected +input);}
 
                 gods_selection++;
             }
-            //System.out.println("Client: "+inputGodsSelected);
+            System.out.println("Client: "+inputGodsSelected);
             objectOutputStream.writeObject(new Message(0,0,inputGodsSelected, null));
             objectOutputStream.flush();
         }
@@ -210,11 +210,23 @@ public class ClientView implements Observer {
 
     public void addAllowedGods(Message mex){
         String[] serverGodList = mex.getData().split(";");
-        System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
+       /* System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
 
+
+        //--------------------------------------------
+        if(serverGodList.length == 3){ //serverResponse[2] != null
+            System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
+        }else{
+            System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+"\u001B[0m");
+        }
+        //------------------------------------------
+*/
+        System.out.print("LISTA DEI SCELTI: ");
         for(int i=0;i<=serverGodList.length-1;i++){
             availableGods.add(serverGodList[i]);
+            System.out.print(serverGodList[i]+" ");
         }
+        System.out.println();
     }
 
     public void choseGod(Message mex) throws IOException {
