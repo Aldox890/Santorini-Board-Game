@@ -88,14 +88,14 @@ public class Board {
 
 
         if(board[x_dest][y_dest].isOccupiedBy()!=null) { //can't move into an occupied cell with the exception of those players who have Apollo or Minotaur as God.
-            if(player.getGod().equals("Apollo")){
+            if(player.getGod().equals("apollo")){
                 Worker temp = board[x_dest][y_dest].isOccupiedBy();
                 this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
                 temp.setCell(board[x_start][y_start]);
                 board[x_start][y_start].setOccupiedBy(temp);    //moves other worker into my previous position (x_start, y_start)
                 return 1;
             }
-            else if(player.getGod().equals("Minotaur")){
+            else if(player.getGod().equals("minotaur")){
                 if(Math.abs(x_start-x_dest) <= 1 && Math.abs(y_start-y_dest) <= 1){
                     Worker temp = board[x_dest][y_dest].isOccupiedBy();
                     int xNew = x_dest - (x_start-x_dest);
@@ -118,22 +118,22 @@ public class Board {
             else return 0;  //can't move into cell
         }
 
-        if (player.getGod().equals("Prometheus")){
+        if (player.getGod().equals("prometheus")){
             if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Check if a worker who has Prometheus' power is moving up
                 if(numberOfBuild == 1){ return 0;}
             }
         }
 
-        if (player.getGod().equals("Athena")){
+        if (player.getGod().equals("athena")){
             if(board[x_dest][y_dest].getLevel()>board[x_start][y_start].getLevel()){ //Check if a worker who has Athena's power is moving up
                 canMoveUp = false;  //Athena's power enabled, the other players can't move up till it's Athena's player turn again.
             }
         }
 
-        if(!player.getGod().equals("Arthemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
+        if(!player.getGod().equals("arthemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
             return 0;
         }
-        if(player.getGod().equals("Arthemis") && numberOfMoves ==1){
+        if(player.getGod().equals("arthemis") && numberOfMoves ==1){
             if(oldCell.getX()== x_dest && (oldCell.getY()== y_dest)){
                 return 0;
             }
@@ -145,7 +145,7 @@ public class Board {
         this.moveWorker(worker,x_dest,y_dest);  //effective move of the worker
 
 
-        if(board[x_dest][y_dest].getLevel()==3 || ((player.getGod().equals("Pan"))&&
+        if(board[x_dest][y_dest].getLevel()==3 || ((player.getGod().equals("pan"))&&
                 ((board[x_start][y_start].getLevel()-board[x_dest][y_dest].getLevel())>=2)) ){  //check if worker has moved on top of a level 3
 
             return -1;  //win
@@ -215,22 +215,22 @@ public class Board {
             return false;
         }
 
-        if(level==2 && !player.getGod().equals("Hephaestus")){
+        if(level==2 && !player.getGod().equals("hephaestus")){
             return false;
         }
 
-        if(level==2 && player.getGod().equals("Hephaestus")){
-            if((board[xBuild][yBuild].getLevel()+2)>=4){
+        if(level==2 && player.getGod().equals("hephaestus")){
+            if((board[xBuild][yBuild].getLevel()+2)>=4){    //if a worker wants to build 2 consecutive blocks upon the starting cell, and the height is bigger or equal to 4
                 return false;
             }
         }
 
 
-        if(level==4 && !player.getGod().equals("Atlas")){
+        if(level==4 && !player.getGod().equals("atlas")){
             return false;
         }
 
-        if(numberOfMoves == 0 && !player.getGod().equals("Prometheus")){ //can't build if worker hasn't already moved && god isn't Prometheus
+        if(numberOfMoves == 0 && !player.getGod().equals("prometheus")){ //can't build if worker hasn't already moved && god isn't Prometheus
             return false;
         }
 
@@ -238,15 +238,15 @@ public class Board {
             return false;
         }
 
-        if(numberOfBuild == 1 && (!player.getGod().equals("Demeter") && !player.getGod().equals("Prometheus"))){
+        if(numberOfBuild == 1 && (!player.getGod().equals("demeter") && !player.getGod().equals("prometheus"))){
             return false;
         }
 
         if(numberOfBuild == 1){
-            if( (player.getGod().equals("Demeter")) && oldBuild.getX() == xBuild && oldBuild.getY() == yBuild){
+            if( (player.getGod().equals("demeter")) && oldBuild.getX() == xBuild && oldBuild.getY() == yBuild){
                 return false;
             }
-            if( (player.getGod().equals("Prometheus")) && numberOfMoves == 0){
+            if( (player.getGod().equals("prometheus")) && numberOfMoves == 0){
                 return false;
             }
         }
