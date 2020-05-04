@@ -73,11 +73,11 @@ public class ClientObserver implements Runnable {
                     case 5:
                         //Move Artemis
                         break;
-                    case 6:
+                    case 6: //Build Hephaestus
                         parsedLine = msg.getData().split(";");
                         gameController.build(player,parsedLine,2,socketId);
                         break;
-                    case 7:
+                    case 7: //Build Atlas
                         parsedLine = msg.getData().split(";");
                         gameController.build(player,parsedLine,4,socketId);
                         break;

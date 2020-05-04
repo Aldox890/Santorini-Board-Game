@@ -223,6 +223,7 @@ public class ClientView implements Observer {
             String input = stdin.nextLine();
             //inserire controllo input
             input = input.toLowerCase();
+            god=input;
             objectOutputStream.writeObject(new Message(0,1,input,null));
             objectOutputStream.flush();
         }
@@ -307,6 +308,7 @@ public class ClientView implements Observer {
     }
 
     public void build(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
+        int resp;
         if (mex.getTurnOf().equals(username)) {
             System.out.println("Insert worker's starting BUILDING point coordinates: ");
             String coordinates = insertCoordinates();
@@ -315,10 +317,41 @@ public class ClientView implements Observer {
             coordinates+= ";"+insertCoordinates();
             //inserire controllo input
 
-            objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
-            objectOutputStream.flush();
-            hasBuild++;
+            if(god.equals("hephaestus")){
+                do {
+                    System.out.println("Do you want to use Hephaestus power? 1-Y 2-N");
+                    resp = Integer.parseInt(stdin.nextLine());
+                }while(resp!=1 && resp!=2);
+                if(resp==1){
+                    objectOutputStream.writeObject(new Message(0, 6, coordinates, null));
+                    objectOutputStream.flush();
+                }
+                else{
+                    objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+                    objectOutputStream.flush();
+                }
+            }
+            else if(god.equals("atlas")){
+                do {
+                    System.out.println("Do you want to use atlas power? 1-Y 2-N");
+                    resp = Integer.parseInt(stdin.nextLine());
+                }while(resp!=1 && resp!=2);
+                if(resp==1){
+                    objectOutputStream.writeObject(new Message(0, 7, coordinates, null));
+                    objectOutputStream.flush();
+                }
+                else{
+                    objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+                    objectOutputStream.flush();
+                }
+            }
+            else{
+                objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+                objectOutputStream.flush();
+                hasBuild++;
+            }
         }
+
     }
 
     /* strategy method to control if the input of the age is correct*/

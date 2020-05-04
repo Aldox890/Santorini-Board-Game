@@ -40,7 +40,7 @@ class GameTest {
 
     @Test
     void setGods(){
-        String gList[]={"Apollo","Athena"};
+        String gList[]={"Apollo","Athena","Pan"};
         g.setGods(gList,2);
         assertEquals(g.getGodList().get(0),"Apollo");
         assertEquals(g.getGodList().get(1),"Athena");
