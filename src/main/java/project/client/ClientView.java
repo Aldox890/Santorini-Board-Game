@@ -111,9 +111,9 @@ public class ClientView implements Observer {
             String in = "0";
             while (!in.equals("1") && !in.equals("2") && !in.equals("3")) {
                 System.out.print("wha' will ye do next? ");
-                System.out.print("1) Move ");
-                System.out.print("2) Build ");
-                System.out.println("3) End turn:");
+                System.out.print("1)Move ");
+                System.out.print("2)Build ");
+                System.out.println("3)End turn:");
                 in = stdin.nextLine();
             }
             switch (in) {
