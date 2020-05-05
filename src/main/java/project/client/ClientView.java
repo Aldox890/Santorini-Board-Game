@@ -343,10 +343,12 @@ public class ClientView implements Observer {
                 if(resp==1){
                     objectOutputStream.writeObject(new Message(0, 6, coordinates, null));
                     objectOutputStream.flush();
+                    hasBuild++;
                 }
                 else{
                     objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
                     objectOutputStream.flush();
+                    hasBuild++;
                 }
             }
             else if(god.equals("atlas")){
@@ -357,10 +359,12 @@ public class ClientView implements Observer {
                 if(resp==1){
                     objectOutputStream.writeObject(new Message(0, 7, coordinates, null));
                     objectOutputStream.flush();
+                    hasBuild++;
                 }
                 else{
                     objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
                     objectOutputStream.flush();
+                    hasBuild++;
                 }
             }
             else{
