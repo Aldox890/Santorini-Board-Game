@@ -225,6 +225,7 @@ public class Game extends Observable {
 
     public void nextTurn(){
         passTurn();
+        checkStuckPlayer(this.turnOf);
         notifyObserver(new Message(-1, 6, "true", turnOf.getName()));
     }
 
@@ -268,13 +269,17 @@ public class Game extends Observable {
             if (gameBoard.checkStuckWorker(w2.getCell().getX(),w2.getCell().getY())){
                 gameBoard.removeWorker(w1);
                 gameBoard.removeWorker(w2);
-                //notifyObserver();
+                Message mex = new Message(-1, 40, "true", turnOf.getName());
+                mex.addBoard(gameBoard.getBoard());
+                notifyObserver(mex);
                 this.playerList.remove(p);
             }
         }
 
         if(playerList.size()==1){
-            //notifyObserver();
+            Message mex = new Message(-1, 30, "true", playerList.get(0).getName());
+            mex.addBoard(gameBoard.getBoard());
+            notifyObserver(mex);
         }
     }
 

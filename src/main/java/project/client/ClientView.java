@@ -52,6 +52,11 @@ public class ClientView implements Observer {
                     System.exit(0);
                     break;
 
+                case(40):
+                    printBoard(mex);
+                    System.out.println(mex.getTurnOf()+" is stuck and his workers has been removed from the board");
+                    break;
+
                 case (0): // required player registration
                     if (mex.getData().equals("registered")) {
                         System.out.println("Successfully registered!");
