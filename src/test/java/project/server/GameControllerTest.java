@@ -30,6 +30,9 @@ class GameControllerTest {
     @Test
     void setGods() {
         ArrayList <String> gods = new ArrayList<>();
+        gods.set(0,"Apollo");
+        gods.set(1,"Pan");
+        gods.set(2,"Atlas");
         gc.setGods(gods,2);
         assertEquals(g.getGodList().get(0),"Apollo");
         assertEquals(g.getGodList().get(1),"Pan");

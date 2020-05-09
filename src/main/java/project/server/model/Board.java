@@ -105,7 +105,7 @@ public class Board {
                         return 0;
                     }
 
-                    if(board[xNew][yNew].isOccupiedBy()==null){
+                    if(board[xNew][yNew].isOccupiedBy()==null && board[xNew][yNew].getLevel()<4){
                         this.moveWorker(temp, xNew, yNew);    //moves other worker into my previous position (xNew, yNew)
                         this.moveWorker(worker, x_dest, y_dest);    //moves my worker into requested position (x_dest, y_dest)
                         return 1;
@@ -299,6 +299,16 @@ public class Board {
                 if(!tooHighToMove(x,y,i,j) && x!=i && y!=j){
                     if(board[i][j].isOccupiedBy()==null) {
                         stuck = false;
+                    }
+                    else if(board[x][y].isOccupiedBy().getOwner().getGod().equals("apollo")){
+                        stuck = false;
+                    }
+                    else if(board[x][y].isOccupiedBy().getOwner().getGod().equals("minothaur")){
+                        int xNew = x - (i-x);
+                        int yNew = y - (j-y);
+                        if(0<xNew && xNew<4 && 0<yNew && yNew<4){
+                            stuck=false;
+                        }
                     }
                 }
             }
