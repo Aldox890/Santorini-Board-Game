@@ -162,7 +162,9 @@ public class Game extends Observable {
     public boolean setGods(ArrayList<String> gods, int socketId) {
         if(gods.size()==3){
             if (godsList.contains(gods.get(0).toLowerCase()) && godsList.contains(gods.get(1).toLowerCase()) && godsList.contains(gods.get(2).toLowerCase())) {
-                allowedGods = gods;
+                allowedGods.add(gods.get(0).toLowerCase());
+                allowedGods.add(gods.get(1).toLowerCase());
+                allowedGods.add(gods.get(2).toLowerCase());
                 for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
                     System.out.println(allowedGods.get(i));
                 }
@@ -175,7 +177,8 @@ public class Game extends Observable {
         }
         else if(gods.size()==2){
             if (godsList.contains(gods.get(0).toLowerCase()) && godsList.contains(gods.get(1).toLowerCase())) {
-                allowedGods = gods;
+                allowedGods.add(gods.get(0).toLowerCase());
+                allowedGods.add(gods.get(1).toLowerCase());
                 for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
                     System.out.println(allowedGods.get(i));
                 }

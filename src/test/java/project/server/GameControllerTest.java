@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import project.server.model.Game;
 import project.server.model.Player;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameControllerTest {
@@ -27,7 +29,7 @@ class GameControllerTest {
 
     @Test
     void setGods() {
-        String[] gods = new String[]{"Apollo", "Pan","Atlas"};
+        ArrayList <String> gods = new ArrayList<>();
         gc.setGods(gods,2);
         assertEquals(g.getGodList().get(0),"Apollo");
         assertEquals(g.getGodList().get(1),"Pan");
@@ -42,18 +44,18 @@ class GameControllerTest {
 
     @Test
     void addWorker() {
-        gc.addWorker(p1, new String[]{"0","0"},0);
-        gc.addWorker(p1,null,0);
+        gc.addWorker(p1, 0,0,0);
+        gc.addWorker(p1,-1,0,0);
     }
 
     @Test
     void moveWorker() {
-        String[] gods = new String[]{"Apollo", "Pan","Atlas"};
+        ArrayList<String> gods = new ArrayList<>();
         gc.setGods(gods,2);
         gc.setGod("Apollo",p1,0);
         gc.setGod("Pan",p2,1);
-        gc.addWorker(p1, new String[]{"0","0"},0);
-        gc.moveWorker(p1,new String[]{"0","0","1","1"},0);
-        gc.build(p1,new String[]{"1","1","0","0"},1,0);
+        gc.addWorker(p1,0,0,0);
+        gc.moveWorker(p1,0,0,1,1,0);
+        gc.build(p1,1,1,0,0,1,0);
     }
 }

@@ -42,19 +42,19 @@ class GameTest {
     @Test
     //Testing Game.setGods()
     void setGods(){
-        String gList[]={"apollo","athena","pan"};
+        ArrayList <String> gList = new ArrayList<>();
         g.setGods(gList,2);
         assertEquals(g.getGodList().get(0),"apollo");   //Correct
         assertEquals(g.getGodList().get(1),"athena");
         assertEquals(g.getGodList().get(2),"pan");
-        assertFalse(g.setGods(new String[]{"", ""},2)); //Error
+        //assertFalse(g.setGods(new String[]{"", ""},2)); //Error
 
     }
 
     @Test
     //Testing Game.addGod()
     void addGod(){
-        String gList[]={"apollo","athena","pan"};
+        ArrayList <String> gList = new ArrayList<>();
         String gChoice="apollo";
         g.setGods(gList,3);         //Creating the allowed god list in game
         g.addGod(gChoice,p1,0);     //p1 choose a god
@@ -71,41 +71,41 @@ class GameTest {
         String s1[] = {"0","1"};
         String s2[] = {"0","2"};
         String gList[]={"apollo","athena","pan"};
-        g.setGods(gList,3);
+        //g.setGods(gList,3);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
         g.addGod("pan",p3,2);
-        assertTrue(g.addWorker(p1,s1,0));
-        assertTrue(g.addWorker(p1,s2,0));
-        assertFalse(g.addWorker(p1,s2,0));              //Worker can't be added on a occupied cell
-        assertFalse(g.addWorker(null,s1,0));        //Function can't be used if there's not a player
-        assertFalse(g.addWorker(p2,s1,1));              //Function used on the wrong socket
+        assertTrue(g.addWorker(p1,0,1,0));
+        assertTrue(g.addWorker(p1,0,2,0));
+        assertFalse(g.addWorker(p1,0,2,0));              //Worker can't be added on a occupied cell
+        assertFalse(g.addWorker(null,0,1,0));        //Function can't be used if there's not a player
+        assertFalse(g.addWorker(p2,0,1,1));              //Function used on the wrong socket
     }
 
 
     @Test
     //Testing Game.move()
     void move(){
-        String gList[]={"apollo","athena","pan"};
+        ArrayList <String> gList = new ArrayList<>();
         g.setGods(gList,3);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
         g.addGod("pan",p3,2);
-        g.addWorker(p1, new String[]{"0", "0"},0);
-        g.moveWorker(p1, new String[]{"0", "0", "0", "1"},0);
+        g.addWorker(p1, 0,0,0);
+        g.moveWorker(p1, 0,0,0,1,0);
     }
 
 
     @Test
     //Testing Game.build()
     void build(){
-        String gList[]={"apollo","athena","pan"};
+        ArrayList <String> gList = new ArrayList<>();
         g.setGods(gList,3);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
         g.addGod("pan",p3,2);
-        g.addWorker(p1, new String[]{"0", "0"},0);
-        g.build(p1,new String[]{"0", "0", "0", "1"},1,0);
+        g.addWorker(p1,0,0,0);
+        g.build(p1,0,0,0,1,1,0);
     }
 
 }
