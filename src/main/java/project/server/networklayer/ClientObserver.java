@@ -1,5 +1,6 @@
 package project.server.networklayer;
 
+import project.ClientMessage;
 import project.Message;
 import project.server.GameController;
 import project.server.model.Player;
@@ -46,40 +47,37 @@ public class ClientObserver implements Runnable {
 
         while(true) {
             try {
-                Message msg = (Message) ois.readObject();
+                ClientMessage msg = (ClientMessage) ois.readObject();
                 String parsedLine[];
                 switch (msg.getTypeOfMessage()) {
                     case 0:
                         // Select 3 gods cards
-                        parsedLine = msg.getData().split(";");
-                        gameController.setGods(parsedLine,socketId);
+                        //parsedLine = msg.getData().split(";");
+                        gameController.setGods(msg.getGameGods(),socketId);
                         break;
                     case 1:
                         // Select 1 god card
-                        gameController.setGod(msg.getData(),player,socketId);
+                        gameController.setGod(msg.getGod(),player,socketId);
                         break;
                     case 2: //Client added a worker
-                        parsedLine = msg.getData().split(";");
-                        gameController.addWorker(player, parsedLine,socketId);
+                        gameController.addWorker(player, msg.getxStart(),msg.getyStart(),socketId);
                         break;
                     case 3: //client wants to move a worker in a certain position
-                        parsedLine = msg.getData().split(";");
-                        gameController.moveWorker(player,parsedLine,socketId);
+                        //parsedLine = msg.getData().split(";");
+                        gameController.moveWorker(player,msg.getxStart(),msg.getyStart(),msg.getxDest(),msg.getyDest(),socketId);
                         break;
                     case 4: // client wants to build in a certain position
-                        parsedLine = msg.getData().split(";");
-                        gameController.build(player,parsedLine,1,socketId);
+                        //parsedLine = msg.getData().split(";");
+                        gameController.build(player,msg.getxStart(),msg.getyStart(),msg.getxDest(),msg.getyDest(),1,socketId);
                         break;
                     case 5:
                         //Move Artemis
                         break;
                     case 6: //Build Hephaestus
-                        parsedLine = msg.getData().split(";");
-                        gameController.build(player,parsedLine,2,socketId);
+                        gameController.build(player,msg.getxStart(),msg.getyStart(),msg.getxDest(),msg.getyDest(),2,socketId);
                         break;
                     case 7: //Build Atlas
-                        parsedLine = msg.getData().split(";");
-                        gameController.build(player,parsedLine,4,socketId);
+                        gameController.build(player,msg.getxStart(),msg.getyStart(),msg.getxDest(),msg.getyDest(),4,socketId);
                         break;
                     case 10:    //end player turn
                         gameController.passTurn();
@@ -99,7 +97,7 @@ public class ClientObserver implements Runnable {
     public void initPlayer() throws IOException, ClassNotFoundException {
         //Saves initial player information
         do {
-            Message msg = (Message) ois.readObject(); // the first message recived should be "username;age"
+            ClientMessage msg = (ClientMessage) ois.readObject(); // the first message recived should be "username;age"
             String[] playerInfo = msg.getData().split(";");
             player = new Player(playerInfo[0], Integer.parseInt(playerInfo[1]));
         } while (!gameController.addPlayer(player,socketId));

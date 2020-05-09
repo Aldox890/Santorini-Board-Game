@@ -1,5 +1,6 @@
 package project.server.networklayer;
 
+import project.ClientMessage;
 import project.Message;
 import project.server.GameController;
 import project.server.model.Game;
@@ -48,7 +49,7 @@ public class Server {
             oos.writeObject(new Message(0, 20, "Create room", ""));
             oos.flush();
 
-            Message mex = (Message) ois.readObject();
+            ClientMessage mex = (ClientMessage) ois.readObject();
             nPlayers = Integer.parseInt(mex.getData());
 
             if (nPlayers!= 3 && nPlayers!= 2 ){

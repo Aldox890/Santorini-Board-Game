@@ -4,6 +4,8 @@ import project.Message;
 import project.server.model.Game;
 import project.server.model.Player;
 
+import java.util.ArrayList;
+
 /*
 * This class plays the role of the controller in the MVC Pattern.
 * */
@@ -22,9 +24,9 @@ public class GameController {
     /*
      * This method sets the Gods chosen by the eldest player, that will be used in the Game.
      */
-    public void setGods(String[] parsedInput,int socketId){
-        if (parsedInput!= null /*&& parsedInput[0] != null && parsedInput[1] != null && parsedInput[2] != null*/) {
-            game.setGods(parsedInput, socketId);
+    public void setGods(ArrayList<String> gods, int socketId){
+        if (gods!= null /*&& parsedInput[0] != null && parsedInput[1] != null && parsedInput[2] != null*/) {
+            game.setGods(gods, socketId);
         }
         else{
             game.badInputException(socketId,3,"false");
@@ -60,10 +62,10 @@ public class GameController {
     /*
      * This method adds a new player's worker in a certain position on the board .
      */
-    public void addWorker(Player p, String[] parsedLine,int socketId){
+    public void addWorker(Player p, int x,int y,int socketId){
         if(p!= null && p.getNumberOfWorker()<2) {
-            if (parsedLine != null && parsedLine[0] != null && parsedLine[1] != null) {
-                game.addWorker(p, parsedLine, socketId);
+            if (x >= 0 && y >= 0) {
+                game.addWorker(p, x, y,socketId);
                 return;
             }
         }
@@ -74,9 +76,9 @@ public class GameController {
     /*
      * This method moves a player's worker in a certain position.
      */
-    public void moveWorker(Player player, String parsedLine[],int socketId){
-        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
-            game.moveWorker(player, parsedLine, socketId);
+    public void moveWorker(Player player, int xStart,int yStart,int xDest, int yDest,int socketId){
+        if (xStart >=0 && yStart >=0 && xDest >= 0 && yDest >= 0) {
+            game.moveWorker(player, xStart,yStart,xDest,yDest, socketId);
             return;
         }
         game.badInputException(socketId,5,"false");
@@ -85,9 +87,9 @@ public class GameController {
     /*
      * This method builds a new level inside a certain cell of the game board
      */
-    public void build(Player player, String parsedLine[],int level,int socketId){
-        if (parsedLine[0] != null && parsedLine[1] != null && parsedLine[2] != null && parsedLine[3] != null) {
-            game.build(player, parsedLine, level, socketId);
+    public void build(Player player, int xStart,int yStart,int xDest, int yDest,int level,int socketId){
+        if (xStart >= 0 && yStart >= 0 && xDest >= 0 && yDest >= 0) {
+            game.build(player, xStart, yStart, xDest, yDest, level, socketId);
             return;
         }
         game.badInputException(socketId,6,"false");

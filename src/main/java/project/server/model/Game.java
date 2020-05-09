@@ -118,8 +118,8 @@ public class Game extends Observable {
      * TRUE if the worker is added inside the game board
      * FALSE if the worker isn't added inside the game board
      */
-    public boolean addWorker(Player p,String[] parsedLine, int socketId){
-        if (gameBoard.createWorker(p, Integer.parseInt(parsedLine[0]),Integer.parseInt(parsedLine[1]))) {
+    public boolean addWorker(Player p,int x, int y, int socketId){
+        if (gameBoard.createWorker(p,x,y)) {
             if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board
                 passTurn();
                 Message mex = new Message(-1, 4, "true", turnOf.getName());
@@ -159,32 +159,29 @@ public class Game extends Observable {
      * Sets the 3 allowed gods to allowedGods list. sends false if fails.
      * Broadcast list to all players if it works.
      */
-    public boolean setGods( String[] gList, int socketId) {
-        if(gList.length==3){
-            if (godsList.contains(gList[0].toLowerCase()) && godsList.contains(gList[1].toLowerCase()) && godsList.contains(gList[2].toLowerCase())) {
-                allowedGods.add(gList[0].toLowerCase());
-                allowedGods.add(gList[1].toLowerCase());
-                allowedGods.add(gList[2].toLowerCase());
+    public boolean setGods(ArrayList<String> gods, int socketId) {
+        if(gods.size()==3){
+            if (godsList.contains(gods.get(0).toLowerCase()) && godsList.contains(gods.get(1).toLowerCase()) && godsList.contains(gods.get(2).toLowerCase())) {
+                allowedGods = gods;
                 for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
                     System.out.println(allowedGods.get(i));
                 }
                 turnNumber = 1;
                 turnOf = getPlayerList().get(0);
-                notifyObserver(new Message(-1,1,gList[0].toLowerCase() + ";" + gList[1].toLowerCase() + ";" + gList[2].toLowerCase(), turnOf.getName()));
+                notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + ";" + gods.get(1).toLowerCase() + ";" + gods.get(2).toLowerCase(), turnOf.getName()));
                 //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
                 return true;
             }
         }
-        else if(gList.length==2){
-            if (godsList.contains(gList[0].toLowerCase()) && godsList.contains(gList[1].toLowerCase())) {
-                allowedGods.add(gList[0].toLowerCase());
-                allowedGods.add(gList[1].toLowerCase());
+        else if(gods.size()==2){
+            if (godsList.contains(gods.get(0).toLowerCase()) && godsList.contains(gods.get(1).toLowerCase())) {
+                allowedGods = gods;
                 for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
                     System.out.println(allowedGods.get(i));
                 }
                 turnNumber = 1;
                 turnOf = getPlayerList().get(0);
-                notifyObserver(new Message(-1,1,gList[0].toLowerCase() + ";" + gList[1].toLowerCase(), turnOf.getName()));
+                notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + ";" + gods.get(1).toLowerCase(), turnOf.getName()));
                 //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
                 return true;
             }
@@ -229,8 +226,8 @@ public class Game extends Observable {
         notifyObserver(new Message(-1, 6, "true", turnOf.getName()));
     }
 
-    public void moveWorker(Player p,String[] parsedLine, int socketId) {
-        int ris = gameBoard.move(p, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]));
+    public void moveWorker(Player p,int xStart,int yStart,int xDest, int yDest, int socketId) {
+        int ris = gameBoard.move(p, xStart, yStart, xDest, yDest);
         if (ris == 1) {
             //sends the board to the client
             Message mex = new Message(-1, 5, "true", turnOf.getName());
@@ -248,8 +245,8 @@ public class Game extends Observable {
     }
 
 
-    public void build(Player p,String[] parsedLine,int level, int socketId){   // <------ DA MODIFICARE
-        if (gameBoard.build(p, level, Integer.parseInt(parsedLine[0]), Integer.parseInt(parsedLine[1]), Integer.parseInt(parsedLine[2]), Integer.parseInt(parsedLine[3]))) {
+    public void build(Player p,int xStart,int yStart,int xDest, int yDest,int level, int socketId){   // <------ DA MODIFICARE
+        if (gameBoard.build(p, level, xStart, yStart, xDest, yDest)) {
             //send the board to the clinet
             Message mex = new Message(-1, 6, "true", turnOf.getName());
             mex.addBoard(gameBoard.getBoard());

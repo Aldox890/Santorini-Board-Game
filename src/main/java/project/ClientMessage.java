@@ -1,8 +1,9 @@
 package project;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ClientMessage {
+public class ClientMessage implements Serializable {
     int typeOfMessage;
     String god;
     ArrayList<String> gameGods;
