@@ -339,7 +339,7 @@ public class ClientView implements Observer {
             int yStart = Integer.parseInt(coords[1]);
 
             System.out.println("Insert worker's MOVING destination point coordinates: ");
-            coordinates+= ";"+insertCoordinates();
+            coordinates=insertCoordinates();
 
             coords = coordinates.split(";");
             int xDest = Integer.parseInt(coords[0]);
@@ -367,7 +367,7 @@ public class ClientView implements Observer {
             int yStart = Integer.parseInt(coords[1]);
 
             System.out.println("Insert worker's destination BUILDING point coordinates: ");
-            coordinates+= ";"+insertCoordinates();
+            coordinates = insertCoordinates();
             coords = coordinates.split(";");
             int xDest = Integer.parseInt(coords[0]);
             int yDest = Integer.parseInt(coords[1]);
