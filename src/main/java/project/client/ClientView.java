@@ -1,6 +1,7 @@
 package project.client;
 
 import project.Cell;
+import project.ClientMessage;
 import project.Message;
 import project.server.model.Color;
 
@@ -42,7 +43,7 @@ public class ClientView implements Observer {
                 case(20): //con quanti giocatori vuoi giocare
                     System.out.println("Number of players of the game");
                     String numOfPlayers = stdin.nextLine();
-                    objectOutputStream.writeObject(new Message(0,20,numOfPlayers, null));
+                    objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,numOfPlayers));
                     objectOutputStream.flush();
                     break;
 
@@ -135,7 +136,7 @@ public class ClientView implements Observer {
                     build(mex);
                     break;
                 case ("3"):
-                    objectOutputStream.writeObject(new Message(0, 10, "", null));
+                    objectOutputStream.writeObject(new ClientMessage(10,null, null, -1, -1,-1,-1,null));
                     objectOutputStream.flush();
                     break;
             }
@@ -193,28 +194,39 @@ public class ClientView implements Observer {
         }
 
         //send message to the project.server
-        objectOutputStream.writeObject(new Message(0,0,(inputLineUsername+";"+inputLineAge), null));
+        objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(inputLineUsername+";"+inputLineAge) ));
         objectOutputStream.flush();
     }
 
     public void choseAllowedGods() throws IOException {
+        ArrayList<String> listOfGods = new ArrayList<>();
         if(players.get(players.size()-1).equals(username)){ //last player in list (eldest) choses the gods
             System.out.println("Sei il giocatore più anziano, scegli "+ players.size() +" dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
 
-            //System.out.println("Seleziona 3 divinità:");
-            String inputGodsSelected="";
-            int gods_selection=1;
+            //System.out.println("Seleziona le x divinità:");
+            //String inputGodsSelected="";
+            int gods_selection=1;   //index of selection
             while(gods_selection<=players.size()){
                 System.out.print("Divinità "+gods_selection+": ");    //input gods (aggiungere controlli)
                 String input= stdin.nextLine();
-                if(gods_selection!=players.size()){
-                    inputGodsSelected = (inputGodsSelected + (input+";"));
-                }else{inputGodsSelected = (inputGodsSelected +input);}
+                if(!listOfGods.contains(input)){    //if the input isn't already in the list of gods, the input will be insert in; otherwise it wont.
+                    listOfGods.add(input);
+                    gods_selection++;
+                }else{
+                    System.out.println("Bad input, re-insert the current God");
+                }
 
-                gods_selection++;
+                /*if(gods_selection!=players.size()){
+                    listOfGods.add(inputGodsSelected);
+                    inputGodsSelected = (inputGodsSelected + (input+";"));
+                }else{inputGodsSelected = (inputGodsSelected +input);}*/
+
+
             }
-            System.out.println("Client: "+inputGodsSelected);
-            objectOutputStream.writeObject(new Message(0,0,inputGodsSelected, null));
+            //System.out.println("Client: "+inputGodsSelected);
+
+            objectOutputStream.writeObject(new ClientMessage(0,null, listOfGods, -1, -1,-1,-1,null));
+                    //new Message(0,0,inputGodsSelected, null));
             objectOutputStream.flush();
         }
     }
@@ -247,7 +259,8 @@ public class ClientView implements Observer {
             //inserire controllo input
             input = input.toLowerCase();
             god=input;
-            objectOutputStream.writeObject(new Message(0,1,input,null));
+            objectOutputStream.writeObject(new ClientMessage(1,god, null, -1, -1,-1,-1,null));
+                    //new Message(0,1,input,null));
             objectOutputStream.flush();
         }
     }
@@ -279,11 +292,14 @@ public class ClientView implements Observer {
         if (mex.getTurnOf().equals(username)) {
             System.out.println("Inserisci X e Y (tra 0 e 4): ");
             System.out.print("Inserisci X: ");
-            String x = stdin.nextLine();
+            String input = stdin.nextLine();
+            int x = Integer.parseInt(input);
             System.out.print("Inserisci Y: ");
-            String y = stdin.nextLine();
+            input = stdin.nextLine();
+            int y = Integer.parseInt(input);
             //inserire controllo input
-            objectOutputStream.writeObject(new Message(0, 2, (x + ";" + y), null));
+            objectOutputStream.writeObject( new ClientMessage(2,null, null, x, y,-1,-1,null));
+                    //new Message(0, 2, (x + ";" + y), null));
             objectOutputStream.flush();
             hasSetWorkers++;
         }
@@ -314,14 +330,24 @@ public class ClientView implements Observer {
 
     public void moveWorker(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
         if (mex.getTurnOf().equals(username)) {
+            String[] coords = new String[2];
             System.out.println("Insert worker's MOVING starting point coordinates: ");
             String coordinates = insertCoordinates();
 
+            coords = coordinates.split(";");
+            int xStart = Integer.parseInt(coords[0]);
+            int yStart = Integer.parseInt(coords[1]);
+
             System.out.println("Insert worker's MOVING destination point coordinates: ");
             coordinates+= ";"+insertCoordinates();
+
+            coords = coordinates.split(";");
+            int xDest = Integer.parseInt(coords[0]);
+            int yDest = Integer.parseInt(coords[1]);
             //inserire controllo input
 
-            objectOutputStream.writeObject(new Message(0, 3, coordinates, null));
+            objectOutputStream.writeObject(new ClientMessage(3,null, null, xStart, yStart,xDest,yDest,null));
+                    //new Message(0, 3, coordinates, null));
             objectOutputStream.flush();
             hasMoved++;
         }
@@ -333,11 +359,18 @@ public class ClientView implements Observer {
     public void build(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
         int resp;
         if (mex.getTurnOf().equals(username)) {
+            String[] coords = new String[2];
             System.out.println("Insert worker's starting BUILDING point coordinates: ");
             String coordinates = insertCoordinates();
+            coords = coordinates.split(";");
+            int xStart = Integer.parseInt(coords[0]);
+            int yStart = Integer.parseInt(coords[1]);
 
             System.out.println("Insert worker's destination BUILDING point coordinates: ");
             coordinates+= ";"+insertCoordinates();
+            coords = coordinates.split(";");
+            int xDest = Integer.parseInt(coords[0]);
+            int yDest = Integer.parseInt(coords[1]);
             //inserire controllo input
 
             if(god.equals("hephaestus")){
@@ -346,12 +379,14 @@ public class ClientView implements Observer {
                     resp = Integer.parseInt(stdin.nextLine());
                 }while(resp!=1 && resp!=2);
                 if(resp==1){
-                    objectOutputStream.writeObject(new Message(0, 6, coordinates, null));
+                    objectOutputStream.writeObject( new ClientMessage(6,null, null, xStart, yStart,xDest,yDest,null));
+                            //new Message(0, 6, coordinates, null));
                     objectOutputStream.flush();
                     hasBuild++;
                 }
                 else{
-                    objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+                    objectOutputStream.writeObject(new ClientMessage(4,null, null, xStart, yStart,xDest,yDest,null));
+                            //new Message(0, 4, coordinates, null));
                     objectOutputStream.flush();
                     hasBuild++;
                 }
@@ -362,18 +397,21 @@ public class ClientView implements Observer {
                     resp = Integer.parseInt(stdin.nextLine());
                 }while(resp!=1 && resp!=2);
                 if(resp==1){
-                    objectOutputStream.writeObject(new Message(0, 7, coordinates, null));
+                    objectOutputStream.writeObject(new ClientMessage(7,null, null, xStart, yStart,xDest,yDest,null));
+                            //new Message(0, 7, coordinates, null));
                     objectOutputStream.flush();
                     hasBuild++;
                 }
                 else{
-                    objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+                    objectOutputStream.writeObject(new ClientMessage(4,null, null, xStart, yStart,xDest,yDest,null));
+                            //new Message(0, 4, coordinates, null));
                     objectOutputStream.flush();
                     hasBuild++;
                 }
             }
             else{
-                objectOutputStream.writeObject(new Message(0, 4, coordinates, null));
+                objectOutputStream.writeObject(new ClientMessage(4,null, null, xStart, yStart,xDest,yDest,null));
+                        //new Message(0, 4, coordinates, null));
                 objectOutputStream.flush();
                 hasBuild++;
             }

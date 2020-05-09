@@ -10,8 +10,9 @@ public class ClientMessage {
     int yStart;
     int xDest;
     int yDest;
+    String data;
 
-    public ClientMessage(int typeOfMessage, String god, ArrayList<String> gameGods, int xStart, int yStart, int xDest, int yDest) {
+    public ClientMessage(int typeOfMessage, String god, ArrayList<String> gameGods, int xStart, int yStart, int xDest, int yDest, String data) {
         this.typeOfMessage = typeOfMessage;
         this.god = god;
         this.gameGods = gameGods;
@@ -19,6 +20,7 @@ public class ClientMessage {
         this.yStart = yStart;
         this.xDest = xDest;
         this.yDest = yDest;
+        this.data = data;
     }
 
     public int getTypeOfMessage() {
@@ -47,5 +49,9 @@ public class ClientMessage {
 
     public int getyDest() {
         return yDest;
+    }
+
+    public String getData() {
+        return data;
     }
 }
