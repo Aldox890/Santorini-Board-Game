@@ -272,7 +272,10 @@ public class Game extends Observable {
                 Message mex = new Message(-1, 40, "true", turnOf.getName());
                 mex.addBoard(gameBoard.getBoard());
                 notifyObserver(mex);
+                passTurn();
                 this.playerList.remove(p);
+                nPlayers--;
+
             }
         }
 
