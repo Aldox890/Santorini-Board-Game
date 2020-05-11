@@ -8,6 +8,7 @@ public class Message implements Serializable {
 
     String turnOf;
     String data;
+    String errorData;
     Cell gameBoard[][];
 
     public Message(int dest, int typeOfMessage, String data, String turnOf){
@@ -30,6 +31,14 @@ public class Message implements Serializable {
 
     public String getData(){
         return data;
+    }
+
+    public String getErrorData() {
+        return errorData;
+    }
+
+    public void setErrorData(String errorData) {
+        this.errorData = errorData;
     }
 
     public String getTurnOf(){return turnOf;}

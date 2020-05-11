@@ -29,7 +29,7 @@ public class GameController {
             game.setGods(gods, socketId);
         }
         else{
-            game.badInputException(socketId,3,"false");
+            game.badInputException(socketId,3,"false", "Error: Bad inputs while inserting the gods.");
         }
     }
 
@@ -69,7 +69,7 @@ public class GameController {
                 return;
             }
         }
-        game.badInputException(socketId,4,"false");
+        game.badInputException(socketId,4,"false", "Error: Bad inputs of adding a worker.");
         return;
     }
 
@@ -81,7 +81,7 @@ public class GameController {
             game.moveWorker(player, xStart,yStart,xDest,yDest, socketId);
             return;
         }
-        game.badInputException(socketId,5,"false");
+        game.badInputException(socketId,5,"false","Error: Bad Move inputs.");
     }
 
     /*
@@ -92,7 +92,7 @@ public class GameController {
             game.build(player, xStart, yStart, xDest, yDest, level, socketId);
             return;
         }
-        game.badInputException(socketId,6,"false");
+        game.badInputException(socketId,6,"false","Error: Bad Build inputs.");
 
     }
 
@@ -104,7 +104,7 @@ public class GameController {
             game.addGod(god,player,socketId);
             return;
         }
-        game.badInputException(socketId,2,"false");
+        game.badInputException(socketId,2,"false", "Error: Bad inputs while selecting a god.");
         return;
     }
 }

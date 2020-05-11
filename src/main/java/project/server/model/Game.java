@@ -59,8 +59,11 @@ public class Game extends Observable {
     }
 
 
-    public void badInputException(int socketId,int typeOfMessage,String data){
-        notifyObserver(new Message(socketId,typeOfMessage,data, turnOf.getName()));
+    /*notifies the client through the observer that has occoured an error in the input */
+    public void badInputException(int socketId,int typeOfMessage,String data, String errorData){
+        Message mex = new Message(socketId,typeOfMessage,data, turnOf.getName());
+        mex.setErrorData(errorData);
+        notifyObserver(mex);
     }
 
     public void setNPlayers(int nPlayers){
@@ -131,8 +134,10 @@ public class Game extends Observable {
             notifyObserver(new Message(-1, 4, "", turnOf.getName()));      //If a player add a worker print the board
             return true;
         }
-        else {                                                                                   //ERROR : if a player choose a wrong position
-            notifyObserver(new Message(socketId, 4, "false", turnOf.getName()));
+        else {
+            Message m = new Message(socketId, 4, "false", turnOf.getName());//ERROR : if a player choose a wrong position
+            m.setErrorData("Error: Bad inputs while inserting workers");
+            notifyObserver(m);
             return false;
         }
     }
@@ -190,7 +195,9 @@ public class Game extends Observable {
             }
         }
 
-        notifyObserver(new Message(socketId,3,"false", turnOf.getName()));
+        Message m = new Message(socketId,3,"false", turnOf.getName());
+        m.setErrorData("Error: unknown gods in the input.");
+        notifyObserver(m);
         return false;
     }
 
@@ -206,7 +213,10 @@ public class Game extends Observable {
             //notifyObserver("-1;2;" + player.getName() + " picked " + god); OLD
             return;
         }
-        notifyObserver(new Message(socketId,2,"false", turnOf.getName()));
+
+        Message m = new Message(socketId,2,"false", turnOf.getName());
+        m.setErrorData("Error: God not in gods usage list.");
+        notifyObserver(m);
     }
 
     /*
@@ -244,7 +254,10 @@ public class Game extends Observable {
             notifyObserver(mex);
             return;
         }
-        notifyObserver(new Message(socketId, 5, "false", turnOf.getName()));
+        Message m = new Message(socketId,5,"false", turnOf.getName());
+        m.setErrorData("Error: Bad input for the move.");
+        notifyObserver(m);
+
     }
 
 
@@ -256,7 +269,9 @@ public class Game extends Observable {
             notifyObserver(mex);
             return;
         }
-        notifyObserver(new Message(socketId,6,"false", turnOf.getName()));
+        Message m = new Message(socketId,6,"false", turnOf.getName());
+        m.setErrorData("Error: Bad input for the build.");
+        notifyObserver(m);
     }
 
     /*

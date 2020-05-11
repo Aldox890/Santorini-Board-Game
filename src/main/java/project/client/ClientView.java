@@ -99,11 +99,11 @@ public class ClientView implements Observer {
                 case(4): //recived any player worker positions
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
                     if(mex.getTurnOf().equals(username) && (hasSetWorkers<2 || mex.getData().equals("false"))){
-                        createWorker(mex);
                         if (mex.getData().equals("false")){
                             System.out.println(mex.getErrorData());
                             hasSetWorkers--;
                         }
+                        createWorker(mex);
                     } // setup my workers position if it's my turn
                     else{turnMenu(mex);}
                     break;
