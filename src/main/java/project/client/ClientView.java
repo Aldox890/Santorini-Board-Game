@@ -214,8 +214,6 @@ public class ClientView implements Observer {
         if(players.get(players.size()-1).equals(username)){ //last player in list (eldest) choses the gods
             System.out.println("Sei il giocatore più anziano, scegli "+ players.size() +" dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
 
-            //System.out.println("Seleziona le x divinità:");
-            //String inputGodsSelected="";
             int gods_selection=1;   //index of selection
             while(gods_selection<=players.size()){
                 System.out.print("Divinità "+gods_selection+": ");    //input gods (aggiungere controlli)
@@ -226,35 +224,16 @@ public class ClientView implements Observer {
                 }else{
                     System.out.println("Bad input, re-insert the current God");
                 }
-
-                /*if(gods_selection!=players.size()){
-                    listOfGods.add(inputGodsSelected);
-                    inputGodsSelected = (inputGodsSelected + (input+";"));
-                }else{inputGodsSelected = (inputGodsSelected +input);}*/
-
-
             }
-            //System.out.println("Client: "+inputGodsSelected);
 
             objectOutputStream.writeObject(new ClientMessage(0,null, listOfGods, -1, -1,-1,-1,null));
-                    //new Message(0,0,inputGodsSelected, null));
             objectOutputStream.flush();
         }
     }
 
     public void addAllowedGods(Message mex){
         String[] serverGodList = mex.getData().split(";");
-       /* System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
 
-
-        //--------------------------------------------
-        if(serverGodList.length == 3){ //serverResponse[2] != null
-            System.out.println("LISTA DEI SCELTI: "+ serverGodList[0]+ " " + serverGodList[1]+ " " +serverGodList[2]);
-        }else{
-            System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+"\u001B[0m");
-        }
-        //------------------------------------------
-*/
         System.out.print("LISTA DEI SCELTI: ");
         for(int i=0;i<=serverGodList.length-1;i++){
             availableGods.add(serverGodList[i]);
@@ -299,10 +278,14 @@ public class ClientView implements Observer {
         }
     }
 
+    /*
+    function used to create a worker and set it in a cell.
+    * */
     public void createWorker(Message mex) throws IOException {
         String coordinates;
         String coords[];
         if (mex.getTurnOf().equals(username)) {
+            System.out.println("Insert workers' starting position:");
             coordinates = insertCoordinates();
             coords = coordinates.split(";");
             int x = Integer.parseInt(coords[0]);
@@ -315,6 +298,9 @@ public class ClientView implements Observer {
         }
     }
 
+    /*
+    function used to print the game board on terminal
+    * */
     public void printBoard(Message mex){
         Cell[][] board = mex.getBoard();
         for(int i = 0;i<5;i++){
@@ -338,6 +324,9 @@ public class ClientView implements Observer {
         mex = null;
     }
 
+    /*
+    * Function used to move one worker from a position [xStart;yStart] to the position [xdest;yDest]
+    * */
     public void moveWorker(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
         if (mex.getTurnOf().equals(username)) {
             String[] coords = new String[2];
@@ -366,6 +355,12 @@ public class ClientView implements Observer {
         }
     }
 
+    /*
+    * Build function by the client.
+    * Receives the message from the server, checks if it's the client's turn and asks for the building coordinates ( [xStart;yStart] and [xDest;yDest] ).
+    * If the client who's building has the power of Hephaestus or Atlas, asks the client if wants to use its power.
+    * Sends the building coordinates to the server.
+    * */
     public void build(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
         int resp;
         if (mex.getTurnOf().equals(username)) {
@@ -435,6 +430,7 @@ public class ClientView implements Observer {
         return ( (age<5 || age>120) || (inputAge.contains(";")) );
     }
 
+    /*function that inserts the coordinates*/
     String insertCoordinates(){
         String x,y;
         do{
@@ -445,9 +441,9 @@ public class ClientView implements Observer {
         if(!isNumeric(x) || !isNumeric(y)){System.out.println("ERROR : You have not inserted a number");}
         }while(!isNumeric(x) || !isNumeric(y));
         return (x+";"+y);
-
     }
 
+    /*function that checks if the input string is a number*/
     public boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
