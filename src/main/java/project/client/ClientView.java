@@ -73,6 +73,7 @@ public class ClientView implements Observer {
                     }
                     if (mex.getData().equals("false")) {
                         System.out.println("Bad input");
+                        System.out.println(mex.getErrorData());
                     }
                     choseAllowedGods();
                     break;
@@ -91,6 +92,7 @@ public class ClientView implements Observer {
                     }
                     if (mex.getData().equals("false")) {
                         System.out.println("Bad input");
+                        System.out.println(mex.getErrorData());
                     }
                     choseGod(mex);
                     break;
@@ -98,13 +100,20 @@ public class ClientView implements Observer {
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
                     if(mex.getTurnOf().equals(username) && (hasSetWorkers<2 || mex.getData().equals("false"))){
                         createWorker(mex);
-                        if (mex.getData().equals("false")){hasSetWorkers--;}
+                        if (mex.getData().equals("false")){
+                            System.out.println(mex.getErrorData());
+                            hasSetWorkers--;
+                        }
                     } // setup my workers position if it's my turn
                     else{turnMenu(mex);}
                     break;
                 case(5): //if someone has moved and it's me, i build
                 case(6):
                     if(!mex.boardIsEmpty()){ printBoard(mex); }
+                    if (mex.getData().equals("false")) {
+                        System.out.println("Bad input");
+                        System.out.println(mex.getErrorData());
+                    }
                     turnMenu(mex);
                     //checkTurnPhase(mex);
                     break;
@@ -148,6 +157,7 @@ public class ClientView implements Observer {
             if(mex.getTypeOfMessage()==5){
                 if(mex.getData().equals("false")){
                     moveWorker(mex);
+                    System.out.println(mex.getErrorData());
                 }
                 else if(hasMoved==0) {
                     moveWorker(mex);
@@ -160,6 +170,7 @@ public class ClientView implements Observer {
 
             if(mex.getTypeOfMessage()==6){
                 if(mex.getData().equals("false")){
+                    System.out.println(mex.getErrorData());
                     build(mex);
                     hasBuild--;
                 }
