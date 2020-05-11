@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
+import java.util.Scanner;;
 
 public class ClientView implements Observer {
 
@@ -300,14 +300,13 @@ public class ClientView implements Observer {
     }
 
     public void createWorker(Message mex) throws IOException {
+        String coordinates;
+        String coords[];
         if (mex.getTurnOf().equals(username)) {
-            System.out.println("Inserisci X e Y (tra 0 e 4): ");
-            System.out.print("Inserisci X: ");
-            String input = stdin.nextLine();
-            int x = Integer.parseInt(input);
-            System.out.print("Inserisci Y: ");
-            input = stdin.nextLine();
-            int y = Integer.parseInt(input);
+            coordinates = insertCoordinates();
+            coords = coordinates.split(";");
+            int x = Integer.parseInt(coords[0]);
+            int y = Integer.parseInt(coords[1]);
             //inserire controllo input
             objectOutputStream.writeObject( new ClientMessage(2,null, null, x, y,-1,-1,null));
                     //new Message(0, 2, (x + ";" + y), null));
@@ -437,10 +436,24 @@ public class ClientView implements Observer {
     }
 
     String insertCoordinates(){
+        String x,y;
+        do{
         System.out.print("Insert X: ");
-        String x = stdin.nextLine();
+        x = stdin.nextLine();
         System.out.print("Insert Y: ");
-        String y = stdin.nextLine();
+        y = stdin.nextLine();
+        if(!isNumeric(x) || !isNumeric(y)){System.out.println("ERROR : You have not inserted a number");}
+        }while(!isNumeric(x) || !isNumeric(y));
         return (x+";"+y);
+
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 }
