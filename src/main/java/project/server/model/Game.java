@@ -234,9 +234,15 @@ public class Game extends Observable {
     }
 
     public void nextTurn(){
+        if(gameBoard.getNumberOfMoves()>=1 && gameBoard.getNumberOfBuild()>=1){
         passTurn();
         checkStuckPlayer(this.turnOf);
         notifyObserver(new Message(-1, 6, "true", turnOf.getName()));
+        }
+        else{
+            notifyObserver(new Message(-1,6,"true",turnOf.getName()));
+        }
+
     }
 
     public void moveWorker(Player p,int xStart,int yStart,int xDest, int yDest, int socketId) {

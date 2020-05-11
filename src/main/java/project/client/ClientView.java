@@ -448,7 +448,7 @@ public class ClientView implements Observer {
 
     }
 
-    public static boolean isNumeric(String str) {
+    public boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
             return true;

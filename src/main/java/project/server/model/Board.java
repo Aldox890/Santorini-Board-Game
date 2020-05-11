@@ -341,6 +341,14 @@ public class Board {
         numberOfMoves=1;
     }
 
+    public int getNumberOfMoves() {
+        return numberOfMoves;
+    }
+
+    public int getNumberOfBuild() {
+        return numberOfBuild;
+    }
+
 
 }
 
