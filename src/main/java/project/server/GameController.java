@@ -109,11 +109,6 @@ public class GameController {
     }
 
     public void removePlayer(Player player){
-        if(player == null) {
-            game.subNPlayers();
-        }
-        else{
             game.removePlayer(player);
-        }
     }
 }

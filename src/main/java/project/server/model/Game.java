@@ -65,15 +65,24 @@ public class Game extends Observable {
         mex.setErrorData(errorData);
         notifyObserver(mex);
     }
+
     public void removePlayer(Player p){
-        playerList.remove(p);
-        gameBoard.removeWorker(p.getWorkers().get(1));
-        gameBoard.removeWorker(p.getWorkers().get(0));
-        subNPlayers();
-        if(turnOf == p){
-            nextTurn();
+        if (p != null && !allowedGods.isEmpty()) {
+            playerList.remove(p);
+            gameBoard.removeWorker(p.getWorkers().get(1));
+            gameBoard.removeWorker(p.getWorkers().get(0));
+            //removeobserver
+            subNPlayers();
+            if (turnOf == p) {
+                passTurn();
+                notifyObserver(new Message(-1, 6, "true", turnOf.getName()));
+            }
+        }
+        else{
+            notifyObserver(new Message(-1, 25, "partita chiusa", turnOf.getName()));
         }
     }
+
     public void subNPlayers(){
         nPlayers = nPlayers -1;
     }
