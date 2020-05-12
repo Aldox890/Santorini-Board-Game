@@ -107,4 +107,13 @@ public class GameController {
         game.badInputException(socketId,2,"false", "Error: Bad inputs while selecting a god.");
         return;
     }
+
+    public void removePlayer(Player player){
+        if(player == null) {
+            game.subNPlayers();
+        }
+        else{
+            game.removePlayer(player);
+        }
+    }
 }

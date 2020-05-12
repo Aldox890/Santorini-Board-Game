@@ -12,7 +12,12 @@ public class Board {
     private int numberOfMoves;  //counts how many times worker has moved.
     private int numberOfBuild; //counts how many times worker has moved.
 
-
+    public boolean canPassTurn(){
+        if(numberOfBuild >0 && numberOfMoves > 0){
+            return true;
+        }
+        return false;
+    }
 
     public Board(){    //board constructor
         board = new Cell[5][5];
@@ -86,6 +91,18 @@ public class Board {
             return 0;
         }
 
+        if(!player.getGod().equals("arthemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
+            return 0;
+        }
+        if(player.getGod().equals("arthemis") && numberOfMoves ==1){
+            if(oldCell.getX()== x_dest && (oldCell.getY()== y_dest)){
+                return 0;
+            }
+        }
+        if(numberOfMoves >=2){    // BUG: numberOfMoves ==2
+            return 0;
+        }
+
 
         if(board[x_dest][y_dest].isOccupiedBy()!=null) { //can't move into an occupied cell with the exception of those players who have Apollo or Minotaur as God.
             if(player.getGod().equals("apollo")){
@@ -130,17 +147,7 @@ public class Board {
             }
         }
 
-        if(!player.getGod().equals("arthemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
-            return 0;
-        }
-        if(player.getGod().equals("arthemis") && numberOfMoves ==1){
-            if(oldCell.getX()== x_dest && (oldCell.getY()== y_dest)){
-                return 0;
-            }
-        }
-        if(numberOfMoves >=2){    // BUG: numberOfMoves ==2
-            return 0;
-        }
+
 
         this.moveWorker(worker,x_dest,y_dest);  //effective move of the worker
 

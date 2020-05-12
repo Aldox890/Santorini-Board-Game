@@ -29,7 +29,6 @@ public class ClientObserver implements Runnable {
         this.socket = new Socket();
         this.socketId = socketId;
         String playerName;
-
         in = new Scanner(socket.getInputStream());
         ois = i;
         out = new PrintWriter(socket.getOutputStream());
@@ -40,12 +39,12 @@ public class ClientObserver implements Runnable {
         try {
             initPlayer();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
-
-        while(true) {
+        boolean end = false;
+        while(true && !end) {
             try {
                 ClientMessage msg = (ClientMessage) ois.readObject();
                 String parsedLine[];
@@ -85,8 +84,15 @@ public class ClientObserver implements Runnable {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                end = true;
+                gameController.removePlayer(player);
+                try {
+                    socket.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

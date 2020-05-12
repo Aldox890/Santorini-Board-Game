@@ -65,7 +65,18 @@ public class Game extends Observable {
         mex.setErrorData(errorData);
         notifyObserver(mex);
     }
-
+    public void removePlayer(Player p){
+        playerList.remove(p);
+        gameBoard.removeWorker(p.getWorkers().get(1));
+        gameBoard.removeWorker(p.getWorkers().get(0));
+        subNPlayers();
+        if(turnOf == p){
+            nextTurn();
+        }
+    }
+    public void subNPlayers(){
+        nPlayers = nPlayers -1;
+    }
     public void setNPlayers(int nPlayers){
         this.nPlayers = nPlayers;
     }
@@ -113,6 +124,9 @@ public class Game extends Observable {
 
             playerList.get(0).setColor(Color.RED);
             playerList.get(1).setColor(Color.YELLOW);
+        }
+        else if (nPlayers == 1){
+            notifyObserver(new Message(-1,3,"OMG YOU ARE THE ONLY PLAYER CONNECTED GG WP EASY WIN :D", turnOf.getName()));
         }
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
     }
