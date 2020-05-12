@@ -46,6 +46,10 @@ public class ClientView implements Observer {
                     objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,numOfPlayers));
                     objectOutputStream.flush();
                     break;
+                case(25): //chiusura se crasha durante scelta dei
+                    System.out.println(mex.getData());
+                    System.exit(0);
+                    break;
 
                 case(30):   //WIN
                     printBoard(mex);
@@ -268,9 +272,13 @@ public class ClientView implements Observer {
     * */
     public void printPlayerList(Message mex){
         String[] serverResponse = mex.getData().split(";");
+        if(serverResponse.length <2){   //if there is only 1 player left, because of disconnection=> WIN
+            System.out.println(mex.getData());
+            System.exit(0);
+        }
         if(serverResponse.length == 3){
             System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+Color.CYAN.getColor()+" 3rd-"+serverResponse[2]+"\u001B[0m");
-        }else{
+        }else if(serverResponse.length == 2){
             System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+"\u001B[0m");
         }
         for(int i=0;i<=serverResponse.length-1;i++){
