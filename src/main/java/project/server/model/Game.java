@@ -96,7 +96,9 @@ public class Game extends Observable {
     public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
             if(playerList.get(i).getName().equals(p.getName())){
-                notifyObserver(new Message(socketId,0,"false", turnOf.getName()));
+                Message m = new Message(socketId,0,"false", turnOf.getName());
+                m.setErrorData("Error: player already present in game, choose another username.");
+                notifyObserver(m);
                 return false;
             }
         }

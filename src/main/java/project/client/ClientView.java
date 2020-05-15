@@ -66,7 +66,11 @@ public class ClientView implements Observer {
                     if (mex.getData().equals("registered")) {
                         System.out.println("Successfully registered!");
                     }
+                    else if(mex.getErrorData()==null){
+                        register();
+                    }
                     else {
+                        System.out.println(mex.getErrorData());
                         register();
                     }
                     break;
@@ -191,7 +195,7 @@ public class ClientView implements Observer {
     public void register() throws IOException {
         System.out.print("Insert username: ");
         String inputLineUsername = stdin.nextLine();
-        System.out.println();
+        //System.out.println();
         while((inputLineUsername.length()<3) || inputLineUsername.contains(";")){
             System.out.print("Input error re-insert username: ");
             inputLineUsername = stdin.nextLine();
