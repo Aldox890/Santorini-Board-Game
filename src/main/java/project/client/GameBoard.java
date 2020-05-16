@@ -21,7 +21,8 @@ public class GameBoard extends JPanel{
 
     protected void paintComponent(Graphics g) {
         setOpaque(false);
-        g.drawImage(img, 0, 0, null);
+        Image newImg = img.getScaledInstance(1024,576,Image.SCALE_DEFAULT);
+        g.drawImage(newImg, 0, 0, null);
         super.paintComponent(g);
     }
 
