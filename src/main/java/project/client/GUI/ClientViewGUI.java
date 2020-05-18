@@ -63,13 +63,15 @@ public class ClientViewGUI implements Observer {
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println("Sent");
                 String username = usernameArea.getText();
                 String age = ageArea.getText();
+                if( username.replace(" ", "").length()>3 && age.replace(" ", "").length()>1){
+                System.out.println("Sent");
                 try {
                     objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(username+";"+age) ));
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                }
                 }
             }
         });
