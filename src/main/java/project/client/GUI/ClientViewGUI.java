@@ -1,9 +1,13 @@
 package project.client.GUI;
 
+import project.ClientMessage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -12,10 +16,12 @@ import java.util.Observer;
 public class ClientViewGUI implements Observer {
 
     Socket socket;
+    ObjectOutputStream objectOutputStream;
 
-    public ClientViewGUI(Socket socket){
-        System.out.println("AA");
+    public ClientViewGUI(Socket socket) throws IOException {
         this.socket = socket;
+        objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
     }
 
     public void login(){
@@ -53,7 +59,13 @@ public class ClientViewGUI implements Observer {
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                //Send login to server
+                String username = usernameArea.getText();
+                String age = ageArea.getText();
+                try {
+                    objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(username+";"+age) ));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }
