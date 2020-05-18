@@ -63,11 +63,15 @@ public class ClientViewGUI implements Observer {
         //loginPanel.setBackground(new Color(135, 177, 182));
 
         logoLabel.setBounds(200,5,200,70);
-        username.setBounds(20,100,100,20);
-        age.setBounds(20,150,100,20);
+        username.setBounds(20,105,100,20);
+        age.setBounds(20,135,100,20);
 
-        usernameArea.setBounds(100,100,100,20);
-        ageArea.setBounds(100,150,100,20);
+        usernameArea.setBounds(100,105,150,20);
+        ageArea.setBounds(100,135,30,20);
+        usernameArea.setOpaque(false);
+        usernameArea.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));   //show just bottom border of JTextField
+        ageArea.setOpaque(false);
+        ageArea.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
 
         loginButton.setBounds(450,150,90,90);
         loginButton.setBorder(null);
@@ -75,8 +79,10 @@ public class ClientViewGUI implements Observer {
         loginButton.setContentAreaFilled(false);
         loginButton.setBorderPainted(false);
 
+        errorMexLogin.setBounds(150,200,300,20);
         errorMexLogin.setForeground(Color.RED);
-        errorMexLogin.setEnabled(false);
+        errorMexLogin.setFont(errorMexLogin.getFont().deriveFont(14f)); //increase font of error label
+        errorMexLogin.setVisible(false);
 
 
 
@@ -86,6 +92,7 @@ public class ClientViewGUI implements Observer {
         loginPanel.add(logoLabel);
         loginPanel.add(usernameArea);
         loginPanel.add(ageArea);
+        loginPanel.add(errorMexLogin);
         loginFrame.add(loginPanel);
         loginFrame.setResizable(false);
         loginFrame.setVisible(true);
@@ -95,13 +102,21 @@ public class ClientViewGUI implements Observer {
             public void mousePressed(MouseEvent e) {
                 String username = usernameArea.getText();
                 String age = ageArea.getText();
-                if( username.replace(" ", "").length()>3 && age.replace(" ", "").length()>1){
-                System.out.println("Sent");
-                try {
-                    objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(username+";"+age) ));
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+                if( username.replace(" ", "").length()>=3 && age.replace(" ", "").length()>=1){
+                    System.out.println("Sent");
+                    try {
+                        objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(username+";"+age) ));
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }else if(username.equals("") || age.equals("")){
+                    //errorMexLogin.setEnabled(true);
+                    errorMexLogin.setText("Error: username and age filed are empty!");
+                    errorMexLogin.setVisible(true);
+                }else if(username.length()<3 || age.length()>3){
+                    //errorMexLogin.setEnabled(true);
+                    errorMexLogin.setText("Error: wrong format input in username and/or age field!");
+                    errorMexLogin.setVisible(true);
                 }
             }
         });
@@ -110,11 +125,11 @@ public class ClientViewGUI implements Observer {
     public void createGameFrame() {
         loginFrame.setVisible(false);
         santoriniFrame = new JFrame("Santorini");
-        GameBoard gameBoard = new GameBoard();
+        GameBoard gameBoard = new GameBoard(1280,720);
 
         santoriniFrame.getContentPane().add(gameBoard);
 
-        gameBoard.setSize(new Dimension(1280, 720));
+        //gameBoard.setSize(new Dimension(1280, 720));
         santoriniFrame.setSize(1280, 758);
         santoriniFrame.setResizable(false);
 
