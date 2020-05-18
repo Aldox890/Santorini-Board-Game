@@ -1,6 +1,7 @@
 package project.client.GUI;
 
 import project.ClientMessage;
+import project.Message;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +25,8 @@ public class ClientViewGUI implements Observer {
 
     }
 
-    public void login(){
+    public void login() throws IOException {
+
         JFrame loginFrame = new JFrame("Santorini login");
         JPanel loginPanel = new JPanel();
         JLabel username = new JLabel("Username:");
@@ -59,6 +61,7 @@ public class ClientViewGUI implements Observer {
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                System.out.println("Sent");
                 String username = usernameArea.getText();
                 String age = ageArea.getText();
                 try {
@@ -72,7 +75,30 @@ public class ClientViewGUI implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        Message mex = (Message) arg;
+        try {
+            switch (mex.getTypeOfMessage()) {
+                case (20): //con quanti giocatori vuoi giocare
+                    objectOutputStream.writeObject(new ClientMessage(20, null, null, -1, -1, -1, -1, "3"));
+                    break;
 
+                case (0): // required player registration
+                    if (mex.getData().equals("registered")) {
+                        System.out.println("Successfully registered!");
+                    } else if (mex.getErrorData() == null) {
+                        login();
+
+                    } else {
+                        System.out.println(mex.getErrorData());
+                        //login();
+                    }
+                    break;
+
+            }
+        }
+        catch (IOException e){
+
+        }
     }
 
 

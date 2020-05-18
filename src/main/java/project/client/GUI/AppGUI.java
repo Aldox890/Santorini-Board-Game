@@ -16,8 +16,6 @@ public class AppGUI {
             ServerObserver serverObserver = new ServerObserver(socket);
             serverObserver.addObserver(clientViewGUI);
 
-            clientViewGUI.login();
-
             serverObserver.waitFromServer();
 
 
