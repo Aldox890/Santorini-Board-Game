@@ -46,7 +46,8 @@ public class ClientView implements Observer {
                     objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,numOfPlayers));
                     objectOutputStream.flush();
                     break;
-                case(25): //chiusura se crasha durante scelta dei
+
+                case(25): //crash during god selection
                     System.out.println(mex.getData());
                     System.exit(0);
                     break;

@@ -9,72 +9,67 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GameTest {
+class Game2PlayersTest {
 
     Game g;
     Player p1,p2,p3,p4;
+    ArrayList <String> gList;
+
     @BeforeEach
-    //Starting a game with 3 players before each test
+        //Starting a game with 3 players before each test
     void setUp() {
         g = new Game();
-        g.setNPlayers(3);
+        g.setNPlayers(2);
         p1 = new Player("Giovanni",22);
         p2 = new Player("Mattia",23);
-        p3 = new Player("Aldo",35);
         g.addPlayer(p1,0);
         g.addPlayer(p2,1);
-        g.addPlayer(p3,2);
-
+        gList = new ArrayList<>();
+        gList.add("apollo");
+        gList.add("athena");
     }
 
     @Test
-    //Game.addPlayer() and Game.init() test
+        //Game.addPlayer() and Game.init() test
     void addPlayer() {
         ArrayList<Player> playerList;
         playerList=g.getPlayerList();
         assertEquals(playerList.get(0).getName(),"Giovanni");
         assertEquals(playerList.get(1).getName(),"Mattia");
-        assertEquals(playerList.get(2).getName(),"Aldo");
     }
 
 
 
     @Test
-    //Testing Game.setGods()
+        //Testing Game.setGods()
     void setGods(){
-        ArrayList <String> gList = new ArrayList<>();
-        g.setGods(gList,2);
+        g.setGods(gList,1);
         assertEquals(g.getGodList().get(0),"apollo");   //Correct
         assertEquals(g.getGodList().get(1),"athena");
-        assertEquals(g.getGodList().get(2),"pan");
         //assertFalse(g.setGods(new String[]{"", ""},2)); //Error
 
     }
 
     @Test
-    //Testing Game.addGod()
+        //Testing Game.addGod()
     void addGod(){
-        ArrayList <String> gList = new ArrayList<>();
         String gChoice="apollo";
-        g.setGods(gList,3);         //Creating the allowed god list in game
+        g.setGods(gList,1);         //Creating the allowed god list in game
         g.addGod(gChoice,p1,0);     //p1 choose a god
         assertEquals(p1.getGod(),gChoice);
         g.addGod(gChoice,p2,1);     //p2 can't choose a god which is already taken
         assertNotEquals(p2.getGod(),gChoice);
-
     }
 
 
     @Test
-    //Testing Game.addWorker()
+        //Testing Game.addWorker()
     void addWorker(){
         String s1[] = {"0","1"};
         String s2[] = {"0","2"};
-        String gList[]={"apollo","athena","pan"};
-        //g.setGods(gList,3);
+        g.setGods(gList,1);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
-        g.addGod("pan",p3,2);
         assertTrue(g.addWorker(p1,0,1,0));
         assertTrue(g.addWorker(p1,0,2,0));
         assertFalse(g.addWorker(p1,0,2,0));              //Worker can't be added on a occupied cell
@@ -84,28 +79,63 @@ class GameTest {
 
 
     @Test
-    //Testing Game.move()
+        //Testing Game.move()
     void move(){
-        ArrayList <String> gList = new ArrayList<>();
-        g.setGods(gList,3);
+        g.setGods(gList,1);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
-        g.addGod("pan",p3,2);
         g.addWorker(p1, 0,0,0);
         g.moveWorker(p1, 0,0,0,1,0);
     }
 
 
     @Test
-    //Testing Game.build()
+        //Testing Game.build()
     void build(){
-        ArrayList <String> gList = new ArrayList<>();
-        g.setGods(gList,3);
+        g.setGods(gList,1);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
-        g.addGod("pan",p3,2);
         g.addWorker(p1,0,0,0);
         g.build(p1,0,0,0,1,1,0);
+    }
+
+    @Test
+    //Testing when a player win
+    void win(){
+        g.setGods(gList,2);
+        g.addGod("athena",p1,0);
+        g.addGod("apollo",p2,1);
+        g.addWorker(p1, 0,0,0);
+        g.addWorker(p1, 4,0,0);
+        g.addWorker(p2, 0,2,1);
+        g.addWorker(p2, 4,4,1);
+        g.getGameBoard().getBoard()[0][0].setLevel(2);
+        g.getGameBoard().getBoard()[1][0].setLevel(3);
+        g.moveWorker(p1,0,0,1,0,0);
+    }
+
+
+    @Test
+    //Testing when a player when stuck
+    void getStuck(){
+        g.setGods(gList,2);
+        g.addGod("athena",p1,0);
+        g.addGod("apollo",p2,1);
+        g.addWorker(p1, 0,2,0);
+        g.addWorker(p1, 4,0,0);
+        g.addWorker(p2, 0,0,1);
+        g.addWorker(p2, 4,4,1);
+        g.getGameBoard().getBoard()[0][1].setLevel(4);
+        g.getGameBoard().getBoard()[1][0].setLevel(4);
+        g.getGameBoard().getBoard()[1][1].setLevel(4);
+        g.getGameBoard().getBoard()[3][4].setLevel(4);
+        g.getGameBoard().getBoard()[4][3].setLevel(4);
+        g.getGameBoard().getBoard()[3][3].setLevel(4);
+        g.moveWorker(p1,0,0,1,0,0);
+        g.nextTurn();
+        g.moveWorker(p1,0,2,0,3,0);
+        g.build(p1,0,3,0,4,1,0);
+        g.nextTurn();
     }
 
 }
