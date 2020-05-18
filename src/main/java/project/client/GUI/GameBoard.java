@@ -10,9 +10,25 @@ import java.io.IOException;
 public class GameBoard extends JPanel{
 
     private BufferedImage img=null;
-    public GameBoard(){
+    int width;
+    int height;
+
+    public GameBoard(int width, int height){
         try {
+            this.width=width;
+            this.height=height;
             img = ImageIO.read(new File("src\\main\\java\\project\\client\\graphics\\SantoriniBoard.png"));//Toolkit.getDefaultToolkit().createImage("graphics/SantoriniBoard.png");
+        } catch (IOException e) {
+            System.out.println("LOOZAPALOOZA");
+        }
+        loadImage(img);
+    }
+
+    public GameBoard(String imgPath,int width, int height){
+        try {
+            this.width=width;
+            this.height=height;
+            img = ImageIO.read(new File(imgPath));
         } catch (IOException e) {
             System.out.println("LOOZAPALOOZA");
         }
@@ -21,7 +37,7 @@ public class GameBoard extends JPanel{
 
     protected void paintComponent(Graphics g) {
         setOpaque(false);
-        Image newImg = img.getScaledInstance(1280,720,Image.SCALE_DEFAULT);
+        Image newImg = img.getScaledInstance(width,height,Image.SCALE_DEFAULT);
         g.drawImage(newImg, 0, 0, null);
         super.paintComponent(g);
     }
