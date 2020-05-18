@@ -1,5 +1,6 @@
 package project.server.model;
 
+import project.Cell;
 import project.Message;
 import project.Worker;
 
@@ -344,6 +345,8 @@ public class Game extends Observable {
     public ArrayList<String> getGodList() {
         return allowedGods;
     }
+
+    public Board getGameBoard(){return gameBoard;}
 
     /** OLD DATA ***/
     private ArrayList<String> allowedGods;
