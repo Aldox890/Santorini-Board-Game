@@ -4,6 +4,7 @@ import project.Message;
 import project.server.model.Game;
 import project.server.model.Player;
 
+import java.io.*;
 import java.util.ArrayList;
 
 /*
@@ -110,5 +111,9 @@ public class GameController {
 
     public void removePlayer(Player player){
             game.removePlayer(player);
+    }
+
+    public void saveGame() throws IOException {
+        game.saveGame();
     }
 }

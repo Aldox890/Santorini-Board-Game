@@ -81,6 +81,10 @@ public class ClientObserver implements Runnable {
                     case 10:    //end player turn
                         gameController.passTurn();
                         break;
+                    case 20:    //save game
+                        gameController.saveGame();
+                        break;
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();

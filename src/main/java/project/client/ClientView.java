@@ -58,9 +58,15 @@ public class ClientView implements Observer {
                     System.exit(0);
                     break;
 
-                case(40):
+                case(40): //Player stuck
                     printBoard(mex);
                     System.out.println(mex.getTurnOf()+" is stuck and his workers has been removed from the board");
+                    break;
+
+                case(50): //Save game
+                    System.out.println("Somebody saved the game.");
+                    System.out.println("Goodbye !");
+                    System.exit(0);
                     break;
 
                 case (0): // required player registration
@@ -139,11 +145,12 @@ public class ClientView implements Observer {
     public void turnMenu(Message mex) throws IOException {
         if(mex.getTurnOf().equals(username)) {
             String in = "0";
-            while (!in.equals("1") && !in.equals("2") && !in.equals("3")) {
+            while (!in.equals("1") && !in.equals("2") && !in.equals("3") && !in.equals("4")) {
                 System.out.print("wha' will ye do next? ");
                 System.out.print("1)Move ");
                 System.out.print("2)Build ");
-                System.out.println("3)End turn:");
+                System.out.print("3)End turn ");
+                System.out.println("4)Save and exit");
                 in = stdin.nextLine();
             }
             switch (in) {
@@ -155,6 +162,10 @@ public class ClientView implements Observer {
                     break;
                 case ("3"):
                     objectOutputStream.writeObject(new ClientMessage(10,null, null, -1, -1,-1,-1,null));
+                    objectOutputStream.flush();
+                    break;
+                case ("4"):
+                    objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,null));
                     objectOutputStream.flush();
                     break;
             }

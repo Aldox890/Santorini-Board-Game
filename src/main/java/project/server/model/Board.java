@@ -3,7 +3,9 @@ package project.server.model;
 import project.Cell;
 import project.Worker;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
     public Cell board [][];
     private boolean canMoveUp;  //flag to check if it's possibile to move into a cell on a higher level.
     private Worker currentWorker;

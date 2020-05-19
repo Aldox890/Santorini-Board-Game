@@ -4,6 +4,7 @@ import project.Cell;
 import project.Message;
 import project.Worker;
 
+import java.io.*;
 import java.util.*;
 
 
@@ -12,7 +13,7 @@ import java.util.*;
 * and to be observed by the Observers.
 *  */
 
-public class Game extends Observable {
+public class Game extends Observable implements Serializable {
     public static final String reset = "\u001B[0m";
     private List<Observer> observers = new ArrayList<>();
     private ArrayList<Player> playerList;
@@ -347,6 +348,25 @@ public class Game extends Observable {
     }
 
     public Board getGameBoard(){return gameBoard;}
+
+    public void saveGame() throws IOException {
+        FileOutputStream f = new FileOutputStream(new File(playersName()+"-savedgame"));
+        ObjectOutputStream o = new ObjectOutputStream(f);
+        o.writeObject(playerList);
+        o.writeObject(gameBoard);
+        o.writeObject(turnOf);
+        o.close();
+        f.close();
+        notifyObserver(new Message(-1,50,"true",turnOf.getName()));
+    }
+
+    public String playersName(){
+        String s="";
+        for(int i=0;i<playerList.size();i++) {
+            s = s +"-"+ playerList.get(i).getName();
+        }
+        return s;
+    }
 
     /** OLD DATA ***/
     private ArrayList<String> allowedGods;
