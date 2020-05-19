@@ -171,5 +171,4 @@ public class ClientViewGUI implements Observer {
 
         }
     }
-
 }
