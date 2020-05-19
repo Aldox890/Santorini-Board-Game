@@ -21,11 +21,19 @@ public class ClientViewGUI implements Observer {
     String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
     JFrame loginFrame;
     JFrame santoriniFrame;
+    LoginFrame login_frame;
 
     public ClientViewGUI(Socket socket) throws IOException {
         this.socket = socket;
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
-
+    }
+    public void loginWithFrame(){
+        try {
+            login_frame=new LoginFrame(this.objectOutputStream);
+            login_frame.setVisible(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void login() throws IOException {
@@ -34,7 +42,7 @@ public class ClientViewGUI implements Observer {
         ImageIcon loginBtnImg = new ImageIcon(graphicsPath+"button-play-normal.png");
         loginFrame = new JFrame("Santorini login");
         //JPanel loginPanel = new JPanel();
-        GameBoard loginPanel = new GameBoard(graphicsPath+"bg_modeselect.png",600,300);
+        ImagePanel loginPanel = new ImagePanel(graphicsPath+"bg_modeselect.png",600,300);
 
 
         Image i = logo.getImage();
@@ -50,7 +58,7 @@ public class ClientViewGUI implements Observer {
         JLabel logoLabel = new JLabel(logo);
         JLabel username = new JLabel("Username:");
         JLabel age = new JLabel("Age:");
-        JLabel errorMexLogin = new JLabel("An error occoured while trying to log in!");
+        JLabel errorMexLogin = new JLabel("ERROR LABEL");
         JTextField usernameArea = new JTextField(10);
         JTextField ageArea = new JTextField(2);
         JButton loginButton = new JButton("Login", loginBtnImg);
@@ -59,7 +67,6 @@ public class ClientViewGUI implements Observer {
 
         loginFrame.setSize(new Dimension(600,300));
         //loginPanel.setSize(new Dimension(600,300));
-
         //loginPanel.setBackground(new Color(135, 177, 182));
 
         logoLabel.setBounds(200,5,200,70);
@@ -111,7 +118,7 @@ public class ClientViewGUI implements Observer {
                     }
                 }else if(username.equals("") || age.equals("")){
                     //errorMexLogin.setEnabled(true);
-                    errorMexLogin.setText("Error: username and age filed are empty!");
+                    errorMexLogin.setText("Error: username and age field are empty!");
                     errorMexLogin.setVisible(true);
                 }else if(username.length()<3 || age.length()>3){
                     //errorMexLogin.setEnabled(true);
@@ -123,15 +130,17 @@ public class ClientViewGUI implements Observer {
     }
 
     public void createGameFrame() {
-        loginFrame.setVisible(false);
+        //loginFrame.setVisible(false);
+        login_frame.setVisible(false);
         santoriniFrame = new JFrame("Santorini");
-        GameBoard gameBoard = new GameBoard(1280,720);
+        ImagePanel imagePanel = new ImagePanel(1280,720);
 
-        santoriniFrame.getContentPane().add(gameBoard);
+        santoriniFrame.getContentPane().add(imagePanel);
 
         //gameBoard.setSize(new Dimension(1280, 720));
         santoriniFrame.setSize(1280, 758);
         santoriniFrame.setResizable(false);
+
 
         santoriniFrame.setVisible(true);
 
@@ -158,7 +167,7 @@ public class ClientViewGUI implements Observer {
                         System.out.println("Successfully registered!");
                         createGameFrame();
                     } else if (mex.getErrorData() == null) {
-                        login();
+                        loginWithFrame();//login();
 
                     } else {
                         System.out.println(mex.getErrorData());

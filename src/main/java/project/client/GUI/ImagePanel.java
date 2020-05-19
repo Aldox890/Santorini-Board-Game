@@ -7,13 +7,13 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GameBoard extends JPanel{
+public class ImagePanel extends JPanel{
 
     private BufferedImage img=null;
     int width;
     int height;
 
-    public GameBoard(int width, int height){
+    public ImagePanel(int width, int height){
         try {
             this.width=width;
             this.height=height;
@@ -24,7 +24,7 @@ public class GameBoard extends JPanel{
         loadImage(img);
     }
 
-    public GameBoard(String imgPath,int width, int height){
+    public ImagePanel(String imgPath, int width, int height){
         try {
             this.width=width;
             this.height=height;
