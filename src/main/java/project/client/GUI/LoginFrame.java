@@ -11,10 +11,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class LoginFrame extends JFrame{
-    Socket socket;
+
     ObjectOutputStream objectOutputStream;
     String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
-    JFrame loginFrame;
 
     LoginFrame( ObjectOutputStream obj) throws IOException{
         //this.socket=s;

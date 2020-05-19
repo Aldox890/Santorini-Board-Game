@@ -22,6 +22,7 @@ public class ClientViewGUI implements Observer {
     JFrame loginFrame;
     JFrame santoriniFrame;
     LoginFrame login_frame;
+    BoardPanel board_panel;
 
     public ClientViewGUI(Socket socket) throws IOException {
         this.socket = socket;
@@ -134,8 +135,12 @@ public class ClientViewGUI implements Observer {
         login_frame.setVisible(false);
         santoriniFrame = new JFrame("Santorini");
         ImagePanel imagePanel = new ImagePanel(1280,720);
+        board_panel = new BoardPanel();
+        board_panel.setBounds(380,105,525,525);
 
+        santoriniFrame.getContentPane().add(board_panel);
         santoriniFrame.getContentPane().add(imagePanel);
+
 
         //gameBoard.setSize(new Dimension(1280, 720));
         santoriniFrame.setSize(1280, 758);
