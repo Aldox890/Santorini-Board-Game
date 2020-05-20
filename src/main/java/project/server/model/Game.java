@@ -5,7 +5,13 @@ import project.Message;
 import project.Worker;
 
 import java.io.*;
+import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 
 /*
@@ -14,6 +20,7 @@ import java.util.*;
 *  */
 
 public class Game extends Observable implements Serializable {
+    private static final long serialVersionUID = 261752617;
     public static final String reset = "\u001B[0m";
     private List<Observer> observers = new ArrayList<>();
     private ArrayList<Player> playerList;
@@ -21,6 +28,7 @@ public class Game extends Observable implements Serializable {
     private Player turnOf;
     private Worker worker;
     private boolean roomIsFull;
+    private String file="";
 
     private int nPlayers;
 
@@ -141,7 +149,10 @@ public class Game extends Observable implements Serializable {
         else if (nPlayers == 1){
             notifyObserver(new Message(-1,3,"OMG YOU ARE THE ONLY PLAYER CONNECTED GG WP EASY WIN :D", turnOf.getName()));
         }
-        notifyObserver(new Message(-1,3,response, turnOf.getName()));
+        checkGame();
+        if(file.equals("")){
+            notifyObserver(new Message(-1,3,response, turnOf.getName()));
+        }
     }
 
     /*
@@ -253,7 +264,7 @@ public class Game extends Observable implements Serializable {
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
-        if(turnOf.getGod().equals("Athena")){
+        if(turnOf.getGod().equals("athena")){
             gameBoard.resetCanMoveUp();
         }
         gameBoard.resetCurrentWorker();
@@ -337,7 +348,6 @@ public class Game extends Observable implements Serializable {
     public Player getTurnOf() {
         return turnOf;
     }
-
     public ArrayList<Player> getPlayerList() {
         return playerList;
     }
@@ -349,8 +359,9 @@ public class Game extends Observable implements Serializable {
 
     public Board getGameBoard(){return gameBoard;}
 
+    //Saves current state of the game in a file in "savedgames" directory
     public void saveGame() throws IOException {
-        FileOutputStream f = new FileOutputStream(new File(playersName()+"-savedgame"));
+        FileOutputStream f = new FileOutputStream(new File("savedgames\\"+nPlayers+"-"+playersName()));
         ObjectOutputStream o = new ObjectOutputStream(f);
         o.writeObject(playerList);
         o.writeObject(gameBoard);
@@ -360,12 +371,99 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new Message(-1,50,"true",turnOf.getName()));
     }
 
+    //Check if there is a game in "savedgames" directory with same players of the actual game
+    public void checkGame(){
+        boolean foundGame=true;
+        File f = new File("savedgames");
+        String[] fileList = f.list();
+        for(String str : fileList){
+            String names[] = str.split("-");
+            int numPlayers = Integer.parseInt(names[0]);
+            for(int i=1;i<numPlayers;i++){
+                if(!checkNames(names)){
+                    foundGame=false;
+                }
+            }
+            if(foundGame) {
+                file=str;
+                notifyObserver(new Message(0, 60, "true", turnOf.getName()));
+            }
+        }
+    }
+
+    //load a game
+    public void loadGame() throws IOException, ClassNotFoundException {
+        file="savedgames\\"+file;
+        FileInputStream f=new FileInputStream(new File(this.file));
+        ObjectInputStream o=new ObjectInputStream(f);
+        ArrayList<Player> newPlayerList = (ArrayList<Player>)o.readObject();
+        gameBoard = (Board)o.readObject();
+        turnOf = playerList.get(0);
+        gameBoard.setCorrectPlayers(playerList);
+        fixGods(newPlayerList);
+        //gameBoard.resetCurrentWorker();
+        o.close();
+        f.close();
+        Message mex=new Message(-1,65,"true",turnOf.getName());
+        mex.addBoard(gameBoard.getBoard());
+        notifyObserver(mex);
+        notifyObserver(new Message(playerList.indexOf(turnOf),5,"true",turnOf.getName()));
+    }
+
+    //returns all players name in this format name1-name2-name3-
     public String playersName(){
         String s="";
         for(int i=0;i<playerList.size();i++) {
-            s = s +"-"+ playerList.get(i).getName();
+            s = s + playerList.get(i).getName() + "-";
         }
         return s;
+    }
+
+    //returns true if all players in the current games have same names in a saved game
+    public boolean checkNames(String[] names){
+        int cont=0;
+        for(int i=0;i<playerList.size();i++){
+            for(int j=0;j<playerList.size()+1;j++){
+                if(playerList.get(i).getName().equals(names[j])){
+                    cont++;
+                }
+            }
+        }
+        if(cont==playerList.size()){
+            return true;
+        }
+        else return false;
+    }
+
+    //players in actual game will have same gods they had in the saved game
+    public void fixGods(ArrayList<Player> plNew){
+        for(int i=0;i<playerList.size();i++){
+            for(int j=0;j<playerList.size();j++){
+                if(playerList.get(i).getName().equals(plNew.get(j).getName())) {
+                    playerList.get(i).selectGod(plNew.get(j).getGod());
+                    notifyObserver(new Message(i,420,playerList.get(i).getGod(),turnOf.getName()));
+                }
+            }
+        }
+    }
+
+    //used if a player doesn't want to load a previous game
+    public void callGod(){
+        String response = "";
+        if (playerList.size() == 3) {
+            response = playerList.get(0).getName() + ";" + playerList.get(1).getName() + ";" + playerList.get(2).getName();
+
+            playerList.get(0).setColor(Color.RED);
+            playerList.get(1).setColor(Color.YELLOW);
+            playerList.get(2).setColor(Color.CYAN);
+        }
+        else if (playerList.size() == 2){
+            response = playerList.get(0).getName() + ";" + playerList.get(1).getName();
+
+            playerList.get(0).setColor(Color.RED);
+            playerList.get(1).setColor(Color.YELLOW);
+        }
+        notifyObserver(new Message(-1,3,response, turnOf.getName()));
     }
 
     /** OLD DATA ***/

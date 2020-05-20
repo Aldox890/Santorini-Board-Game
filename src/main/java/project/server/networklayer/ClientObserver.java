@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Scanner;
 
 
@@ -84,7 +85,14 @@ public class ClientObserver implements Runnable {
                     case 20:    //save game
                         gameController.saveGame();
                         break;
-
+                    case 30:    //load game
+                        if(msg.getData().equals("true")){
+                            gameController.loadGame();
+                        }
+                        else{
+                            gameController.callGod();
+                        }
+                        break;
                 }
             } catch (IOException e) {
                 e.printStackTrace();

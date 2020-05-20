@@ -69,6 +69,26 @@ public class ClientView implements Observer {
                     System.exit(0);
                     break;
 
+                case(60): //Load game
+                    if(loadGame()) {
+                        objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, "true"));
+                        objectOutputStream.flush();
+                    }
+                    else{
+                        objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, "false"));
+                        objectOutputStream.flush();
+                    }
+                    break;
+                case(65): //A game is loaded
+                    System.out.println("You start your old game");
+                    System.out.println(mex.getTurnOf()+" is the first player");
+                    printBoard(mex);
+                    break;
+                case(420):  //print your previous god
+                    System.out.println("Il tuo dio è "+mex.getData());
+                    god=mex.getData();
+                    break;
+
                 case (0): // required player registration
                     if (mex.getData().equals("registered")) {
                         System.out.println("Successfully registered!");
@@ -475,5 +495,19 @@ public class ClientView implements Observer {
         } catch(NumberFormatException e){
             return false;
         }
+    }
+
+    //ask if the player wants to resume a previous game
+    public Boolean loadGame(){
+        String resp;
+        System.out.println("Your previous game has been found");
+        do {
+            System.out.println("Do you want to load that game? (Y/N)");
+            resp = stdin.nextLine();
+        }while(!resp.equals("Y")&&!resp.equals("N")&&!resp.equals("y")&&!resp.equals("n"));
+        if(resp.equals("Y")||resp.equals("y"))
+            return true;
+        else
+            return false;
     }
 }

@@ -4,8 +4,10 @@ import project.Cell;
 import project.Worker;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Board implements Serializable {
+    private static final long serialVersionUID = 65296812;
     public Cell board [][];
     private boolean canMoveUp;  //flag to check if it's possibile to move into a cell on a higher level.
     private Worker currentWorker;
@@ -344,6 +346,23 @@ public class Board implements Serializable {
         numberOfBuild = 0;
         oldCell = new Cell(-1,-1);
         oldBuild = new Cell(-1,-1);
+    }
+
+    //set player-workers correspondence if a game is loaded
+    public void setCorrectPlayers(ArrayList<Player> playerlist){
+        for(int i=0;i<5;i++){
+            for(int j=0;j<5;j++){
+                if(board[i][j].isOccupiedBy()!=null){
+                    String name = board[i][j].isOccupiedBy().getOwner().getName();
+                    for(int x=0;x<playerlist.size();x++){
+                        if(name.equals(playerlist.get(x).getName())){
+                            playerlist.get(x).addWorker(board[i][j].isOccupiedBy());
+                            board[i][j].isOccupiedBy().setOwner(playerlist.get(x));
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void setNumberOfMoves(){

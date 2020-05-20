@@ -116,4 +116,13 @@ public class GameController {
     public void saveGame() throws IOException {
         game.saveGame();
     }
+
+    public void loadGame() throws IOException, ClassNotFoundException {
+        game.loadGame();
+    }
+
+    public void callGod(){
+        game.callGod();
+    }
+
 }
