@@ -84,6 +84,11 @@ public class ClientView implements Observer {
                     System.out.println(mex.getTurnOf()+" is the first player");
                     printBoard(mex);
                     break;
+                case(70):
+                    if(mex.getTurnOf().equals(username)){
+                        System.out.println(mex.getData());
+                    }
+                    break;
                 case(420):  //print your previous god
                     System.out.println("Il tuo dio è "+mex.getData());
                     god=mex.getData();

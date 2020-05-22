@@ -398,7 +398,7 @@ public class Game extends Observable implements Serializable {
         ObjectInputStream o=new ObjectInputStream(f);
         ArrayList<Player> newPlayerList = (ArrayList<Player>)o.readObject();
         gameBoard = (Board)o.readObject();
-        turnOf = playerList.get(0);
+        turnOf = (Player)o.readObject();
         gameBoard.setCorrectPlayers(playerList);
         fixGods(newPlayerList);
         //gameBoard.resetCurrentWorker();
@@ -407,7 +407,9 @@ public class Game extends Observable implements Serializable {
         Message mex=new Message(-1,65,"true",turnOf.getName());
         mex.addBoard(gameBoard.getBoard());
         notifyObserver(mex);
-        notifyObserver(new Message(playerList.indexOf(turnOf),5,"true",turnOf.getName()));
+        notifyObserver(new Message(-1,70,
+                "You have to do "+(1-gameBoard.getNumberOfMoves())+" moves and "+(1-gameBoard.getNumberOfBuild())+" build",turnOf.getName()));
+        notifyObserver(new Message(-1,5,"true",turnOf.getName()));
     }
 
     //returns all players name in this format name1-name2-name3-
