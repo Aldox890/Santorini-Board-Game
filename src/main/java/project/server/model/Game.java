@@ -147,7 +147,7 @@ public class Game extends Observable implements Serializable {
             playerList.get(1).setColor(Color.YELLOW);
         }
         else if (nPlayers == 1){
-            notifyObserver(new Message(-1,3,"OMG YOU ARE THE ONLY PLAYER CONNECTED GG WP EASY WIN :D", turnOf.getName()));
+            notifyObserver(new Message(-1,3," YOU ARE THE ONLY PLAYER CONNECTED ", turnOf.getName()));
         }
         checkGame();
         if(file.equals("")){

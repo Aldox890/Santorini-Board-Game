@@ -124,9 +124,6 @@ class Game3PlayersTest {
         g.nextTurn();
         g.build(p1,0,1,1,1,1,0);
         g.nextTurn();
-
     }
-
-
 
 }

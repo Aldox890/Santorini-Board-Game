@@ -158,13 +158,28 @@ public class ClientViewGUI implements Observer {
         });
     }
 
+    public int startingDialogBox(){
+        Object[] options = {"2",
+                "3"};
+        int n = JOptionPane.showOptionDialog(loginFrame,
+                "How many players would you play with?",
+                "Santorini",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+        return n;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
         try {
             switch (mex.getTypeOfMessage()) {
                 case (20): //con quanti giocatori vuoi giocare
-                    objectOutputStream.writeObject(new ClientMessage(20, null, null, -1, -1, -1, -1, "3"));
+                    int n = startingDialogBox();
+                    objectOutputStream.writeObject(new ClientMessage(20, null, null, -1, -1, -1, -1, Integer.toString((n+2))));
                     break;
 
                 case (0): // required player registration
