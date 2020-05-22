@@ -21,7 +21,7 @@ public class LoginFrame extends JFrame{
         ImageIcon logo = new ImageIcon(graphicsPath+"santorini-logo.png");
         ImageIcon loginBtnImg = new ImageIcon(graphicsPath+"button-play-normal.png");
         //loginFrame = new JFrame("Santorini login");
-        ImagePanel loginPanel = new ImagePanel(graphicsPath+"bg_modeselect.png",600,300);
+        ImagePanel loginPanel = new ImagePanel(graphicsPath+"bg_login_blured.png",600,300);
 
 
         Image i = logo.getImage();
