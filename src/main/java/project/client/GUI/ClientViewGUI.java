@@ -3,10 +3,13 @@ package project.client.GUI;
 import project.ClientMessage;
 import project.Message;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -23,6 +26,7 @@ public class ClientViewGUI implements Observer {
     JFrame santoriniFrame;
     LoginFrame login_frame;
     BoardPanel board_panel;
+    PlayersPanel players_panel;
 
     public ClientViewGUI(Socket socket) throws IOException {
         this.socket = socket;
@@ -136,8 +140,15 @@ public class ClientViewGUI implements Observer {
         santoriniFrame = new JFrame("Santorini");
         ImagePanel imagePanel = new ImagePanel(1280,720);
         board_panel = new BoardPanel();
+        players_panel = new PlayersPanel();
         board_panel.setBounds(380,105,525,525);
+        santoriniFrame.setLayout(null);
+        players_panel.setBounds(0,0,150,400);
 
+        players_panel.setBackground(Color.LIGHT_GRAY);
+
+        imagePanel.setBounds(0,0,1280,720);
+        santoriniFrame.getContentPane().add(players_panel);
         santoriniFrame.getContentPane().add(board_panel);
         santoriniFrame.getContentPane().add(imagePanel);
 
@@ -146,9 +157,7 @@ public class ClientViewGUI implements Observer {
         santoriniFrame.setSize(1280, 758);
         santoriniFrame.setResizable(false);
 
-
         santoriniFrame.setVisible(true);
-
 
         santoriniFrame.addMouseListener(new MouseAdapter() {
             @Override
@@ -172,10 +181,15 @@ public class ClientViewGUI implements Observer {
         return n;
     }
 
+    public void addPlayersList(Message mex){
+            players_panel.addPlayers(mex.getData().split(";"));
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
         try {
+            System.out.println("list arrived: " + mex.getData());
             switch (mex.getTypeOfMessage()) {
                 case (20): //con quanti giocatori vuoi giocare
                     int n = startingDialogBox();
@@ -192,6 +206,16 @@ public class ClientViewGUI implements Observer {
                     } else {
                         System.out.println(mex.getErrorData());
                         //login();
+                    }
+                    break;
+                case(3):
+
+                    if (!mex.getData().equals("false")) {
+                        addPlayersList(mex);
+                    }
+                    if (mex.getData().equals("false")) {
+                        System.out.println("Bad input");
+                        System.out.println(mex.getErrorData());
                     }
                     break;
             }
