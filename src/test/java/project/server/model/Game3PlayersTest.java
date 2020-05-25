@@ -1,4 +1,4 @@
-package project.server;
+package project.server.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,6 +35,7 @@ class Game3PlayersTest {
     @Test
     //Game.addPlayer() and Game.init() test
     void addPlayer() {
+        g.addPlayer(new Player("Giovanni",22),3);
         ArrayList<Player> playerList;
         playerList=g.getPlayerList();
         assertEquals(playerList.get(0).getName(),"Giovanni");
@@ -43,6 +44,31 @@ class Game3PlayersTest {
     }
 
 
+    @Test
+    //Testing Game.removePlayer()
+    void removePlayer(){
+        g.setGods(gList,3);
+        g.addGod("apollo",p1,0);
+        g.addGod("athena",p2,1);
+        g.addGod("pan",p3,2);
+        g.addWorker(p1,0,0,2);
+        g.addWorker(p1,1,1,2);
+        g.addWorker(p2,2,2,2);
+        g.addWorker(p2,3,3,2);
+        g.addWorker(p3,0,4,2);
+        g.addWorker(p3,4,0,2);
+        g.removePlayer(p1);
+        assertEquals(g.getPlayerList().size(),2);
+    }
+
+    @Test
+    void removePlayerDuringGodSelection(){
+        g.setGods(gList,3);
+        g.addGod("apollo",p1,0);
+        g.addGod("athena",p2,1);
+        g.removePlayer(p3);
+
+    }
 
     @Test
     //Testing Game.setGods()

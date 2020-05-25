@@ -1,7 +1,8 @@
-package project;
+package project.server.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import project.Worker;
 import project.server.model.Player;
 import project.server.model.Board;
 
