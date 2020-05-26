@@ -13,7 +13,8 @@ import java.net.Socket;
 public class LoginFrame extends JFrame{
 
     ObjectOutputStream objectOutputStream;
-    String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
+    //String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
+    private static final String graphicsPath = "graphics//"; //"src//main//java//project//client//graphics//";
 
     LoginFrame( ObjectOutputStream obj) throws IOException{
         //this.socket=s;

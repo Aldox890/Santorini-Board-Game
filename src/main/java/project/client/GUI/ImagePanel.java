@@ -17,7 +17,7 @@ public class ImagePanel extends JPanel{
         try {
             this.width=width;
             this.height=height;
-            img = ImageIO.read(new File("src\\main\\java\\project\\client\\graphics\\SantoriniBoard.png"));//Toolkit.getDefaultToolkit().createImage("graphics/SantoriniBoard.png");
+            img = ImageIO.read(new File("graphics//SantoriniBoard.png"));//Toolkit.getDefaultToolkit().createImage("graphics/SantoriniBoard.png");
         } catch (IOException e) {
             System.out.println("LOOZAPALOOZA");
         }
@@ -52,4 +52,15 @@ public class ImagePanel extends JPanel{
             e.printStackTrace();
         }
     }
+
+    /*public void setBackground(String imgpath, int width, int height){
+        try {
+            this.width=width;
+            this.height=height;
+            img = ImageIO.read(new File(imgpath));
+        } catch (IOException e) {
+            System.out.println("LOOZAPALOOZA");
+        }
+        loadImage(img);
+    }*/
 }

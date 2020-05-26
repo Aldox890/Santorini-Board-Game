@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PlayersPanel extends JPanel {
-    String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
+    private static final String graphicsPath = "graphics//";
     JPanel playerSlot;
     PlayersPanel(){
         playerSlot = new JPanel();
@@ -35,8 +35,18 @@ public class PlayersPanel extends JPanel {
     }
 
     void addPlayers(String[] players){
-        playerSlot.add(createLabel(players[0]));
-        playerSlot.add(createLabel(players[1]));
-        playerSlot.add(createLabel(players[2]));
+        /*if(players.length == 2) {
+            playerSlot.add(createLabel(players[0]));
+            playerSlot.add(createLabel(players[1]));
+        }
+        else if(players.length == 3) {
+            playerSlot.add(createLabel(players[0]));
+            playerSlot.add(createLabel(players[1]));
+            playerSlot.add(createLabel(players[2]));
+        }*/
+
+        for(int i=0; i<=players.length-1;i++){
+            playerSlot.add(createLabel(players[i]));
+        }
     }
 }

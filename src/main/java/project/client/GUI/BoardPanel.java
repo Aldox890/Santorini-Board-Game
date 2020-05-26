@@ -3,6 +3,8 @@ package project.client.GUI;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +12,7 @@ import java.io.ObjectOutputStream;
 
 public class BoardPanel extends JPanel {
     ObjectOutputStream objectOutputStream;
-    String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
+    String graphicsPath = "graphics//";
     GridBagLayout gridbaglayout;
     GridBagConstraints lim;
 
@@ -30,8 +32,8 @@ public class BoardPanel extends JPanel {
                 //ImageIcon img = new ImageIcon(graphicsPath+"levelNumber\\dome45.png");
                 BufferedImage combinedImage = null;
                 try {
-                    final BufferedImage bg = ImageIO.read(new File(graphicsPath+"levelNumber\\3.png"));
-                    final BufferedImage dome = ImageIO.read(new File(graphicsPath+"levelNumber\\dome45.png"));
+                    final BufferedImage bg = ImageIO.read(new File(graphicsPath+"buildings//3.png"));
+                    final BufferedImage dome = ImageIO.read(new File(graphicsPath+"buildings//dome45.png"));
                     combinedImage = new BufferedImage(bg.getWidth(), bg.getHeight(), BufferedImage.TYPE_INT_ARGB );
                     Graphics2D g = combinedImage.createGraphics();
                     g.drawImage(bg,0,0,null);

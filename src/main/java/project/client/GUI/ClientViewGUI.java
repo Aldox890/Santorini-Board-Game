@@ -21,12 +21,13 @@ public class ClientViewGUI implements Observer {
 
     Socket socket;
     ObjectOutputStream objectOutputStream;
-    String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
+    private static final String graphicsPath = "graphics//"; //"src//main//java//project//client//graphics//";
     JFrame loginFrame;
     JFrame santoriniFrame;
     LoginFrame login_frame;
     BoardPanel board_panel;
     PlayersPanel players_panel;
+    ControlsPanel controls_panel;
 
     public ClientViewGUI(Socket socket) throws IOException {
         this.socket = socket;
@@ -141,13 +142,16 @@ public class ClientViewGUI implements Observer {
         ImagePanel imagePanel = new ImagePanel(1280,720);
         board_panel = new BoardPanel();
         players_panel = new PlayersPanel();
+        controls_panel = new ControlsPanel(graphicsPath+"DecoratedPanel.png",300,720);
         board_panel.setBounds(380,105,525,525);
         santoriniFrame.setLayout(null);
 
 
 
         imagePanel.setBounds(0,0,1280,720);
+
         santoriniFrame.getContentPane().add(players_panel);
+        santoriniFrame.getContentPane().add(controls_panel);
         santoriniFrame.getContentPane().add(board_panel);
         santoriniFrame.getContentPane().add(imagePanel);
 
