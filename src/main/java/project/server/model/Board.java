@@ -332,8 +332,10 @@ public class Board implements Serializable {
     * & calls the removeWorker() method from Player class, to remove the worker from it's Workers list.
     * */
     public void removeWorker(Worker worker){
-        worker.getCell().setOccupiedBy(null);
-        worker.getOwner().removeWorker(worker);
+        if(worker != null) {
+            worker.getCell().setOccupiedBy(null);
+            worker.getOwner().removeWorker(worker);
+        }
     }
 
     public boolean tooHighToMove(int x_start,int y_start,int x_dest,int y_dest){

@@ -79,8 +79,10 @@ public class Game extends Observable implements Serializable {
     public void removePlayer(Player p){
         if (p != null && allowedGods.isEmpty()) {
             playerList.remove(p);
-            gameBoard.removeWorker(p.getWorkers().get(1));
-            gameBoard.removeWorker(p.getWorkers().get(0));
+            if(p.getWorkers().size()>2) {
+                gameBoard.removeWorker(p.getWorkers().get(1));
+                gameBoard.removeWorker(p.getWorkers().get(0));
+            }
             //removeobserver
             subNPlayers();
             if (turnOf == p) {
