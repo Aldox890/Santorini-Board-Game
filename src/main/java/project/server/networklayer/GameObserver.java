@@ -38,6 +38,7 @@ public class GameObserver implements Observer {
                 return;
             }
             try {
+                System.out.println("list arrived: " + msg.getData());
                 oos.writeObject(msg);
                 oos.flush();
                 oos.reset(); // Reset will disregard the state of any objects already written to the stream.

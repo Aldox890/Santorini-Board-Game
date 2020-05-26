@@ -143,9 +143,8 @@ public class ClientViewGUI implements Observer {
         players_panel = new PlayersPanel();
         board_panel.setBounds(380,105,525,525);
         santoriniFrame.setLayout(null);
-        players_panel.setBounds(0,0,150,400);
 
-        players_panel.setBackground(Color.LIGHT_GRAY);
+
 
         imagePanel.setBounds(0,0,1280,720);
         santoriniFrame.getContentPane().add(players_panel);
@@ -183,6 +182,7 @@ public class ClientViewGUI implements Observer {
 
     public void addPlayersList(Message mex){
             players_panel.addPlayers(mex.getData().split(";"));
+            players_panel.setVisible(true);
     }
 
     @Override
