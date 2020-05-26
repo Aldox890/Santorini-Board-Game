@@ -211,7 +211,10 @@ public class ClientViewGUI implements Observer {
                 case(3):
 
                     if (!mex.getData().equals("false")) {
+                        System.out.println("createFrame");
                         addPlayersList(mex);
+                        santoriniFrame.validate();
+                        santoriniFrame.repaint();
                     }
                     if (mex.getData().equals("false")) {
                         System.out.println("Bad input");
