@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import project.server.model.Game;
 import project.server.model.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,7 +65,7 @@ class Game2PlayersTest {
 
     @Test
         //Testing Game.addWorker()
-    void addWorker(){
+    void addWorker() throws IOException {
         String s1[] = {"0","1"};
         String s2[] = {"0","2"};
         g.setGods(gList,1);
@@ -80,7 +81,7 @@ class Game2PlayersTest {
 
     @Test
         //Testing Game.move()
-    void move(){
+    void move() throws IOException {
         g.setGods(gList,1);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
@@ -91,7 +92,7 @@ class Game2PlayersTest {
 
     @Test
         //Testing Game.build()
-    void build(){
+    void build() throws IOException {
         g.setGods(gList,1);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
@@ -101,7 +102,7 @@ class Game2PlayersTest {
 
     @Test
     //Testing when a player win
-    void win(){
+    void win() throws IOException {
         g.setGods(gList,2);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
@@ -117,7 +118,7 @@ class Game2PlayersTest {
 
     @Test
     //Testing when a player when stuck
-    void getStuck(){
+    void getStuck() throws IOException {
         g.setGods(gList,2);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);

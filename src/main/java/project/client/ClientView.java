@@ -63,11 +63,11 @@ public class ClientView implements Observer {
                     System.out.println(mex.getTurnOf()+" is stuck and his workers has been removed from the board");
                     break;
 
-                case(50): //Save game
+                /*case(50): //Save game
                     System.out.println("Somebody saved the game.");
                     System.out.println("Goodbye !");
                     System.exit(0);
-                    break;
+                    break;*/
 
                 case(60): //Load game
                     if(loadGame()) {
@@ -189,10 +189,10 @@ public class ClientView implements Observer {
                     objectOutputStream.writeObject(new ClientMessage(10,null, null, -1, -1,-1,-1,null));
                     objectOutputStream.flush();
                     break;
-                case ("4"):
+                /*case ("4"):
                     objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,null));
                     objectOutputStream.flush();
-                    break;
+                    break;*/
             }
         }
     }

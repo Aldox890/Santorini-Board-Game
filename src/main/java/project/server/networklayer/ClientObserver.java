@@ -97,7 +97,11 @@ public class ClientObserver implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
                 end = true;
-                gameController.removePlayer(player);
+                try {
+                    gameController.removePlayer(player);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
                 try {
                     socket.close();
                 } catch (IOException ex) {

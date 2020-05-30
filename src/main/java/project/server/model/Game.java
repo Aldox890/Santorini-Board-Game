@@ -76,7 +76,7 @@ public class Game extends Observable implements Serializable {
         notifyObserver(mex);
     }
 
-    public void removePlayer(Player p){
+    public void removePlayer(Player p) throws IOException {
         if ((p != null && allowedGods.isEmpty() && turnNumber>0)) {
             playerList.remove(p);
             if(p.getWorkers().size()>2) {
@@ -161,10 +161,15 @@ public class Game extends Observable implements Serializable {
      * TRUE if the worker is added inside the game board
      * FALSE if the worker isn't added inside the game board
      */
-    public boolean addWorker(Player p,int x, int y, int socketId){
+    public boolean addWorker(Player p,int x, int y, int socketId) throws IOException {
         if (gameBoard.createWorker(p,x,y)) {
             if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board
-                passTurn();
+                try {
+                    passTurn();
+                }
+                catch (IOException e){
+                    e.printStackTrace();
+                }
                 Message mex = new Message(-1, 4, "true", turnOf.getName());
                 mex.addBoard(gameBoard.getBoard());
                 printBoard(mex);
@@ -262,7 +267,7 @@ public class Game extends Observable implements Serializable {
     /*
     * method that ends the turn of the current player
     * */
-    public void passTurn(){
+    public void passTurn() throws IOException {
         int indexOfP = playerList.indexOf(turnOf);
         if (indexOfP < nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
@@ -271,9 +276,10 @@ public class Game extends Observable implements Serializable {
         }
         gameBoard.resetCurrentWorker();
         gameBoard.resetState();
+        this.saveGame();
     }
 
-    public void nextTurn(){
+    public void nextTurn() throws IOException {
         if(gameBoard.getNumberOfMoves()>=1 && gameBoard.getNumberOfBuild()>=1){
         passTurn();
         checkStuckPlayer(this.turnOf);
@@ -323,7 +329,7 @@ public class Game extends Observable implements Serializable {
     /*
     * checks if a player has both the workers stucked
     * */
-    public void checkStuckPlayer(Player p){
+    public void checkStuckPlayer(Player p) throws IOException {
         Worker w1 = p.getWorkers().get(0);
         Worker w2 = p.getWorkers().get(1);
         if(gameBoard.checkStuckWorker(w1.getCell().getX(),w1.getCell().getY())){
@@ -363,14 +369,18 @@ public class Game extends Observable implements Serializable {
 
     //Saves current state of the game in a file in "savedgames" directory
     public void saveGame() throws IOException {
-        FileOutputStream f = new FileOutputStream(new File("savedgames//"+nPlayers+"-"+playersName()));
-        ObjectOutputStream o = new ObjectOutputStream(f);
-        o.writeObject(playerList);
-        o.writeObject(gameBoard);
-        o.writeObject(turnOf);
-        o.close();
-        f.close();
-        notifyObserver(new Message(-1,50,"true",turnOf.getName()));
+        try {
+            FileOutputStream f = new FileOutputStream(new File("savedgames//" + nPlayers + "-" + playersName()));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(playerList);
+            o.writeObject(gameBoard);
+            o.writeObject(turnOf);
+            o.close();
+            f.close();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
     }
 
     //Check if there is a game in "savedgames" directory with same players of the actual game

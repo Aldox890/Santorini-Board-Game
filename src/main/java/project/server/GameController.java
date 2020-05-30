@@ -34,7 +34,7 @@ public class GameController {
         }
     }
 
-    public void passTurn(){
+    public void passTurn() throws IOException {
         game.nextTurn();
     }
 
@@ -63,7 +63,7 @@ public class GameController {
     /*
      * This method adds a new player's worker in a certain position on the board .
      */
-    public void addWorker(Player p, int x,int y,int socketId){
+    public void addWorker(Player p, int x,int y,int socketId) throws IOException {
         if(p!= null && p.getNumberOfWorker()<2) {
             if (x >= 0 && y >= 0) {
                 game.addWorker(p, x, y,socketId);
@@ -109,7 +109,7 @@ public class GameController {
         return;
     }
 
-    public void removePlayer(Player player){
+    public void removePlayer(Player player) throws IOException {
             game.removePlayer(player);
     }
 

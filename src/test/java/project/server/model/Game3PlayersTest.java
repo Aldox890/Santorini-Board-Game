@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import project.server.model.Game;
 import project.server.model.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,7 +47,7 @@ class Game3PlayersTest {
 
     @Test
     //Testing Game.removePlayer()
-    void removePlayer(){
+    void removePlayer() throws IOException {
         g.setGods(gList,3);
         g.addGod("apollo",p1,0);
         g.addGod("athena",p2,1);
@@ -62,7 +63,7 @@ class Game3PlayersTest {
     }
 
     @Test
-    void removePlayerDuringGodSelection(){
+    void removePlayerDuringGodSelection() throws IOException {
         g.setGods(gList,3);
         g.addGod("apollo",p1,0);
         g.addGod("athena",p2,1);
@@ -96,7 +97,7 @@ class Game3PlayersTest {
 
     @Test
     //Testing Game.addWorker()
-    void addWorker(){
+    void addWorker() throws IOException {
         String s1[] = {"0","1"};
         String s2[] = {"0","2"};
         g.setGods(gList,3);
@@ -113,7 +114,7 @@ class Game3PlayersTest {
 
     @Test
     //Testing Game.move()
-    void move(){
+    void move() throws IOException {
         g.setGods(gList,3);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
@@ -126,7 +127,7 @@ class Game3PlayersTest {
 
     @Test
     //Testing Game.build()
-    void build(){
+    void build() throws IOException {
         g.setGods(gList,3);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
@@ -137,7 +138,7 @@ class Game3PlayersTest {
 
     @Test
     //Testing Game.nextTurn()
-    void nextTurn(){
+    void nextTurn() throws IOException {
         g.setGods(gList,3);
         g.addGod("athena",p1,0);
         g.addGod("apollo",p2,1);
