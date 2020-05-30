@@ -150,8 +150,8 @@ public class ClientViewGUI implements Observer {
 
         imagePanel.setBounds(0,0,1280,720);
 
-        santoriniFrame.getContentPane().add(players_panel);
         santoriniFrame.getContentPane().add(controls_panel);
+        santoriniFrame.getContentPane().add(players_panel);
         santoriniFrame.getContentPane().add(board_panel);
         santoriniFrame.getContentPane().add(imagePanel);
 

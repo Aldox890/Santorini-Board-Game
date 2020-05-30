@@ -2,6 +2,8 @@ package project.client.GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PlayersPanel extends JPanel {
     private static final String graphicsPath = "graphics//";
@@ -35,16 +37,6 @@ public class PlayersPanel extends JPanel {
     }
 
     void addPlayers(String[] players){
-        /*if(players.length == 2) {
-            playerSlot.add(createLabel(players[0]));
-            playerSlot.add(createLabel(players[1]));
-        }
-        else if(players.length == 3) {
-            playerSlot.add(createLabel(players[0]));
-            playerSlot.add(createLabel(players[1]));
-            playerSlot.add(createLabel(players[2]));
-        }*/
-
         for(int i=0; i<=players.length-1;i++){
             playerSlot.add(createLabel(players[i]));
         }
