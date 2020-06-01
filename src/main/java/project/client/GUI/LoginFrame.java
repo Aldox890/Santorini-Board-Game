@@ -15,7 +15,7 @@ public class LoginFrame extends JFrame{
     ObjectOutputStream objectOutputStream;
     //String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
     private static final String graphicsPath = "graphics//"; //"src//main//java//project//client//graphics//";
-
+    String userName;
     LoginFrame( ObjectOutputStream obj) throws IOException{
         //this.socket=s;
         this.objectOutputStream = obj;
@@ -90,6 +90,7 @@ public class LoginFrame extends JFrame{
             @Override
             public void mousePressed(MouseEvent e) {
                 String username = usernameArea.getText();
+                userName = username;
                 String age = ageArea.getText();
                 if( username.replace(" ", "").length()>=3 && age.replace(" ", "").length()>=1){
                     System.out.println("Sent");
@@ -109,6 +110,10 @@ public class LoginFrame extends JFrame{
                 }
             }
         });
+    }
+
+    public String getUsername(){
+        return userName;
     }
 
     public void setInvisible(){

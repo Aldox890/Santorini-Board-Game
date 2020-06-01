@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -28,10 +29,14 @@ public class ClientViewGUI implements Observer {
     BoardPanel board_panel;
     PlayersPanel players_panel;
     ControlsPanel controls_panel;
+    ArrayList<String> players;
+
 
     public ClientViewGUI(Socket socket) throws IOException {
         this.socket = socket;
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+        players = new ArrayList<String>();
+
     }
     public void loginWithFrame(){
         try {
@@ -110,9 +115,11 @@ public class ClientViewGUI implements Observer {
         loginFrame.setResizable(false);
         loginFrame.setVisible(true);
 
-        loginButton.addMouseListener(new MouseAdapter() {
+        /*loginButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                uusername = username.getText();
+                System.out.println("username: ");
                 String username = usernameArea.getText();
                 String age = ageArea.getText();
                 if( username.replace(" ", "").length()>=3 && age.replace(" ", "").length()>=1){
@@ -132,7 +139,9 @@ public class ClientViewGUI implements Observer {
                     errorMexLogin.setVisible(true);
                 }
             }
+
         });
+                 */
     }
 
     public void createGameFrame() {
@@ -185,8 +194,23 @@ public class ClientViewGUI implements Observer {
     }
 
     public void addPlayersList(Message mex){
+            String[] serverResponse = mex.getData().split(";");
+            for(int i=0;i<=serverResponse.length-1;i++){
+                players.add(serverResponse[i]);
+            }
+
             players_panel.addPlayers(mex.getData().split(";"));
             players_panel.setVisible(true);
+    }
+
+    public void choseAllowedGods() throws IOException {
+        ArrayList<String> listOfGods = new ArrayList<>();
+        if(players.get(players.size()-1).equals(login_frame.getUsername())){ //last player in list (eldest) choses the gods
+            System.out.println("You are the most godlike player");
+
+            objectOutputStream.writeObject(new ClientMessage(0,null, listOfGods, -1, -1,-1,-1,null));
+            objectOutputStream.flush();
+        }
     }
 
     @Override
@@ -224,6 +248,7 @@ public class ClientViewGUI implements Observer {
                         System.out.println("Bad input");
                         System.out.println(mex.getErrorData());
                     }
+                    choseAllowedGods();
                     break;
             }
         }
