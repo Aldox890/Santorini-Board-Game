@@ -36,7 +36,7 @@ class Game3PlayersTest {
     @Test
     //Game.addPlayer() and Game.init() test
     void addPlayer() {
-        g.addPlayer(new Player("Giovanni",22),3);
+        //g.addPlayer(new Player("Giovanni",22),3);
         ArrayList<Player> playerList;
         playerList=g.getPlayerList();
         assertEquals(playerList.get(0).getName(),"Giovanni");
