@@ -30,6 +30,8 @@ public class ClientViewGUI implements Observer {
     PlayersPanel players_panel;
     ControlsPanel controls_panel;
     ArrayList<String> players;
+    GodsPanel godsPanel;
+
 
 
     public ClientViewGUI(Socket socket) throws IOException {
@@ -208,8 +210,14 @@ public class ClientViewGUI implements Observer {
         if(players.get(players.size()-1).equals(login_frame.getUsername())){ //last player in list (eldest) choses the gods
             System.out.println("You are the most godlike player");
 
-            objectOutputStream.writeObject(new ClientMessage(0,null, listOfGods, -1, -1,-1,-1,null));
-            objectOutputStream.flush();
+            godsPanel = new GodsPanel(objectOutputStream,players.size());
+            santoriniFrame.add(godsPanel,0);
+            godsPanel.setVisible(true);
+
+            santoriniFrame.validate();
+            santoriniFrame.repaint();
+
+
         }
     }
 

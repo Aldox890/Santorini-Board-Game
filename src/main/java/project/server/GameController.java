@@ -26,12 +26,15 @@ public class GameController {
      * This method sets the Gods chosen by the eldest player, that will be used in the Game.
      */
     public void setGods(ArrayList<String> gods, int socketId){
-        if (gods!= null /*&& parsedInput[0] != null && parsedInput[1] != null && parsedInput[2] != null*/) {
-            game.setGods(gods, socketId);
+        if (gods!= null  && (gods.size() == game.getNPlayers())) {
+            if(gods.get(0)!=gods.get(1)) {
+                if(game.getNPlayers() == 2 || (gods.get(1)!=gods.get(2))) {
+                    game.setGods(gods, socketId);
+                    return;
+                }
+            }
         }
-        else{
-            game.badInputException(socketId,3,"false", "Error: Bad inputs while inserting the gods.");
-        }
+        game.badInputException(socketId,3,"false", "Error: Bad inputs while inserting the gods.");
     }
 
     public void passTurn() throws IOException {

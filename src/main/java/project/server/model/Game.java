@@ -32,6 +32,10 @@ public class Game extends Observable implements Serializable {
 
     private int nPlayers;
 
+    public int getNPlayers(){
+        return nPlayers;
+    }
+
 
     public Game(){
         gameBoard = new Board();
