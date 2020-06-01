@@ -175,7 +175,7 @@ public class ClientView implements Observer {
                 System.out.print("1)Move ");
                 System.out.print("2)Build ");
                 System.out.print("3)End turn ");
-                System.out.println("4)Save and exit");
+                // System.out.println("4)Save and exit");
                 in = stdin.nextLine();
             }
             switch (in) {

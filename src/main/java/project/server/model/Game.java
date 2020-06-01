@@ -276,7 +276,9 @@ public class Game extends Observable implements Serializable {
         }
         gameBoard.resetCurrentWorker();
         gameBoard.resetState();
-        this.saveGame();
+        if(playerList.size()>1){
+            this.saveGame();
+        }
     }
 
     public void nextTurn() throws IOException {
@@ -385,20 +387,19 @@ public class Game extends Observable implements Serializable {
 
     //Check if there is a game in "savedgames" directory with same players of the actual game
     public void checkGame(){
-        boolean foundGame=true;
         File f = new File("savedgames");
         String[] fileList = f.list();
         for(String str : fileList){
             String names[] = str.split("-");
             int numPlayers = Integer.parseInt(names[0]);
             for(int i=1;i<numPlayers;i++){
-                if(!checkNames(names)){
-                    foundGame=false;
-                }
+                if(numPlayers == playerList.size()){
+                    if(checkNames(names)){
+                        file=str;
+                        notifyObserver(new Message(0, 60, "true", turnOf.getName()));
+                        return;
+                    }
             }
-            if(foundGame) {
-                file=str;
-                notifyObserver(new Message(0, 60, "true", turnOf.getName()));
             }
         }
     }
@@ -437,7 +438,7 @@ public class Game extends Observable implements Serializable {
     public boolean checkNames(String[] names){
         int cont=0;
         for(int i=0;i<playerList.size();i++){
-            for(int j=0;j<playerList.size()+1;j++){
+            for(int j=1;j<playerList.size()+1;j++){
                 if(playerList.get(i).getName().equals(names[j])){
                     cont++;
                 }
