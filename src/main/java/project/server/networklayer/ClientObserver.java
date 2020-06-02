@@ -36,6 +36,9 @@ public class ClientObserver implements Runnable {
     }
 
     @Override
+    /**
+     * Method that recognize every type of message and calls gameController methods
+     */
     public void run() {
         try {
             initPlayer();
@@ -82,9 +85,6 @@ public class ClientObserver implements Runnable {
                     case 10:    //end player turn
                         gameController.passTurn();
                         break;
-                    case 20:    //save game
-                        gameController.saveGame();
-                        break;
                     case 30:    //load game
                         if(msg.getData().equals("true")){
                             gameController.loadGame();
@@ -113,7 +113,7 @@ public class ClientObserver implements Runnable {
         }
     }
 
-    /*
+    /**
     * Setup name and age of the player
     * */
     public void initPlayer() throws IOException, ClassNotFoundException {

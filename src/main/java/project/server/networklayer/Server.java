@@ -26,6 +26,11 @@ public class Server {
         playerid = 0;
     }
 
+    /**
+     * Starting method of the server
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void startServer() throws IOException, ClassNotFoundException {
         ExecutorService executor = Executors.newCachedThreadPool();
         try{

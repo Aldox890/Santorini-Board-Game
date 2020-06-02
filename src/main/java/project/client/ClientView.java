@@ -35,6 +35,10 @@ public class ClientView implements Observer {
         availableGods = new ArrayList<String>();
     }
 
+    /**
+     * Reads messages from server and call different functions according to typeOfMessage
+     * @param arg message received
+     */
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
@@ -164,8 +168,8 @@ public class ClientView implements Observer {
         }
     }
 
-    /*
-    * method that checks if the player has to move or to build, based of what message receives from the server
+    /**
+    * method that asks to player if he want to move,build or end his turn
     * */
     public void turnMenu(Message mex) throws IOException {
         if(mex.getTurnOf().equals(username)) {
@@ -229,6 +233,9 @@ public class ClientView implements Observer {
         }
     }
 
+    /**
+     * Method that asks username and age and send this data to server
+     */
     public void register() throws IOException {
         System.out.print("Insert username: ");
         String inputLineUsername = stdin.nextLine();
@@ -254,10 +261,14 @@ public class ClientView implements Observer {
         objectOutputStream.flush();
     }
 
+    /**
+     * Eldest player chooses 3 gods
+     * @throws IOException
+     */
     public void choseAllowedGods() throws IOException {
         ArrayList<String> listOfGods = new ArrayList<>();
         if(players.get(players.size()-1).equals(username)){ //last player in list (eldest) choses the gods
-            System.out.println("Sei il giocatore più anziano, scegli "+ players.size() +" dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
+            System.out.println("You are the eldest player, choose "+ players.size() +" dei:" + "Apollo " + "Artemis " +"Athena "+ "Atlas "+"Demeter "+ "Hephaestus "+"Minotaur "+ "Pan "+ "Prometheus");
 
             int gods_selection=1;   //index of selection
             while(gods_selection<=players.size()){
@@ -276,6 +287,10 @@ public class ClientView implements Observer {
         }
     }
 
+    /**
+     * Sets allowed gods
+     * @param mex message received from server
+     */
     public void addAllowedGods(Message mex){
         String[] serverGodList = mex.getData().split(";");
 
@@ -287,6 +302,9 @@ public class ClientView implements Observer {
         System.out.println();
     }
 
+    /**
+     * Allows a player to choose his god
+     */
     public void choseGod(Message mex) throws IOException {
         if(mex.getTurnOf().equals(username) && !availableGods.isEmpty()){  //tocca a me
             System.out.print("Seleziona il Dio: ");
@@ -300,6 +318,9 @@ public class ClientView implements Observer {
         }
     }
 
+    /**
+     * Removes a god from list when it is taken from another player
+     */
     public void removeAllowedGod(Message mex){
         if(!mex.getData().equals("false")){
             String[] selectedGod = mex.getData().split(";");
@@ -308,7 +329,7 @@ public class ClientView implements Observer {
         }
     }
 
-    /*
+    /**
     * prints the list of players with their respective color assaigned by the server.
     * */
     public void printPlayerList(Message mex){
@@ -327,9 +348,9 @@ public class ClientView implements Observer {
         }
     }
 
-    /*
-    function used to create a worker and set it in a cell.
-    * */
+    /**
+     function used to create a worker and set it in a cell.
+    */
     public void createWorker(Message mex) throws IOException {
         String coordinates;
         String coords[];
@@ -347,9 +368,9 @@ public class ClientView implements Observer {
         }
     }
 
-    /*
+    /**
     function used to print the game board on terminal
-    * */
+    */
     public void printBoard(Message mex){
         Cell[][] board = mex.getBoard();
         for(int i = 0;i<5;i++){
@@ -373,9 +394,9 @@ public class ClientView implements Observer {
         mex = null;
     }
 
-    /*
-    * Function used to move one worker from a position [xStart;yStart] to the position [xdest;yDest]
-    * */
+    /**
+     * Function used to move one worker from a position [xStart;yStart] to the position [xdest;yDest]
+     */
     public void moveWorker(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
         if (mex.getTurnOf().equals(username)) {
             String[] coords = new String[2];
@@ -404,7 +425,7 @@ public class ClientView implements Observer {
         }
     }
 
-    /*
+    /**
     * Build function by the client.
     * Receives the message from the server, checks if it's the client's turn and asks for the building coordinates ( [xStart;yStart] and [xDest;yDest] ).
     * If the client who's building has the power of Hephaestus or Atlas, asks the client if wants to use its power.
@@ -473,13 +494,16 @@ public class ClientView implements Observer {
 
     }
 
-    /* strategy method to control if the input of the age is correct*/
+    /** strategy method to control if the input of the age is correct*/
     boolean checkAge(String inputAge){
         int age = Integer.parseInt(inputAge);
         return ( (age<5 || age>120) || (inputAge.contains(";")) );
     }
 
-    /*function that inserts the coordinates*/
+    /**
+     * Method that allows to insert coordinates
+     * @return a string in format "x,y" where x and y are int
+     */
     String insertCoordinates(){
         String x,y;
         do{
@@ -492,7 +516,9 @@ public class ClientView implements Observer {
         return (x+";"+y);
     }
 
-    /*function that checks if the input string is a number*/
+    /**
+     * Method that checks if the input string is a number
+     */
     public boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
@@ -502,8 +528,10 @@ public class ClientView implements Observer {
         }
     }
 
-    //ask if the player wants to resume a previous game
-    public Boolean loadGame(){
+    /**
+     *Asks to a player if he wants to resume a previous game
+    */
+     public Boolean loadGame(){
         String resp;
         System.out.println("Your previous game has been found");
         do {

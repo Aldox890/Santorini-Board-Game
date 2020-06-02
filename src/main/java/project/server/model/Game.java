@@ -29,13 +29,14 @@ public class Game extends Observable implements Serializable {
     private Worker worker;
     private boolean roomIsFull;
     private String file="";
-
+    private ArrayList<String> allowedGods;
+    private int turnNumber;
+    private ArrayList<String> godsList;
     private int nPlayers;
 
     public int getNPlayers(){
         return nPlayers;
     }
-
 
     public Game(){
         gameBoard = new Board();
@@ -56,14 +57,14 @@ public class Game extends Observable implements Serializable {
         worker = null;
     }
 
-    /*
+    /**
      * Adds a new observer to the list.
      */
     public void addObserver(Observer arg) {
         this.observers.add(arg);
     }
 
-    /*
+    /**
      * Notifies the observers about changes.
      */
     public void notifyObserver(Object obj){
@@ -73,13 +74,20 @@ public class Game extends Observable implements Serializable {
     }
 
 
-    /*notifies the client through the observer that has occoured an error in the input */
+    /**
+     * notifies the client through the observer that has occoured an error in the input
+     */
     public void badInputException(int socketId,int typeOfMessage,String data, String errorData){
         Message mex = new Message(socketId,typeOfMessage,data, turnOf.getName());
         mex.setErrorData(errorData);
         notifyObserver(mex);
     }
 
+    /**
+     * remove a player when he disconnects
+     * @param p
+     * @throws IOException
+     */
     public void removePlayer(Player p) throws IOException {
         if ((p != null && allowedGods.isEmpty() && turnNumber>0)) {
             playerList.remove(p);
@@ -99,15 +107,20 @@ public class Game extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Reduce nPlayers by 1
+     */
     public void subNPlayers(){
         nPlayers = nPlayers -1;
     }
     public void setNPlayers(int nPlayers){
         this.nPlayers = nPlayers;
     }
-    /*
-     * Adds a new player to the list and notifies the observer. false if player name already exists.
+
+    /**
+     * Adds a new player to the list and notifies the observer.
      * calls init() once 3 players are connected.
+     * @return true if a player is added, false if player name already exists in actual game
      */
     public synchronized boolean addPlayer(Player p,int socketId){
         for(int i = 0; i < playerList.size(); i++){
@@ -130,8 +143,9 @@ public class Game extends Observable implements Serializable {
         return true;
     }
 
-    /*
+    /**
      * Orders the playerList and sets turnOf. Sends playerList to the clients
+     * Checks if there is a saved game with same players of actual game
      */
     public void init(){
         Collections.sort(playerList, (Player m1, Player m2) -> (int) (m1.getAge() - m2.getAge()));  //sorting of players
@@ -161,9 +175,10 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    /*
-     * TRUE if the worker is added inside the game board
-     * FALSE if the worker isn't added inside the game board
+    /**
+     * Adds a worker in board
+     * @return TRUE if the worker is added inside the game board
+     * @return FALSE if the worker isn't added inside the game board
      */
     public boolean addWorker(Player p,int x, int y, int socketId) throws IOException {
         if (gameBoard.createWorker(p,x,y)) {
@@ -191,6 +206,10 @@ public class Game extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Method that print the board
+     * @param mex mex sent to client
+     */
     public void printBoard(Message mex){
         //Cell[][] board = mex.getBoard();
 
@@ -209,9 +228,10 @@ public class Game extends Observable implements Serializable {
         System.out.println("");
     }
 
-    /*
-     * Sets the 3 allowed gods to allowedGods list. sends false if fails.
+    /**
+     * Sets the 3 allowed gods to allowedGods list.
      * Broadcast list to all players if it works.
+     * @return true if gods are set, false if fails
      */
     public boolean setGods(ArrayList<String> gods, int socketId) {
         if(gods.size()==3){
@@ -250,6 +270,9 @@ public class Game extends Observable implements Serializable {
         return false;
     }
 
+    /**
+     * Sets god chosen by a player and remove god from allowedGods list
+     */
     public void addGod(String god, Player player, int socketId){
         if(allowedGods.contains(god)){
             player.selectGod(god);
@@ -268,8 +291,8 @@ public class Game extends Observable implements Serializable {
         notifyObserver(m);
     }
 
-    /*
-    * method that ends the turn of the current player
+    /**
+    * Method that ends the turn of the current player and saves the game
     * */
     public void passTurn() throws IOException {
         int indexOfP = playerList.indexOf(turnOf);
@@ -285,6 +308,10 @@ public class Game extends Observable implements Serializable {
         }
     }
 
+    /**
+     * Method that calls passTurn() and checkStuckPlayer() if a player can end his turn
+     * @throws IOException if game can't be saved
+     */
     public void nextTurn() throws IOException {
         if(gameBoard.getNumberOfMoves()>=1 && gameBoard.getNumberOfBuild()>=1){
         passTurn();
@@ -297,6 +324,9 @@ public class Game extends Observable implements Serializable {
 
     }
 
+    /**
+     * Method that invokes Board.move() and according to results sends different messages to clients
+     */
     public void moveWorker(Player p,int xStart,int yStart,int xDest, int yDest, int socketId) {
         int ris = gameBoard.move(p, xStart, yStart, xDest, yDest);
         if (ris == 1) {
@@ -319,6 +349,9 @@ public class Game extends Observable implements Serializable {
     }
 
 
+    /**
+     * Method that invokes Board.build() and according to results sends different messages to clients
+     */
     public void build(Player p,int xStart,int yStart,int xDest, int yDest,int level, int socketId){   // <------ DA MODIFICARE
         if (gameBoard.build(p, level, xStart, yStart, xDest, yDest)) {
             //send the board to the clinet
@@ -332,9 +365,10 @@ public class Game extends Observable implements Serializable {
         notifyObserver(m);
     }
 
-    /*
-    * checks if a player has both the workers stucked
-    * */
+    /**
+     * checks if a player has both the workers stucked
+     * if true, removes the player from game and his workers from board
+    */
     public void checkStuckPlayer(Player p) throws IOException {
         Worker w1 = p.getWorkers().get(0);
         Worker w2 = p.getWorkers().get(1);
@@ -373,8 +407,10 @@ public class Game extends Observable implements Serializable {
 
     public Board getGameBoard(){return gameBoard;}
 
-    //Saves current state of the game in a file in "savedgames" directory
-    public void saveGame() throws IOException {
+    /**
+     *Saves current state of the game in a file in "savedgames" directory
+     */
+     public void saveGame() {
         try {
             FileOutputStream f = new FileOutputStream(new File("savedgames//" + nPlayers + "-" + playersName()));
             ObjectOutputStream o = new ObjectOutputStream(f);
@@ -389,8 +425,10 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    //Check if there is a game in "savedgames" directory with same players of the actual game
-    public void checkGame(){
+    /**
+     *Check if there is a game in "savedgames" directory with same players of the actual game
+    */
+     public void checkGame(){
         File f = new File("savedgames");
         String[] fileList = f.list();
         for(String str : fileList){
@@ -408,7 +446,9 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    //load a game
+    /**
+     * Loads an existing game
+     */
     public void loadGame() throws IOException, ClassNotFoundException {
         file="savedgames//"+file;
         FileInputStream f=new FileInputStream(new File(this.file));
@@ -429,7 +469,11 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new Message(-1,5,"true",turnOf.getName()));
     }
 
-    //returns all players name in this format name1-name2-name3-
+    /**
+     *
+     * @return all players name in this format name1-name2-name3-
+     */
+
     public String playersName(){
         String s="";
         for(int i=0;i<playerList.size();i++) {
@@ -438,7 +482,10 @@ public class Game extends Observable implements Serializable {
         return s;
     }
 
-    //returns true if all players in the current games have same names in a saved game
+    /**
+     * Checks if actual game players are the same of the saved games
+     * @return true if there are a game with same players, else false
+     */
     public boolean checkNames(String[] names){
         int cont=0;
         for(int i=0;i<playerList.size();i++){
@@ -454,7 +501,9 @@ public class Game extends Observable implements Serializable {
         else return false;
     }
 
-    //players in actual game will have same gods they had in the saved game
+    /**
+     *players in actual game will have same gods they had in the saved game
+     */
     public void fixGods(ArrayList<Player> plNew){
         for(int i=0;i<playerList.size();i++){
             for(int j=0;j<playerList.size();j++){
@@ -466,7 +515,9 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    //used if a player doesn't want to load a previous game
+    /**
+     * used if a player doesn't want to load a previous game
+     */
     public void callGod(){
         String response = "";
         if (playerList.size() == 3) {
@@ -485,22 +536,7 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
     }
 
-    /** OLD DATA ***/
-    private ArrayList<String> allowedGods;
-    private int turnNumber;
-    private ArrayList<String> godsList;
 
-    public void addGod(String s){
-        allowedGods.add(s);
-    }
-
-    public int getTurnNumber(){
-        return turnNumber;
-    }
-
-    public synchronized void setTurnOf (Player p){
-        turnOf = p;
-    }
 
 
 

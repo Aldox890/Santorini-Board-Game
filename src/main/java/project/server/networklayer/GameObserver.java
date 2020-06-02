@@ -27,7 +27,7 @@ public class GameObserver implements Observer {
         oos.flush();
     }
 
-    /*
+    /**
      * update function simply output strings to the socket by now.
      */
     @Override

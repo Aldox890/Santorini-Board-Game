@@ -13,6 +13,17 @@ public class ClientMessage implements Serializable {
     int yDest;
     String data;
 
+    /**
+     * Constructor that initialize a message sent from a client to server
+     * @param typeOfMessage see typeOfMessage codes table
+     * @param god the god i can use
+     * @param gameGods used to sent to clients the list of available gods
+     * @param xStart starting x coordinate where a worker is
+     * @param yStart starting y coordinate where a worker is
+     * @param xDest x coordinate where a worker would move or build
+     * @param yDest y coordinate where a worker would move or build
+     * @param data
+     */
     public ClientMessage(int typeOfMessage, String god, ArrayList<String> gameGods, int xStart, int yStart, int xDest, int yDest, String data) {
         this.typeOfMessage = typeOfMessage;
         this.god = god;

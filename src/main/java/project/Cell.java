@@ -8,7 +8,12 @@ public class Cell implements Serializable {
     private int level;
     private Worker occupiedBy;
 
-    public Cell(int x,int y){ //project.Cell constructor
+    /**
+     * Constructor of a cell , set level = 0 and occupiedBy = null
+     * @param x x coordinate of the cell
+     * @param y y coordinate of the cell
+     */
+    public Cell(int x,int y){
         this.x = x;
         this.y = y;
         level = 0;
@@ -19,6 +24,10 @@ public class Cell implements Serializable {
         return level;
     }
 
+    /**
+     * Used when a worker build in the cell
+     * @param level {0,1,2,3,4}
+     */
     public void setLevel(int level) {
         this.level = level;
     }
@@ -27,6 +36,10 @@ public class Cell implements Serializable {
         return occupiedBy;
     }   //returns who is in this cell
 
+    /**
+     * Used when a worker moves in the cell
+     * @param occupiedBy worker in the cell
+     */
     public void setOccupiedBy(Worker occupiedBy) {
         this.occupiedBy = occupiedBy;
     }
