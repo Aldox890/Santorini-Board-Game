@@ -32,6 +32,9 @@ public class ClientViewGUI implements Observer {
     ArrayList<String> players;
     GodsPanel godsPanel;
 
+    ArrayList<String> availableGods;
+
+
 
 
     public ClientViewGUI(Socket socket) throws IOException {
@@ -221,6 +224,35 @@ public class ClientViewGUI implements Observer {
         }
     }
 
+    public void addAllowedGods(Message mex){
+        String[] serverGodList = mex.getData().split(";");
+
+        System.out.print("LISTA DEI SCELTI: ");
+        for(int i=0;i<=serverGodList.length-1;i++){
+            availableGods.add(serverGodList[i]);
+            System.out.print(serverGodList[i]+" ");
+        }
+        System.out.println();
+    }
+
+    public void choseGod(Message mex) throws IOException {
+        if(mex.getTurnOf().equals(login_frame.getUsername()) && !availableGods.isEmpty()){  //tocca a me
+
+            System.out.print("Seleziona il Dio: ");
+
+            //objectOutputStream.writeObject(new ClientMessage(1,god, null, -1, -1,-1,-1,null));
+            //objectOutputStream.flush();
+        }
+    }
+
+    public void removeAllowedGod(Message mex){
+        if(!mex.getData().equals("false")){
+            String[] selectedGod = mex.getData().split(";");
+            System.out.println(selectedGod[0] + " has selected " + selectedGod[1]);
+            availableGods.remove(selectedGod[1]);
+        }
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
@@ -258,6 +290,24 @@ public class ClientViewGUI implements Observer {
                     }
                     choseAllowedGods();
                     break;
+                case (1): // recived chosen gods list
+                    addAllowedGods(mex);
+                    choseGod(mex);
+                    break;
+
+                case (2): // recived god chosen by a player
+                    removeAllowedGod(mex);
+                    if(availableGods.isEmpty()){
+                        //createWorker(mex); // setup my workers position if it's my turn
+                        break;
+                    }
+                    if (mex.getData().equals("false")) {
+                        System.out.println("Bad input");
+                        System.out.println(mex.getErrorData());
+                    }
+                    choseGod(mex);
+                    break;
+
             }
         }
         catch (IOException e){
