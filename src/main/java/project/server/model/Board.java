@@ -16,14 +16,11 @@ public class Board implements Serializable {
     private int numberOfMoves;  //counts how many times worker has moved.
     private int numberOfBuild; //counts how many times worker has moved.
 
-    public boolean canPassTurn(){
-        if(numberOfBuild >0 && numberOfMoves > 0){
-            return true;
-        }
-        return false;
-    }
 
-    public Board(){    //board constructor
+    /**
+     * Board constructor : initialize cells and set starting flags values
+     */
+    public Board(){
         board = new Cell[5][5];
         for(int i=0; i<5;i++){  //set up of coordinates of the cells
             for(int j=0; j<5;j++){
@@ -41,19 +38,30 @@ public class Board implements Serializable {
         return board;
     }
 
+    /**
+     * Method that sets which worker has done the first move for a player
+     * @param x x coordinate of the worker
+     * @param y y coordinate of the worker
+     */
     public void setCurrentWorker(int x,int y){
         currentWorker = board[x][y].isOccupiedBy();
     }
 
+    /**
+     * Reset currentWorker to null every time a player ends his turn
+     */
     public void resetCurrentWorker(){
         currentWorker = null;
     }
 
-    /*checks if it's possible to move from (x_start, y_start) to (x_dest, y_dest)
-     * checks if the requested position is already occupied by another worker
-     * moves the worker in the position at coordinates (x,y) or sends back an error message
-     * sets the previous occupied cell to "null" (so that the cell is now empty)
-     * */
+    /**
+     *
+     * Checks if it's possible to move from (x_start, y_start) to (x_dest, y_dest)
+     * Checks if the requested position is already occupied by another worker
+     * Moves the worker in the position at coordinates (x,y) or sends back an error message
+     * Sets the previous occupied cell to "null" (so that the cell is now empty)
+     * @return 0 if a move is not allowed, 1 if a move is allowed, -1 if a move bring a player to win
+     */
     public int move(Player player, int x_start, int y_start, int x_dest, int y_dest){
 
         if(x_start<0 || x_start>4 || y_start<0 || y_start>4){   //check if current worker position are inside the board
@@ -165,24 +173,26 @@ public class Board implements Serializable {
         return 1;   //moved into a new cell correctly
     }
 
-    /*
+    /**
      * sets the previous occupied cell to "null" (so that the cell is now empty)
      * sets the worker into the requested cell
-     * */
+     */
     public boolean moveWorker(Worker worker, int posX, int posY){
         oldCell = new Cell(worker.getCell().getX(), worker.getCell().getY());//previously occupied cell
         worker.getCell().setOccupiedBy(null);
         worker.setCell(board[posX][posY]);
         board[posX][posY].setOccupiedBy(worker);
-        this.numberOfMoves++;   //
+        this.numberOfMoves++;
         return true; //returns true if the worker got moved into a new position
-        //board[worker.getCell().getX()][worker.getCell().getY()].setOccupiedBy(null);
     }
 
-    //controls if is possible to builds in (x1,y1)
-    /*
-    * adds a level on the cell at position (xBuild, yBuild) based on worker current position (xPos, yPos)
-    * */
+
+    /**
+     * adds a level on the cell at position (xBuild, yBuild) based on worker current position (xPos, yPos)
+     * checks if is possible to builds in (xBuild,yBuild)
+     * @param level 1 if standard build, 2 if hephaestus build, 4 if atlas build
+     * @return true if build is allowed, false if build isn't allowed
+     */
     public boolean build(Player player,int level, int xPos, int yPos, int xBuild, int yBuild){
         Worker worker;
 
@@ -267,9 +277,10 @@ public class Board implements Serializable {
         return true;
     }
 
-    /*
-    * returns true if there is no worker already in the selected cell
-    * returns false if there is already a worker inside the cell*/
+    /**
+     * Creates a worker in (x,y) cell
+     * @return true if there is no worker already in the selected cell, false if there is already a worker inside the cell
+     */
     public boolean createWorker(Player p, int x, int y){
         if(x >= 0 && x <= 4 && y >= 0 && y <= 4) {
             if (this.board[x][y].isOccupiedBy() == null) {   //if there is no worker inside, puts the new worker in the cell at x and y
@@ -282,11 +293,17 @@ public class Board implements Serializable {
         return false;
     }
 
+    /**
+     * canMoveUp flag is resetted to true
+     */
     public void resetCanMoveUp(){
         canMoveUp = true;
     }
 
-    //build in (posX,posY)
+    /**
+     * add level to actual level, set level to 4 if parameter is 4
+     * @param level 1 if standard build, 2 if hephaestus build, 4 if atlas build
+     */
     public void buildInPos(Worker worker,int level,int posX,int posY){
         if(level < 4) {
             board[posX][posY].setLevel(board[posX][posY].getLevel() + level);
@@ -298,8 +315,10 @@ public class Board implements Serializable {
         oldBuild = new Cell(posX,posY);
     }
 
-    /*Given (x,y) a worker position, returns true if the worker is stuck in his position
-    * */
+    /**
+     * Given (x,y) a worker position, returns true if the worker is stuck in his position
+     * @return true if the worker is stuck, else false
+     */
     public boolean checkStuckWorker(int x, int y){
         int i=0,j=0,n,m;
         n=(x==4)? x : x+1;
@@ -327,10 +346,11 @@ public class Board implements Serializable {
         return stuck;
     }
 
-    /*
-    * Set the cell previously occupied by a worker to empty
-    * & calls the removeWorker() method from Player class, to remove the worker from it's Workers list.
-    * */
+    /**
+     * Set the cell previously occupied by a worker to empty
+     * Calls the removeWorker() method from Player class, to remove the worker from it's Workers list.
+     * @param worker worker to remove
+     */
     public void removeWorker(Worker worker){
         if(worker != null) {
             worker.getCell().setOccupiedBy(null);
@@ -338,11 +358,19 @@ public class Board implements Serializable {
         }
     }
 
+    /**
+     * Checks if (x_dest,y_dest) level is lower than (x_start,y_start) level + 1
+     * @return true if (x_dest,y_dest) level is lower than (x_start,y_start) level + 1, else false
+     */
     public boolean tooHighToMove(int x_start,int y_start,int x_dest,int y_dest){
         //can't move up more than one level
         return (board[x_dest][y_dest].getLevel() - board[x_start][y_start].getLevel() > 1); //return (board[x_dest][y_dest].getLevel() > board[x_start][y_start].getLevel() + 1);
     }
 
+    /**
+     * Resets flags
+     * Used when a player ends his turn
+     */
     public void resetState(){
         numberOfMoves = 0;
         numberOfBuild = 0;
@@ -350,7 +378,10 @@ public class Board implements Serializable {
         oldBuild = new Cell(-1,-1);
     }
 
-    //set player-workers correspondence if a game is loaded
+    /**
+     * set player-workers correspondence if a game is loaded
+     * @param playerlist actual list of player in game
+     */
     public void setCorrectPlayers(ArrayList<Player> playerlist){
         for(int i=0;i<5;i++){
             for(int j=0;j<5;j++){
@@ -367,6 +398,9 @@ public class Board implements Serializable {
         }
     }
 
+    /**
+     * Set numberOfMoves flag to 1
+     */
     public void setNumberOfMoves(){
         numberOfMoves=1;
     }
