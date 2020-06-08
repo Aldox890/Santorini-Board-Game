@@ -2,9 +2,11 @@ package project.client.GUI;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +17,9 @@ public class BoardPanel extends JPanel {
     String graphicsPath = "graphics//";
     GridBagLayout gridbaglayout;
     GridBagConstraints lim;
+
+
+
 
     public BoardPanel(/*ObjectOutputStream obj*/) {
         //this.objectOutputStream=obj;
@@ -49,6 +54,22 @@ public class BoardPanel extends JPanel {
                 component.setContentAreaFilled(false);
                 component.setOpaque(false);
                 component.setBorder(null);
+                component.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        //super.mouseEntered(e);
+                        component.setBorder(new LineBorder(Color.BLACK, 1));
+                    }
+                });
+
+                component.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        super.mouseExited(e);
+                        component.setBorder(null);
+                    }
+                });
+
                 lim.gridx=c;
                 lim.gridy=r;
                 lim.weightx=1;

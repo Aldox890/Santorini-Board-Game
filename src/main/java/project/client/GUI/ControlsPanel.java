@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class ControlsPanel extends ImagePanel {
     private static final String graphicsPath = "graphics//btncontrols//";
     JPanel containerPanel;
-    JPanel godCardPanel;
+    ImagePanel godCardPanel;
     //JPanel fillerPanel;
     JPanel buttonsPanel;
     JButton moveBtn, buildBtn, endTurnBtn, godButton;
@@ -38,28 +38,30 @@ public class ControlsPanel extends ImagePanel {
         containerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         containerPanel.setOpaque(false);
 
-        createGodPanel();
+        //createGodPanel();
         createButtonPanel();
 
 
         //containerPanel.add(Box.createVerticalStrut(50));
-        containerPanel.add(godCardPanel);
+        //containerPanel.add(godCardPanel);
         containerPanel.add(Box.createVerticalStrut(30));
         //containerPanel.add(Box.createRigidArea(new Dimension(200,50)));
         containerPanel.add(buttonsPanel);
 
-        godCardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        //godCardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
     }
 
-    void createGodPanel(){
-        godCardPanel = new JPanel();//new ImagePanel(bgpath+"SidePanel.png",200,300);
+    public void createGodPanel(String godName){
+        godCardPanel = new ImagePanel("graphics//gods//cards//"+ godName+".png",200,250);//new ImagePanel(bgpath+"SidePanel.png",200,300);
         godCardPanel.setMinimumSize(new Dimension(200, 250));
         godCardPanel.setPreferredSize(new Dimension(200, 250));
         godCardPanel.setMaximumSize(new Dimension(200, 250));
         godCardPanel.setBackground(Color.BLUE);
         godCardPanel.setLayout(new BoxLayout(godCardPanel, BoxLayout.PAGE_AXIS));
+        godCardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        this.containerPanel.add(godCardPanel);
     }
 
 

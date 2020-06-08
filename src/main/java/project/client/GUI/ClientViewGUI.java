@@ -31,6 +31,7 @@ public class ClientViewGUI implements Observer {
     ControlsPanel controls_panel;
     ArrayList<String> players;
     GodsPanel godsPanel;
+    ChooseGodPanel chooseGodPanel;
 
     ArrayList<String> availableGods;
 
@@ -41,7 +42,7 @@ public class ClientViewGUI implements Observer {
         this.socket = socket;
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         players = new ArrayList<String>();
-
+        availableGods = new ArrayList<>();
     }
     public void loginWithFrame(){
         try {
@@ -239,6 +240,12 @@ public class ClientViewGUI implements Observer {
         if(mex.getTurnOf().equals(login_frame.getUsername()) && !availableGods.isEmpty()){  //tocca a me
 
             System.out.print("Seleziona il Dio: ");
+            chooseGodPanel = new ChooseGodPanel(objectOutputStream, availableGods);
+            santoriniFrame.add(chooseGodPanel,0);
+            chooseGodPanel.setVisible(true);
+
+            santoriniFrame.validate();
+            santoriniFrame.repaint();
 
             //objectOutputStream.writeObject(new ClientMessage(1,god, null, -1, -1,-1,-1,null));
             //objectOutputStream.flush();
@@ -256,6 +263,7 @@ public class ClientViewGUI implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
+        String[] parsedMex = mex.getData().split(";");
         try {
             System.out.println("list arrived: " + mex.getData());
             switch (mex.getTypeOfMessage()) {
@@ -297,6 +305,11 @@ public class ClientViewGUI implements Observer {
 
                 case (2): // recived god chosen by a player
                     removeAllowedGod(mex);
+                    if(parsedMex.length==2 && parsedMex[0].equals(login_frame.getUsername())){
+                        controls_panel.createGodPanel(parsedMex[1]);
+                        santoriniFrame.validate();
+                        santoriniFrame.repaint();
+                    }
                     if(availableGods.isEmpty()){
                         //createWorker(mex); // setup my workers position if it's my turn
                         break;
