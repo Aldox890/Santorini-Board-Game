@@ -1,5 +1,7 @@
 package project.client.GUI;
 
+import project.ClientMessage;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -17,13 +19,15 @@ public class BoardPanel extends JPanel {
     String graphicsPath = "graphics//";
     GridBagLayout gridbaglayout;
     GridBagConstraints lim;
+    GameState gs;
+    CellButton[][] buttonBoard;
 
 
 
-
-    public BoardPanel(/*ObjectOutputStream obj*/) {
-        //this.objectOutputStream=obj;
-
+    public BoardPanel(ObjectOutputStream obj, GameState gameState) {
+        this.objectOutputStream=obj;
+        this.gs = gameState;
+        buttonBoard = new CellButton[5][5];
 
         this.setSize(510,510);
         this.setOpaque(false);
@@ -37,7 +41,7 @@ public class BoardPanel extends JPanel {
                 //ImageIcon img = new ImageIcon(graphicsPath+"levelNumber\\dome45.png");
                 BufferedImage combinedImage = null;
                 try {
-                    final BufferedImage bg = ImageIO.read(new File(graphicsPath+"buildings//3.png"));
+                    final BufferedImage bg = ImageIO.read(new File(graphicsPath+"buildings//0.png"));
                     final BufferedImage dome = ImageIO.read(new File(graphicsPath+"buildings//dome45.png"));
                     combinedImage = new BufferedImage(bg.getWidth(), bg.getHeight(), BufferedImage.TYPE_INT_ARGB );
                     Graphics2D g = combinedImage.createGraphics();
@@ -49,26 +53,11 @@ public class BoardPanel extends JPanel {
                 }
 
 
-                JButton component = new JButton("B"+r+","+c,new ImageIcon(combinedImage));
+                buttonBoard[r][c] = new CellButton(r,c,new ImageIcon(combinedImage));
                 //component.setPreferredSize(new Dimension(102,102));
-                component.setContentAreaFilled(false);
-                component.setOpaque(false);
-                component.setBorder(null);
-                component.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseEntered(MouseEvent e) {
-                        //super.mouseEntered(e);
-                        component.setBorder(new LineBorder(Color.BLACK, 1));
-                    }
-                });
-
-                component.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseExited(MouseEvent e) {
-                        super.mouseExited(e);
-                        component.setBorder(null);
-                    }
-                });
+                buttonBoard[r][c].setContentAreaFilled(false);
+                buttonBoard[r][c].setOpaque(false);
+                buttonBoard[r][c].setBorder(null);
 
                 lim.gridx=c;
                 lim.gridy=r;
@@ -76,10 +65,61 @@ public class BoardPanel extends JPanel {
                 lim.weighty=1;
                 lim.fill = GridBagConstraints.BOTH;
                 //lim.insets = new Insets(10, 10, 10, 10); //lim è un GridBagConstraints
-                gridbaglayout.setConstraints(component,lim);
-                this.add(component);
+                gridbaglayout.setConstraints(buttonBoard[r][c],lim);
+                this.add(buttonBoard[r][c]);
+
+                createListener(buttonBoard[r][c]);
+
+
             }
         }
+
+
+    }
+
+
+    public void createListener(CellButton component){
+        BoardPanel bPanel = this;
+
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                //super.mouseEntered(e);
+                component.setBorder(new LineBorder(Color.BLACK, 1));
+            }
+        });
+
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                component.setBorder(null);
+            }
+        });
+
+        /*TO FIX*/
+        component.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                if(gs.isMyTurn()){
+
+                    if(gs.getHasSetWorkers() == 0 || gs.getHasSetWorkers() == 1){
+                        try {
+
+                            objectOutputStream.writeObject( new ClientMessage(2,null, null, component.getRow(), component.getColumn(),-1,-1,null));
+                            objectOutputStream.flush();
+                            gs.setHasSetWorkers(gs.getHasSetWorkers()+1);
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+
+                    }
+
+                    System.out.println("R: "+ component.getRow() + " C: "+  component.getColumn());
+                }
+            }
+        });
 
 
     }

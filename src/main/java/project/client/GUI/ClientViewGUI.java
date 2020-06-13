@@ -1,5 +1,6 @@
 package project.client.GUI;
 
+import project.Cell;
 import project.ClientMessage;
 import project.Message;
 
@@ -35,6 +36,7 @@ public class ClientViewGUI implements Observer {
 
     ArrayList<String> availableGods;
 
+    GameState gameState;
 
 
 
@@ -43,6 +45,7 @@ public class ClientViewGUI implements Observer {
         objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         players = new ArrayList<String>();
         availableGods = new ArrayList<>();
+        gameState = new GameState();
     }
     public void loginWithFrame(){
         try {
@@ -155,7 +158,7 @@ public class ClientViewGUI implements Observer {
         login_frame.setVisible(false);
         santoriniFrame = new JFrame("Santorini");
         ImagePanel imagePanel = new ImagePanel(1280,720);
-        board_panel = new BoardPanel();
+        board_panel = new BoardPanel(objectOutputStream,gameState);
         players_panel = new PlayersPanel();
         controls_panel = new ControlsPanel(graphicsPath+"DecoratedPanel.png",300,720);
         board_panel.setBounds(380,105,525,525);
@@ -266,6 +269,14 @@ public class ClientViewGUI implements Observer {
         String[] parsedMex = mex.getData().split(";");
         try {
             System.out.println("list arrived: " + mex.getData());
+
+            if(login_frame != null && mex.getTurnOf() != null && login_frame.getUsername() != null && mex.getTurnOf().equals(login_frame.getUsername())){
+                gameState.setMyTurn(true);
+            }
+            else{
+                gameState.setMyTurn(false);
+            }
+
             switch (mex.getTypeOfMessage()) {
                 case (20): //con quanti giocatori vuoi giocare
                     int n = startingDialogBox();
@@ -310,8 +321,17 @@ public class ClientViewGUI implements Observer {
                         santoriniFrame.validate();
                         santoriniFrame.repaint();
                     }
-                    if(availableGods.isEmpty()){
+                    if(availableGods.isEmpty()){    //when the last player has chosen the personal god, the next turn is of the first player.
+                        gameState.setHasSetWorkers(0);  //0:means that the player hasn't set worker yet and should insert the workers
+
                         //createWorker(mex); // setup my workers position if it's my turn
+                        /*
+                        * setWorkerFlag=1
+                        *
+                        * New Dialog() per dare messaggio di scegliere worker.
+                        *
+                        *
+                        * */
                         break;
                     }
                     if (mex.getData().equals("false")) {
@@ -321,10 +341,63 @@ public class ClientViewGUI implements Observer {
                     choseGod(mex);
                     break;
 
+                case(4): //recived any player worker positions
+                    if(!mex.boardIsEmpty()){
+                        printBoard(mex);
+
+                    }
+                    if(mex.getTurnOf().equals(login_frame.getUsername()) && ((gameState.getHasSetWorkers()>=0 && gameState.getHasSetWorkers()<2) || mex.getData().equals("false"))){
+                        if (mex.getData().equals("false")){
+                            System.out.println(mex.getErrorData());
+                            gameState.setHasSetWorkers(gameState.getHasSetWorkers()-1);
+                        }
+                        //createWorker(mex);
+                    } // setup my workers position if it's my turn
+                    //else{turnMenu(mex);}
+                    break;
+
+                /*case(5): //if someone has moved and it's me, i build
+                case(6):
+                    if(!mex.boardIsEmpty()){ printBoard(mex); }
+                    if (mex.getData().equals("false")) {
+                        System.out.println("Bad input");
+                        System.out.println(mex.getErrorData());
+                    }
+                    turnMenu(mex);
+                    //checkTurnPhase(mex);
+                    break;*/
+
             }
         }
         catch (IOException e){
 
         }
+
+
+    }
+
+    public static final String reset = "\u001B[0m";
+    public void printBoard(Message mex){
+
+        Cell[][] board = mex.getBoard();
+        for(int i = 0;i<5;i++){
+            for(int j = 0;j<5;j++){
+                if(board[i][j].isOccupiedBy() != null) {
+                    String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player
+                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
+                    String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level
+                    System.out.print(color+player+lvl+" "+reset);
+                }
+                else{
+                    System.out.print(" " + board[i][j].getLevel() + " ");
+                }
+            }
+            System.out.println("");
+        }
+        System.out.println("turnof: "+ mex.getTurnOf());
+        System.out.println("");
+
+        mex.addBoard(null);
+        mex = null;
     }
 }
