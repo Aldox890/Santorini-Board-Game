@@ -60,7 +60,9 @@ public class GodsPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(listOfGods.size()<nPlayers) {
-                    listOfGods.add(name);
+                    if(!listOfGods.contains(name)) {
+                        listOfGods.add(name);
+                    }
                 }
                 if (listOfGods.size() >= nPlayers){
                     try {
