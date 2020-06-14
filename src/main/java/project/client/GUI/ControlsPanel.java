@@ -1,8 +1,12 @@
 package project.client.GUI;
 
+import project.ClientMessage;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class ControlsPanel extends ImagePanel {
     private static final String graphicsPath = "graphics//btncontrols//";
@@ -11,9 +15,13 @@ public class ControlsPanel extends ImagePanel {
     //JPanel fillerPanel;
     JPanel buttonsPanel;
     JButton moveBtn, buildBtn, endTurnBtn, godButton;
+    GameState gameState;
+    ObjectOutputStream objectOutputStream;
 
-    ControlsPanel(String bgpath,int width, int height){
+    ControlsPanel(ObjectOutputStream oos, String bgpath,int width, int height, GameState gs){
         super(bgpath,width,height);
+        objectOutputStream = oos;
+        gameState = gs;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         //this.setAlignmentY(Component.CENTER_ALIGNMENT);
         this.setBounds(990,0,300,720);
@@ -87,6 +95,7 @@ public class ControlsPanel extends ImagePanel {
 
         addMouseEnteredToButtons();
         addMouseExitedToButtons();
+        addMouseClickToButtons();
 
         buttonsPanel.add(moveBtn);
         buttonsPanel.add(buildBtn);
@@ -153,6 +162,39 @@ public class ControlsPanel extends ImagePanel {
                 //super.mouseExited(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_ENDTURN.png"),190,70);
                 endTurnBtn.setIcon(imgbtn);
+            }
+        });
+    }
+
+    void addMouseClickToButtons(){
+        moveBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                gameState.setMoveFlag(true);
+                gameState.setBuildFlag(false);
+            }
+        });
+
+        buildBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                gameState.setBuildFlag(true);
+                gameState.setMoveFlag(false);
+            }
+        });
+
+        endTurnBtn.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                gameState.setBuildFlag(false);
+                gameState.setMoveFlag(false);
+
+                try {
+                    objectOutputStream.writeObject(new ClientMessage(10,null, null, -1, -1,-1,-1,null));
+                    objectOutputStream.flush();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         });
     }

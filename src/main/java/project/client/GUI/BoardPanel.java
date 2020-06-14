@@ -4,15 +4,10 @@ import project.Cell;
 import project.ClientMessage;
 import project.Message;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
@@ -23,15 +18,23 @@ public class BoardPanel extends JPanel {
     String graphicsPath = "graphics//";
     GridBagLayout gridbaglayout;
     GridBagConstraints lim;
-    GameState gs;
+    GameState gameState;
     CellButton[][] buttonBoard;
 
-
+    int xStart;
+    int yStart;
+    int xDest;
+    int yDest;
 
     public BoardPanel(ObjectOutputStream obj, GameState gameState) {
         this.objectOutputStream=obj;
-        this.gs = gameState;
+        this.gameState = gameState;
         buttonBoard = new CellButton[5][5];
+
+        xStart = -1;
+        yStart = -1;
+        xDest = -1;
+        yDest = -1;
 
         this.setSize(510,510);
         this.setOpaque(false);
@@ -88,7 +91,11 @@ public class BoardPanel extends JPanel {
         for(int i = 0;i<5;i++){
             for(int j = 0;j<5;j++){
 
-                buttonBoard[i][j].removeAll();
+                Component[] components = buttonBoard[i][j].getComponents();
+
+                for (Component component : components) {
+                    buttonBoard[i][j].remove(component);
+                }
 
                 if(board[i][j].isOccupiedBy() != null) {
                     String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player
@@ -96,18 +103,16 @@ public class BoardPanel extends JPanel {
                     String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level
                     System.out.print(color+player+lvl+" "+reset);
 
-                    ImagePanel img = new ImagePanel(graphicsPath + "worker//red_worker.png", 40, 65);
+                    ImagePanel img = new ImagePanel(graphicsPath + "worker//red_worker.png", 102, 102);
 
                     if(mex.getCell(i,j).isOccupiedBy().getOwner().getColor() == CYAN) {
-                        img = new ImagePanel(graphicsPath + "worker//verdeacqua_worker.png", 40, 65);
+                        img = new ImagePanel(graphicsPath + "worker//verdeacqua_worker.png", 102, 102);
                     }
                     else if(mex.getCell(i,j).isOccupiedBy().getOwner().getColor() == YELLOW) {
-                        img = new ImagePanel(graphicsPath + "worker//yellow_worker.png", 40, 65);
+                        img = new ImagePanel(graphicsPath + "worker//yellow_worker.png", 102, 102);
                     }
-
                     buttonBoard[i][j].add(img);
                 }
-
                 ImagePanel img = new ImagePanel(graphicsPath+"buildings//" + mex.getCell(i,j).getLevel() + ".png",102,102);
                 buttonBoard[i][j].add(img);
             }
@@ -153,20 +158,64 @@ public class BoardPanel extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                if(gs.isMyTurn()){
-
-                    if(gs.getHasSetWorkers() == 0 || gs.getHasSetWorkers() == 1){
+                if(gameState.isMyTurn()){
+                    if(gameState.getHasSetWorkers() == 0 || gameState.getHasSetWorkers() == 1){
                         try {
 
                             objectOutputStream.writeObject( new ClientMessage(2,null, null, component.getRow(), component.getColumn(),-1,-1,null));
                             objectOutputStream.flush();
-                            gs.setHasSetWorkers(gs.getHasSetWorkers()+1);
+                            gameState.setHasSetWorkers(gameState.getHasSetWorkers()+1);
                         } catch (IOException ex) {
                             ex.printStackTrace();
                         }
 
                     }
+                    else if(gameState.isMoveFlag()){
+                        if(xStart == -1 && yStart == -1){
+                            xStart = component.getRow();
+                            yStart = component.getColumn();
+                        }
+                        else{
+                            xDest = component.getRow();
+                            yDest = component.getColumn();
+                            try {
+                                objectOutputStream.writeObject(new ClientMessage(3,null, null, xStart, yStart,xDest,yDest,null));
+                                objectOutputStream.flush();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
 
+                            xStart = -1;
+                            yStart = -1;
+                            xDest = -1;
+                            yDest = -1;
+                            gameState.setMoveFlag(false);
+                        }
+                    }
+                    else if(gameState.isBuildFlag()) {
+                        if (xStart == -1 && yStart == -1) {
+                            xStart = component.getRow();
+                            yStart = component.getColumn();
+                        }
+                        else {
+                            xDest = component.getRow();
+                            yDest = component.getColumn();
+
+                            //add gods checks and alert: line 469 ClientView CLI
+                            try {
+                                objectOutputStream.writeObject(new ClientMessage(4, null, null, xStart, yStart, xDest, yDest, null));
+                                objectOutputStream.flush();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                            }
+
+                            xStart = -1;
+                            yStart = -1;
+                            xDest = -1;
+                            yDest = -1;
+                            gameState.setBuildFlag(false);
+                        }
+                    }
                     System.out.println("R: "+ component.getRow() + " C: "+  component.getColumn());
                 }
             }

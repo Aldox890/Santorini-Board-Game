@@ -160,7 +160,7 @@ public class ClientViewGUI implements Observer {
         ImagePanel imagePanel = new ImagePanel(1280,720);
         board_panel = new BoardPanel(objectOutputStream,gameState);
         players_panel = new PlayersPanel();
-        controls_panel = new ControlsPanel(graphicsPath+"DecoratedPanel.png",300,720);
+        controls_panel = new ControlsPanel(objectOutputStream,graphicsPath+"DecoratedPanel.png",300,720,gameState);
         board_panel.setBounds(380,105,525,525);
         santoriniFrame.setLayout(null);
 
@@ -323,15 +323,6 @@ public class ClientViewGUI implements Observer {
                     }
                     if(availableGods.isEmpty()){    //when the last player has chosen the personal god, the next turn is of the first player.
                         gameState.setHasSetWorkers(0);  //0:means that the player hasn't set worker yet and should insert the workers
-
-                        //createWorker(mex); // setup my workers position if it's my turn
-                        /*
-                        * setWorkerFlag=1
-                        *
-                        * New Dialog() per dare messaggio di scegliere worker.
-                        *
-                        *
-                        * */
                         break;
                     }
                     if (mex.getData().equals("false")) {
@@ -350,21 +341,20 @@ public class ClientViewGUI implements Observer {
                             System.out.println(mex.getErrorData());
                             gameState.setHasSetWorkers(gameState.getHasSetWorkers()-1);
                         }
-                        //createWorker(mex);
-                    } // setup my workers position if it's my turn
+                    }
                     //else{turnMenu(mex);}
                     break;
 
-                /*case(5): //if someone has moved and it's me, i build
+                case(5): //if someone has moved and it's me, i build
                 case(6):
-                    if(!mex.boardIsEmpty()){ printBoard(mex); }
+                    if(!mex.boardIsEmpty()){board_panel.updateBoard(mex);}
                     if (mex.getData().equals("false")) {
                         System.out.println("Bad input");
                         System.out.println(mex.getErrorData());
                     }
-                    turnMenu(mex);
+                    //turnMenu(mex);
                     //checkTurnPhase(mex);
-                    break;*/
+                    break;
 
             }
         }
