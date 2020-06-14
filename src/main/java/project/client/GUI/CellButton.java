@@ -7,8 +7,7 @@ public class CellButton extends JButton {
     private int row;
     private int column;
 
-    public CellButton(int r, int c, ImageIcon img) {
-        super(img);
+    public CellButton(int r, int c) {
         this.row = r;
         this.column = c;
     }

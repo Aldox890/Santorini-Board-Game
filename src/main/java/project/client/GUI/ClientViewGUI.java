@@ -343,8 +343,7 @@ public class ClientViewGUI implements Observer {
 
                 case(4): //recived any player worker positions
                     if(!mex.boardIsEmpty()){
-                        printBoard(mex);
-
+                        board_panel.updateBoard(mex);
                     }
                     if(mex.getTurnOf().equals(login_frame.getUsername()) && ((gameState.getHasSetWorkers()>=0 && gameState.getHasSetWorkers()<2) || mex.getData().equals("false"))){
                         if (mex.getData().equals("false")){
@@ -376,28 +375,5 @@ public class ClientViewGUI implements Observer {
 
     }
 
-    public static final String reset = "\u001B[0m";
-    public void printBoard(Message mex){
 
-        Cell[][] board = mex.getBoard();
-        for(int i = 0;i<5;i++){
-            for(int j = 0;j<5;j++){
-                if(board[i][j].isOccupiedBy() != null) {
-                    String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player
-                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
-                    String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level
-                    System.out.print(color+player+lvl+" "+reset);
-                }
-                else{
-                    System.out.print(" " + board[i][j].getLevel() + " ");
-                }
-            }
-            System.out.println("");
-        }
-        System.out.println("turnof: "+ mex.getTurnOf());
-        System.out.println("");
-
-        mex.addBoard(null);
-        mex = null;
-    }
 }
