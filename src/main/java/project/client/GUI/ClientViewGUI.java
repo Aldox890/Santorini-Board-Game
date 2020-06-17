@@ -264,6 +264,7 @@ public class ClientViewGUI implements Observer {
         if(!mex.getData().equals("false")){
             String[] selectedGod = mex.getData().split(";");
             System.out.println(selectedGod[0] + " has selected " + selectedGod[1]);
+            players_panel.addGodThumbnail(selectedGod[0], selectedGod[1]);
             availableGods.remove(selectedGod[1]);
         }
     }
