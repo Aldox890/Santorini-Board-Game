@@ -13,7 +13,8 @@ public class PlayerInfoPanel extends JPanel {
 
     public PlayerInfoPanel() {
         super();
-        this.setPreferredSize(new Dimension(250,40));
+        this.setPreferredSize(new Dimension(230,50));
+        //this.setBounds(0,0,250,50);
         this.setLayout(new FlowLayout());
         this.setOpaque(false);
 
@@ -22,6 +23,7 @@ public class PlayerInfoPanel extends JPanel {
         imgGod.setOpaque(false);
 
         username = new JLabel();
+        username.setMaximumSize(new Dimension(70,20));
 
 
         color = new JLabel();
@@ -58,7 +60,7 @@ public class PlayerInfoPanel extends JPanel {
     /*sets the border of the panel if the boolean flag is true otherwise it resets it*/
     public void setBorder(boolean active){
         if(active){
-            this.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
+            this.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
         }else{
             this.setBorder(null);
         }

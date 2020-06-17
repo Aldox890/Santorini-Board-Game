@@ -279,20 +279,20 @@ public class ClientViewGUI implements Observer {
             if(login_frame != null && mex.getTurnOf() != null && login_frame.getUsername() != null && mex.getTurnOf().equals(login_frame.getUsername())){
                 gameState.setMyTurn(true);
                 if(santoriniFrame != null){
-                    santoriniFrame.setEnabled(true);
-                    /*board_panel.setEnabled(true);
+                    //santoriniFrame.setEnabled(true);
+                    board_panel.setEnabled(true);
                     players_panel.setEnabled(true);
-                    controls_panel.setEnabled(true);*/
+                    controls_panel.setEnabled(true);
                 }
 
             }
             else{
                 gameState.setMyTurn(false);
                 if(santoriniFrame != null){
-                    santoriniFrame.setEnabled(false);
-                    /*board_panel.setEnabled(false);
+                    //santoriniFrame.setEnabled(false);
+                    board_panel.setEnabled(false);
                     players_panel.setEnabled(false);
-                    controls_panel.setEnabled(false);*/
+                    controls_panel.setEnabled(false);
                 }
             }
 
@@ -304,6 +304,21 @@ public class ClientViewGUI implements Observer {
                 case (20): //con quanti giocatori vuoi giocare
                     int n = startingDialogBox();
                     objectOutputStream.writeObject(new ClientMessage(20, null, null, -1, -1, -1, -1, Integer.toString((n+2))));
+                    break;
+
+                case(25): //crash during god selection
+                    System.out.println(mex.getData());
+                    System.exit(0);
+                    break;
+
+                case(30):   //WIN
+                    //printBoard(mex);
+                    WinPanel winPanel = new WinPanel(mex.getTurnOf());
+                    santoriniFrame.add(winPanel,0);
+                    santoriniFrame.validate();
+                    santoriniFrame.repaint();
+                    System.out.println(mex.getTurnOf()+" has won the game!");
+                    //System.exit(0);
                     break;
 
                 case (0): // required player registration

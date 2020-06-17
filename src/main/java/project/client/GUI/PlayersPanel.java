@@ -16,24 +16,30 @@ public class PlayersPanel extends JPanel {
     PlayersPanel(){
         playerSlot = new JPanel();
         playerSlot.setOpaque(false);
-        playerSlot.setLayout(new GridLayout(4,1));
+        //playerSlot.setLayout(new GridLayout(4,1));
+        playerSlot.setLayout(new BoxLayout(playerSlot,BoxLayout.PAGE_AXIS));
         this.setLayout(null);
         this.setBounds(0,0,300,720);
 
         ImagePanel background = new ImagePanel(graphicsPath + "DecoratedPanel.png",300,720);
         background.setBounds(-26,0,300,720);
-        this.setOpaque(false);
-        this.add(background);
 
-        background.add(playerSlot);
         JPanel fillPanel = new JPanel();
         fillPanel.setPreferredSize(new Dimension(300,100));
         fillPanel.setOpaque(false);
-        playerSlot.add(fillPanel);
+        background.add(fillPanel);
+
+        playerSlot.setBounds(49,130,230,200);
+        background.add(playerSlot);
+
+        this.setOpaque(false);
+        this.add(background);
+
     }
 
     JPanel createLabel(String name, Color c){
         PlayerInfoPanel infoPanel = new PlayerInfoPanel();
+        infoPanel.setBounds(10,0,250,50);
         infoPanel.setImgGod("default");
         infoPanel.setUsername(name);
         infoPanel.setColor(c);
