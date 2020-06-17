@@ -33,8 +33,10 @@ public class ClientViewGUI implements Observer {
     ArrayList<String> players;
     GodsPanel godsPanel;
     ChooseGodPanel chooseGodPanel;
+    AlertPanel alertPanel;
 
     ArrayList<String> availableGods;
+
 
     GameState gameState;
 
@@ -156,6 +158,7 @@ public class ClientViewGUI implements Observer {
     public void createGameFrame() {
         //loginFrame.setVisible(false);
         login_frame.setVisible(false);
+        alertPanel = new AlertPanel();
         santoriniFrame = new JFrame("Santorini");
         ImagePanel imagePanel = new ImagePanel(1280,720);
         board_panel = new BoardPanel(objectOutputStream,gameState);
@@ -166,12 +169,14 @@ public class ClientViewGUI implements Observer {
 
 
 
+
         imagePanel.setBounds(0,0,1280,720);
 
         santoriniFrame.getContentPane().add(controls_panel);
         santoriniFrame.getContentPane().add(players_panel);
         santoriniFrame.getContentPane().add(board_panel);
         santoriniFrame.getContentPane().add(imagePanel);
+        santoriniFrame.getContentPane().add(alertPanel,0);
 
 
         //gameBoard.setSize(new Dimension(1280, 720));
@@ -268,8 +273,8 @@ public class ClientViewGUI implements Observer {
         Message mex = (Message) arg;
         String[] parsedMex = mex.getData().split(";");
         try {
+            if(alertPanel!=null) alertPanel.setText(mex.getErrorData());
             System.out.println("list arrived: " + mex.getData());
-
             if(login_frame != null && mex.getTurnOf() != null && login_frame.getUsername() != null && mex.getTurnOf().equals(login_frame.getUsername())){
                 gameState.setMyTurn(true);
             }
