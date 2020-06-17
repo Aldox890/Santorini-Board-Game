@@ -278,9 +278,26 @@ public class ClientViewGUI implements Observer {
             System.out.println("list arrived: " + mex.getData());
             if(login_frame != null && mex.getTurnOf() != null && login_frame.getUsername() != null && mex.getTurnOf().equals(login_frame.getUsername())){
                 gameState.setMyTurn(true);
+                if(santoriniFrame != null){
+                    santoriniFrame.setEnabled(true);
+                    /*board_panel.setEnabled(true);
+                    players_panel.setEnabled(true);
+                    controls_panel.setEnabled(true);*/
+                }
+
             }
             else{
                 gameState.setMyTurn(false);
+                if(santoriniFrame != null){
+                    santoriniFrame.setEnabled(false);
+                    /*board_panel.setEnabled(false);
+                    players_panel.setEnabled(false);
+                    controls_panel.setEnabled(false);*/
+                }
+            }
+
+            if(players_panel != null){
+                players_panel.setTurn(mex.getTurnOf());
             }
 
             switch (mex.getTypeOfMessage()) {

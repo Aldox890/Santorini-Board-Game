@@ -33,28 +33,6 @@ public class PlayersPanel extends JPanel {
     }
 
     JPanel createLabel(String name, Color c){
-        /*JPanel panel = new JPanel();
-        panel.setLayout(new FlowLayout());
-        panel.setPreferredSize(new Dimension(300,40));
-        panel.setOpaque(false);
-
-        JLabel godImg = new JLabel("god");
-        godImg.setPreferredSize(new Dimension(35,35));
-        godImg.setOpaque(false);
-        //godImg.setBackground(Color.YELLOW);
-
-        JLabel userLabel = new JLabel(name);
-
-        JLabel color = new JLabel("colore");
-        color.setPreferredSize(new Dimension(15,15));
-        color.setOpaque(true);
-        color.setBackground(c);*/
-
-
-        //panel.add(godImg);
-        //panel.add(userLabel);
-        //panel.add(color);
-
         PlayerInfoPanel infoPanel = new PlayerInfoPanel();
         infoPanel.setImgGod("default");
         infoPanel.setUsername(name);
@@ -80,6 +58,17 @@ public class PlayersPanel extends JPanel {
         for(PlayerInfoPanel p : playersInfoList){
             if(p.getUsername().equals(player_name)){
                 p.setImgGod(god_name);
+            }
+        }
+    }
+
+    /*sets the border to blue of the container of the player who has the turn */
+    public void setTurn(String player){
+        for(PlayerInfoPanel p : playersInfoList){
+            if(p.getUsername().equals(player)){
+                p.setBorder(true);
+            }else{
+                p.setBorder(false);
             }
         }
     }

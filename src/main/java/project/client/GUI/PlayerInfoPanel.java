@@ -13,7 +13,7 @@ public class PlayerInfoPanel extends JPanel {
 
     public PlayerInfoPanel() {
         super();
-        this.setPreferredSize(new Dimension(300,40));
+        this.setPreferredSize(new Dimension(250,40));
         this.setLayout(new FlowLayout());
         this.setOpaque(false);
 
@@ -54,4 +54,15 @@ public class PlayerInfoPanel extends JPanel {
     public void setColor(Color color) {
         this.color.setBackground(color);
     }
+
+    /*sets the border of the panel if the boolean flag is true otherwise it resets it*/
+    public void setBorder(boolean active){
+        if(active){
+            this.setBorder(BorderFactory.createLineBorder(Color.BLUE,1));
+        }else{
+            this.setBorder(null);
+        }
+    }
+
+
 }
