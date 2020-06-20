@@ -540,7 +540,9 @@ public class Game extends Observable implements Serializable {
         notifyObserver(new Message(-1,3,response, turnOf.getName()));
     }
 
-
+    /**
+     * When a game is completed his file is deleted
+     */
     public void deleteSavedGame(){
         String filename="";
         filename=filename+startingPlayers+"-";
