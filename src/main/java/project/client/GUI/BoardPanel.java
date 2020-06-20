@@ -21,20 +21,10 @@ public class BoardPanel extends JPanel {
     GameState gameState;
     CellButton[][] buttonBoard;
 
-    int xStart;
-    int yStart;
-    int xDest;
-    int yDest;
-
     public BoardPanel(ObjectOutputStream obj, GameState gameState) {
         this.objectOutputStream=obj;
         this.gameState = gameState;
         buttonBoard = new CellButton[5][5];
-
-        xStart = -1;
-        yStart = -1;
-        xDest = -1;
-        yDest = -1;
 
         this.setSize(510,510);
         this.setOpaque(false);
@@ -156,7 +146,7 @@ public class BoardPanel extends JPanel {
         /*TO FIX*/
         component.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 super.mouseClicked(e);
                 if(gameState.isMyTurn()){
                     if(gameState.getHasSetWorkers() == 0 || gameState.getHasSetWorkers() == 1){
@@ -171,48 +161,49 @@ public class BoardPanel extends JPanel {
 
                     }
                     else if(gameState.isMoveFlag()){
-                        if(xStart == -1 && yStart == -1){
-                            xStart = component.getRow();
-                            yStart = component.getColumn();
+                        if(gameState.getxStart() == -1 && gameState.getyStart() == -1){
+                            gameState.setxStart(component.getRow());
+                            gameState.setyStart(component.getColumn());
                         }
                         else{
-                            xDest = component.getRow();
-                            yDest = component.getColumn();
+                            gameState.setxDest(component.getRow());
+                            gameState.setyDest(component.getColumn());
                             try {
-                                objectOutputStream.writeObject(new ClientMessage(3,null, null, xStart, yStart,xDest,yDest,null));
+                                objectOutputStream.writeObject(new ClientMessage(3,null, null, gameState.getxStart(), gameState.getyStart(),gameState.getxDest(),gameState.getyDest(),null));
                                 objectOutputStream.flush();
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
 
-                            xStart = -1;
-                            yStart = -1;
-                            xDest = -1;
-                            yDest = -1;
+                            gameState.setxStart(-1);
+                            gameState.setyStart(-1);
+                            gameState.setxDest(-1);
+                            gameState.setyDest(-1);
+
                             gameState.setMoveFlag(false);
                         }
                     }
                     else if(gameState.isBuildFlag()) {
-                        if (xStart == -1 && yStart == -1) {
-                            xStart = component.getRow();
-                            yStart = component.getColumn();
+                        if (gameState.getxStart() == -1 && gameState.getyStart() == -1) {
+                            gameState.setxStart(component.getRow());
+                            gameState.setyStart(component.getColumn());
                         }
                         else {
-                            xDest = component.getRow();
-                            yDest = component.getColumn();
+                            gameState.setxDest(component.getRow());
+                            gameState.setyDest(component.getColumn());
 
                             //add gods checks and alert: line 469 ClientView CLI
                             try {
-                                objectOutputStream.writeObject(new ClientMessage(4, null, null, xStart, yStart, xDest, yDest, null));
+                                objectOutputStream.writeObject(new ClientMessage(4, null, null, gameState.getxStart(), gameState.getyStart(),gameState.getxDest(),gameState.getyDest(), null));
                                 objectOutputStream.flush();
                             } catch (IOException ex) {
                                 ex.printStackTrace();
                             }
 
-                            xStart = -1;
-                            yStart = -1;
-                            xDest = -1;
-                            yDest = -1;
+                            gameState.setxStart(-1);
+                            gameState.setyStart(-1);
+                            gameState.setxDest(-1);
+                            gameState.setyDest(-1);
                             gameState.setBuildFlag(false);
                         }
                     }

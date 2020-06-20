@@ -11,6 +11,10 @@ public class GameState {
     private boolean buildFlag;
     private int boardClicks;
     private Cell[][] gameBoard;
+    private int xStart;
+    private int yStart;
+    private int xDest;
+    private int yDest;
 
     public GameState() {
         isMyTurn = false;
@@ -83,5 +87,37 @@ public class GameState {
 
     public void setMyTurn(boolean myTurn) {
         isMyTurn = myTurn;
+    }
+
+    public int getxStart() {
+        return xStart;
+    }
+
+    public int getyStart() {
+        return yStart;
+    }
+
+    public int getxDest() {
+        return xDest;
+    }
+
+    public int getyDest() {
+        return yDest;
+    }
+
+    public void setxStart(int xStart) {
+        this.xStart = xStart;
+    }
+
+    public void setyStart(int yStart) {
+        this.yStart = yStart;
+    }
+
+    public void setxDest(int xDest) {
+        this.xDest = xDest;
+    }
+
+    public void setyDest(int yDest) {
+        this.yDest = yDest;
     }
 }

@@ -228,8 +228,6 @@ public class ClientViewGUI implements Observer {
 
             santoriniFrame.validate();
             santoriniFrame.repaint();
-
-
         }
     }
 
@@ -284,7 +282,6 @@ public class ClientViewGUI implements Observer {
                     players_panel.setEnabled(true);
                     controls_panel.setEnabled(true);
                 }
-
             }
             else{
                 gameState.setMyTurn(false);

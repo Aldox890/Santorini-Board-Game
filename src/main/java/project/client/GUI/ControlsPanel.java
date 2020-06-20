@@ -170,6 +170,10 @@ public class ControlsPanel extends ImagePanel {
         moveBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                gameState.setxStart(-1);
+                gameState.setyStart(-1);
+                gameState.setxDest(-1);
+                gameState.setyDest(-1);
                 gameState.setMoveFlag(true);
                 gameState.setBuildFlag(false);
             }
@@ -178,6 +182,10 @@ public class ControlsPanel extends ImagePanel {
         buildBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                gameState.setxStart(-1);
+                gameState.setyStart(-1);
+                gameState.setxDest(-1);
+                gameState.setyDest(-1);
                 gameState.setBuildFlag(true);
                 gameState.setMoveFlag(false);
             }
@@ -186,6 +194,10 @@ public class ControlsPanel extends ImagePanel {
         endTurnBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                gameState.setxStart(-1);
+                gameState.setyStart(-1);
+                gameState.setxDest(-1);
+                gameState.setyDest(-1);
                 gameState.setBuildFlag(false);
                 gameState.setMoveFlag(false);
 
