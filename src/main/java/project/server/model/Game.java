@@ -6,9 +6,7 @@ import project.Worker;
 
 import java.io.*;
 import java.lang.reflect.Array;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
@@ -20,6 +18,8 @@ import java.util.stream.Stream;
 *  */
 
 public class Game extends Observable implements Serializable {
+    private ArrayList <String> startingNames = new ArrayList<>();
+    private int startingPlayers;
     private static final long serialVersionUID = 261752617;
     public static final String reset = "\u001B[0m";
     private List<Observer> observers = new ArrayList<>();
@@ -115,6 +115,7 @@ public class Game extends Observable implements Serializable {
     }
     public void setNPlayers(int nPlayers){
         this.nPlayers = nPlayers;
+        startingPlayers = nPlayers;
     }
 
     /**
@@ -132,6 +133,7 @@ public class Game extends Observable implements Serializable {
             }
         }
         playerList.add(p);
+        startingNames.add(p.getName());
         System.out.println("added to playerlist: " + p.getName());
 
         notifyObserver(new Message(socketId,0,"registered", turnOf.getName()));
@@ -340,6 +342,7 @@ public class Game extends Observable implements Serializable {
             Message mex = new Message(-1, 30, "true", turnOf.getName());
             mex.addBoard(gameBoard.getBoard());
             notifyObserver(mex);
+            deleteSavedGame();
             return;
         }
         Message m = new Message(socketId,5,"false", turnOf.getName());
@@ -390,6 +393,7 @@ public class Game extends Observable implements Serializable {
             Message mex = new Message(-1, 30, "true", playerList.get(0).getName());
             mex.addBoard(gameBoard.getBoard());
             notifyObserver(mex);
+
         }
     }
 
@@ -537,7 +541,30 @@ public class Game extends Observable implements Serializable {
     }
 
 
-
-
+    public void deleteSavedGame(){
+        String filename="";
+        filename=filename+startingPlayers+"-";
+        for(int i=0;i<startingPlayers;i++) {
+            filename=filename+startingNames.get(i)+"-";
+        }
+        try
+        {
+            Files.deleteIfExists(Paths.get("savedgames//"+filename));
+        }
+        catch(NoSuchFileException e)
+        {
+            System.out.println("No such file/directory exists");
+        }
+        catch(DirectoryNotEmptyException e)
+        {
+            System.out.println("Directory is not empty.");
+        }
+        catch(IOException e)
+        {
+            System.out.println("Invalid permissions.");
+        }
+        System.out.println("Deletion successful.");
+    }
 
 }
+
