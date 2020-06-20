@@ -184,6 +184,7 @@ public class BoardPanel extends JPanel {
                         }
                     }
                     else if(gameState.isBuildFlag()) {
+
                         if (gameState.getxStart() == -1 && gameState.getyStart() == -1) {
                             gameState.setxStart(component.getRow());
                             gameState.setyStart(component.getColumn());
@@ -193,6 +194,32 @@ public class BoardPanel extends JPanel {
                             gameState.setyDest(component.getColumn());
 
                             //add gods checks and alert: line 469 ClientView CLI
+                            if(gameState.getPersonalGod().equals("atlas")){
+                                int n = useGodPowerDialogBox(gameState.getPersonalGod());
+
+                                if(n == 0){ //YES
+                                    try{
+                                        objectOutputStream.writeObject(new ClientMessage(7,null, null, gameState.getxStart(), gameState.getyStart(),gameState.getxDest(),gameState.getyDest(),null));
+                                        objectOutputStream.flush();
+                                        return;
+                                    }catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
+                            else if(gameState.getPersonalGod().equals("hephaestus")){
+                                int n = useGodPowerDialogBox(gameState.getPersonalGod());   //asks if does want to use god power
+
+                                if(n == 0){ //YES
+                                    try{
+                                        objectOutputStream.writeObject(new ClientMessage(6,null, null, gameState.getxStart(), gameState.getyStart(),gameState.getxDest(),gameState.getyDest(),null));
+                                        objectOutputStream.flush();
+                                        return;
+                                    }catch (IOException ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }
+                            }
                             try {
                                 objectOutputStream.writeObject(new ClientMessage(4, null, null, gameState.getxStart(), gameState.getyStart(),gameState.getxDest(),gameState.getyDest(), null));
                                 objectOutputStream.flush();
@@ -213,6 +240,21 @@ public class BoardPanel extends JPanel {
         });
 
 
+    }
+
+
+    public int useGodPowerDialogBox(String godName){
+        Object[] options = {"YES",
+                "NO"};
+        int n = JOptionPane.showOptionDialog(this.getParent(),
+                "Do you want to use "+ godName+"'s power?",
+                "Santorini",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+        return n;
     }
 
 }

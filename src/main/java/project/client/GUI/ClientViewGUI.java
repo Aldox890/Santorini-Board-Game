@@ -125,34 +125,6 @@ public class ClientViewGUI implements Observer {
         loginFrame.add(loginPanel);
         loginFrame.setResizable(false);
         loginFrame.setVisible(true);
-
-        /*loginButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                uusername = username.getText();
-                System.out.println("username: ");
-                String username = usernameArea.getText();
-                String age = ageArea.getText();
-                if( username.replace(" ", "").length()>=3 && age.replace(" ", "").length()>=1){
-                    System.out.println("Sent");
-                    try {
-                        objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(username+";"+age) ));
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }else if(username.equals("") || age.equals("")){
-                    //errorMexLogin.setEnabled(true);
-                    errorMexLogin.setText("Error: username and age field are empty!");
-                    errorMexLogin.setVisible(true);
-                }else if(username.length()<3 || age.length()>3){
-                    //errorMexLogin.setEnabled(true);
-                    errorMexLogin.setText("Error: wrong format input in username and/or age field!");
-                    errorMexLogin.setVisible(true);
-                }
-            }
-
-        });
-                 */
     }
 
     public void createGameFrame() {
@@ -264,6 +236,10 @@ public class ClientViewGUI implements Observer {
             System.out.println(selectedGod[0] + " has selected " + selectedGod[1]);
             players_panel.addGodThumbnail(selectedGod[0], selectedGod[1]);
             availableGods.remove(selectedGod[1]);
+
+            if(selectedGod[0].equals(gameState.getPlayerName())){
+                gameState.setPersonalGod(selectedGod[1]);
+            }
         }
     }
 
@@ -274,6 +250,9 @@ public class ClientViewGUI implements Observer {
         try {
             if(alertPanel!=null) alertPanel.setText(mex.getErrorData());
             System.out.println("list arrived: " + mex.getData());
+            if(login_frame != null && gameState.getPlayerName()==null){
+                gameState.setPlayerName(login_frame.getUsername());
+            }
             if(login_frame != null && mex.getTurnOf() != null && login_frame.getUsername() != null && mex.getTurnOf().equals(login_frame.getUsername())){
                 gameState.setMyTurn(true);
                 if(santoriniFrame != null){
@@ -309,13 +288,20 @@ public class ClientViewGUI implements Observer {
                     break;
 
                 case(30):   //WIN
-                    //printBoard(mex);
                     WinPanel winPanel = new WinPanel(mex.getTurnOf());
                     santoriniFrame.add(winPanel,0);
                     santoriniFrame.validate();
                     santoriniFrame.repaint();
                     System.out.println(mex.getTurnOf()+" has won the game!");
                     //System.exit(0);
+                    break;
+
+                case(40): //Player stuck
+                    //printBoard(mex);
+                    players.remove(mex.getTurnOf()); //remove player which has both workers stucked
+                    santoriniFrame.validate();
+                    santoriniFrame.repaint();
+                    System.out.println(mex.getTurnOf()+" is stuck and his workers has been removed from the board");
                     break;
 
                 case (0): // required player registration
@@ -330,8 +316,8 @@ public class ClientViewGUI implements Observer {
                         //login();
                     }
                     break;
-                case(3):
 
+                case(3):
                     if (!mex.getData().equals("false")) {
                         System.out.println("createFrame");
                         addPlayersList(mex);
@@ -344,6 +330,7 @@ public class ClientViewGUI implements Observer {
                     }
                     choseAllowedGods();
                     break;
+
                 case (1): // recived chosen gods list
                     addAllowedGods(mex);
                     choseGod(mex);

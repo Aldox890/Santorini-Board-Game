@@ -169,7 +169,7 @@ public class ControlsPanel extends ImagePanel {
     void addMouseClickToButtons(){
         moveBtn.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 gameState.setxStart(-1);
                 gameState.setyStart(-1);
                 gameState.setxDest(-1);
@@ -181,7 +181,7 @@ public class ControlsPanel extends ImagePanel {
 
         buildBtn.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 gameState.setxStart(-1);
                 gameState.setyStart(-1);
                 gameState.setxDest(-1);
@@ -193,7 +193,7 @@ public class ControlsPanel extends ImagePanel {
 
         endTurnBtn.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 gameState.setxStart(-1);
                 gameState.setyStart(-1);
                 gameState.setxDest(-1);

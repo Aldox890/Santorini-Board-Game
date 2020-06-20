@@ -2,19 +2,20 @@ package project.client.GUI;
 
 import project.Cell;
 
+import java.util.ArrayList;
+
 public class GameState {
-    private String playerName;
+
+    private ArrayList<String> availableGods;
+    private ArrayList<String> players;
+    private String playerName, personalGod;
     private int playerAge;
     private boolean isMyTurn;
     private int hasSetWorkers;
-    private boolean moveFlag;
-    private boolean buildFlag;
+    private boolean moveFlag, buildFlag;
     private int boardClicks;
     private Cell[][] gameBoard;
-    private int xStart;
-    private int yStart;
-    private int xDest;
-    private int yDest;
+    private int xStart, xDest, yStart, yDest;
 
     public GameState() {
         isMyTurn = false;
@@ -119,5 +120,29 @@ public class GameState {
 
     public void setyDest(int yDest) {
         this.yDest = yDest;
+    }
+
+    public ArrayList<String> getAvailableGods() {
+        return availableGods;
+    }
+
+    public void setAvailableGods(ArrayList<String> availableGods) {
+        this.availableGods = availableGods;
+    }
+
+    public ArrayList<String> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<String> players) {
+        this.players = players;
+    }
+
+    public String getPersonalGod() {
+        return personalGod;
+    }
+
+    public void setPersonalGod(String personalGod) {
+        this.personalGod = personalGod;
     }
 }
