@@ -47,7 +47,6 @@ class Game2PlayersTest {
         g.setGods(gList,1);
         assertEquals(g.getGodList().get(0),"apollo");   //Correct
         assertEquals(g.getGodList().get(1),"athena");
-        //assertFalse(g.setGods(new String[]{"", ""},2)); //Error
 
     }
 

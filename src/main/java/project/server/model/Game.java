@@ -236,33 +236,47 @@ public class Game extends Observable implements Serializable {
      * @return true if gods are set, false if fails
      */
     public boolean setGods(ArrayList<String> gods, int socketId) {
+        boolean correctGodsFlag = true;
         if(gods.size()==3){
             if (godsList.contains(gods.get(0).toLowerCase()) && godsList.contains(gods.get(1).toLowerCase()) && godsList.contains(gods.get(2).toLowerCase())) {
+                for(int i =0; i <gods.size()-1;i++){
+                    for(int j=i+1; j<gods.size();j++){
+                        if(gods.get(i).equals(gods.get(j))){
+                            correctGodsFlag = false;
+                        }
+                    }
+                }
+                if (correctGodsFlag) {
                 allowedGods.add(gods.get(0).toLowerCase());
                 allowedGods.add(gods.get(1).toLowerCase());
                 allowedGods.add(gods.get(2).toLowerCase());
-                for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
-                    System.out.println(allowedGods.get(i));
-                }
+
                 turnNumber = 1;
                 turnOf = getPlayerList().get(0);
                 notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + ";" + gods.get(1).toLowerCase() + ";" + gods.get(2).toLowerCase(), turnOf.getName()));
                 //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
                 return true;
+                }
             }
         }
         else if(gods.size()==2){
             if (godsList.contains(gods.get(0).toLowerCase()) && godsList.contains(gods.get(1).toLowerCase())) {
-                allowedGods.add(gods.get(0).toLowerCase());
-                allowedGods.add(gods.get(1).toLowerCase());
-                for(int i =0; i <=allowedGods.size()-1;i++){    //debug print of gods
-                    System.out.println(allowedGods.get(i));
+                for(int i =0; i<gods.size()-1;i++){
+                    for(int j=i+1; j<gods.size();j++){
+                        if(gods.get(i).equals(gods.get(j))){
+                            correctGodsFlag = false;
+                        }
+                    }
                 }
-                turnNumber = 1;
-                turnOf = getPlayerList().get(0);
-                notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + ";" + gods.get(1).toLowerCase(), turnOf.getName()));
-                //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
-                return true;
+                if(correctGodsFlag){
+                    allowedGods.add(gods.get(0).toLowerCase());
+                    allowedGods.add(gods.get(1).toLowerCase());
+                    turnNumber = 1;
+                    turnOf = getPlayerList().get(0);
+                    notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + ";" + gods.get(1).toLowerCase(), turnOf.getName()));
+                    //notifyObserver("-1;1;" + gList[0] + ";" + gList[1] + ";" + gList[2]); OLD VERSION
+                    return true;
+                }
             }
         }
 
