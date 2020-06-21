@@ -288,6 +288,7 @@ public class ClientViewGUI implements Observer {
                     break;
 
                 case(30):   //WIN
+                    if(!mex.boardIsEmpty()){board_panel.updateBoard(mex);}
                     WinPanel winPanel = new WinPanel(mex.getTurnOf());
                     santoriniFrame.add(winPanel,0);
                     santoriniFrame.validate();

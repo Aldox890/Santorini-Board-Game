@@ -15,7 +15,7 @@ public class Board implements Serializable {
     private Cell oldBuild;
     private int numberOfMoves;  //counts how many times worker has moved.
     private int numberOfBuild; //counts how many times worker has moved.
-
+    private boolean prometheusFlag;
 
     /**
      * Board constructor : initialize cells and set starting flags values
@@ -32,6 +32,7 @@ public class Board implements Serializable {
         oldCell = null;
         numberOfMoves = 0;
         numberOfBuild = 0;
+        prometheusFlag = false;
     }
 
     public Cell[][] getBoard() {
@@ -267,11 +268,14 @@ public class Board implements Serializable {
             if( (player.getGod().equals("demeter")) && oldBuild.getX() == xBuild && oldBuild.getY() == yBuild){
                 return false;
             }
-            if( (player.getGod().equals("prometheus")) && numberOfMoves == 0){
+            if((player.getGod().equals("prometheus")) && (numberOfMoves == 0 || !prometheusFlag)){
                 return false;
             }
         }
 
+        if(numberOfMoves == 0 && player.getGod().equals("prometheus")){
+            prometheusFlag = true;
+        }
 
         this.buildInPos(worker,level,xBuild,yBuild);
         return true;
@@ -376,6 +380,7 @@ public class Board implements Serializable {
         numberOfBuild = 0;
         oldCell = new Cell(-1,-1);
         oldBuild = new Cell(-1,-1);
+        prometheusFlag = false;
     }
 
     /**
@@ -412,6 +417,7 @@ public class Board implements Serializable {
     public int getNumberOfBuild() {
         return numberOfBuild;
     }
+
 
 
 }
