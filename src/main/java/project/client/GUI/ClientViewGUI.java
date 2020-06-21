@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -139,7 +141,31 @@ public class ClientViewGUI implements Observer {
         board_panel.setBounds(380,105,525,525);
         santoriniFrame.setLayout(null);
 
+        santoriniFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
+
+        santoriniFrame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                //super.windowClosing(e);
+
+                int choice = JOptionPane.showConfirmDialog(santoriniFrame,
+                                "Are you sure you want to close this window?", "Close Window?",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE);
+
+                if(choice == 0){ //yes
+                    try {
+                        socket.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    System.exit(0);
+                }else{
+                    santoriniFrame.setVisible(true);
+                }
+            }
+        });
 
 
         imagePanel.setBounds(0,0,1280,720);

@@ -4,6 +4,7 @@ import project.client.ServerObserver;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 
 
 public class AppGUI {
@@ -16,7 +17,12 @@ public class AppGUI {
             ServerObserver serverObserver = new ServerObserver(socket);
             serverObserver.addObserver(clientViewGUI);
 
-            serverObserver.waitFromServer();
+            try {
+                serverObserver.waitFromServer();
+            }catch(SocketException e){
+                //System.out.println("LOOZAPALOOZA ERROE");
+                e.printStackTrace();
+            }
 
 
     }

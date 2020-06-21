@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -31,7 +32,7 @@ public class ServerObserver extends Observable {
         }
     }
 
-    public void waitFromServer() throws IOException, ClassNotFoundException {
+    public void waitFromServer() throws IOException, ClassNotFoundException{
         while(true){
             Message obj = (Message)ois.readObject();
             notifyObserver(obj);
