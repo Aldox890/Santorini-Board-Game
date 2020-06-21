@@ -269,12 +269,29 @@ public class ClientViewGUI implements Observer {
         }
     }
 
+    public int loadGame(){
+        Object[] options = {"YES",
+                "NO"};
+        int n = JOptionPane.showOptionDialog(santoriniFrame,
+                "Do you want to load your previous game ?",
+                "Santorini",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,     //do not use a custom Icon
+                options,  //the titles of buttons
+                options[0]); //default button title
+        return n;
+    }
+
+
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
         String[] parsedMex = mex.getData().split(";");
         try {
-            if(alertPanel!=null) alertPanel.setText(mex.getErrorData());
+            if(alertPanel!=null) {
+                alertPanel.setText(mex.getErrorData());
+            }
             System.out.println("list arrived: " + mex.getData());
             if(login_frame != null && gameState.getPlayerName()==null){
                 gameState.setPlayerName(login_frame.getUsername());
@@ -330,6 +347,45 @@ public class ClientViewGUI implements Observer {
                     santoriniFrame.repaint();
                     System.out.println(mex.getTurnOf()+" is stuck and his workers has been removed from the board");
                     break;
+
+                case(60): //Load game
+                    if(loadGame() == 0){
+                        objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, "true"));
+                        objectOutputStream.flush();
+                    }
+                    else{
+                        objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, "false"));
+                        objectOutputStream.flush();
+                    }
+                    break;
+
+                case(65): //A game is loaded
+                    System.out.println("You start your old game");
+                    System.out.println(mex.getTurnOf()+" is the first player");
+                    if(!mex.boardIsEmpty()){board_panel.updateBoard(mex);}
+                    break;
+                case(70):
+                    if(mex.getTurnOf().equals(login_frame.getUsername())){
+                        alertPanel.setText(mex.getData());
+                        alertPanel.setVisible(true);
+                        santoriniFrame.validate();
+                        santoriniFrame.repaint();
+                        System.out.println(mex.getData());
+                    }
+                    break;
+                case(420):  //print your previous god
+                    parsedMex=mex.getData().split(";");
+                    if(parsedMex[0].equals(login_frame.getUsername())){
+                        gameState.setPersonalGod(parsedMex[1]);
+                        controls_panel.createGodPanel(parsedMex[1]);
+                        santoriniFrame.validate();
+                        santoriniFrame.repaint();
+                    }
+                    players_panel.addSinglePlayer(parsedMex[0],parsedMex[2]);
+                    players_panel.setTurn(mex.getTurnOf());
+                    players_panel.addGodThumbnail(parsedMex[0], parsedMex[1]);
+                    break;
+
 
                 case (0): // required player registration
                     if (mex.getData().equals("registered")) {

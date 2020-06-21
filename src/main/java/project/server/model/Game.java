@@ -527,11 +527,13 @@ public class Game extends Observable implements Serializable {
             for(int j=0;j<playerList.size();j++){
                 if(playerList.get(i).getName().equals(plNew.get(j).getName())) {
                     playerList.get(i).selectGod(plNew.get(j).getGod());
-                    notifyObserver(new Message(i,420,playerList.get(i).getGod(),turnOf.getName()));
+                    notifyObserver(new Message(-1,420,playerList.get(i).getName()+";"+playerList.get(i).getGod()+";"+i,turnOf.getName()));
                 }
             }
         }
     }
+
+
 
     /**
      * used if a player doesn't want to load a previous game

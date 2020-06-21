@@ -49,6 +49,18 @@ public class PlayersPanel extends JPanel {
         return infoPanel;
     }
 
+    void addSinglePlayer(String player, String index){
+        if(Integer.parseInt(index) == 0){
+            playerSlot.add(createLabel(player,Color.RED));
+        }
+        if(Integer.parseInt(index) == 1){
+            playerSlot.add(createLabel(player,Color.YELLOW));
+        }
+        if(Integer.parseInt(index) == 2){
+            playerSlot.add(createLabel(player,Color.CYAN));
+        }
+    }
+
     void addPlayers(String[] players){
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.RED);

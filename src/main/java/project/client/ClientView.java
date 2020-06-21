@@ -67,12 +67,6 @@ public class ClientView implements Observer {
                     System.out.println(mex.getTurnOf()+" is stuck and his workers has been removed from the board");
                     break;
 
-                /*case(50): //Save game
-                    System.out.println("Somebody saved the game.");
-                    System.out.println("Goodbye !");
-                    System.exit(0);
-                    break;*/
-
                 case(60): //Load game
                     if(loadGame()) {
                         objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, "true"));
@@ -94,8 +88,9 @@ public class ClientView implements Observer {
                     }
                     break;
                 case(420):  //print your previous god
-                    System.out.println("Il tuo dio è "+mex.getData());
-                    god=mex.getData();
+                    String[] godLoaded = mex.getData().split(";");
+                    System.out.println(godLoaded[0] + " ha scelto "+godLoaded[1]);
+                    god = godLoaded[1];
                     break;
 
                 case (0): // required player registration
