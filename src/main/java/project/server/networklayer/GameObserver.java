@@ -18,6 +18,7 @@ public class GameObserver implements Observer {
     private int socketId;
     ObjectOutputStream oos;
 
+
     public GameObserver(Socket socket,ObjectOutputStream o,int socketId) throws IOException {
         this.socket = socket;
         this.socketId = socketId;
@@ -43,7 +44,7 @@ public class GameObserver implements Observer {
                 oos.flush();
                 oos.reset(); // Reset will disregard the state of any objects already written to the stream.
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
     }

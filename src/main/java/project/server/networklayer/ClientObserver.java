@@ -95,7 +95,6 @@ public class ClientObserver implements Runnable {
                         break;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
                 end = true;
                 try {
                     gameController.removePlayer(player);
@@ -107,6 +106,8 @@ public class ClientObserver implements Runnable {
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+
+
             } catch (ClassNotFoundException e) {
                 //e.printStackTrace();
             }

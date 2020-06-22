@@ -64,6 +64,10 @@ public class Game extends Observable implements Serializable {
         this.observers.add(arg);
     }
 
+    public void removeObserver(Observer arg) {
+        this.observers.remove(arg);
+    }
+
     /**
      * Notifies the observers about changes.
      */
@@ -91,11 +95,10 @@ public class Game extends Observable implements Serializable {
     public void removePlayer(Player p) throws IOException {
         if ((p != null && allowedGods.isEmpty() && turnNumber>0)) {
             playerList.remove(p);
-            if(p.getWorkers().size()>2) {
+            if(p.getWorkers().size()>=2) {
                 gameBoard.removeWorker(p.getWorkers().get(1));
                 gameBoard.removeWorker(p.getWorkers().get(0));
             }
-            //removeobserver
             subNPlayers();
             if (turnOf == p) {
                 passTurn();
