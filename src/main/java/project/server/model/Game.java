@@ -312,6 +312,9 @@ public class Game extends Observable implements Serializable {
     * */
     public void passTurn() throws IOException {
         int indexOfP = playerList.indexOf(turnOf);
+        if(indexOfP == -1){
+            indexOfP = 0;
+        }
         if (indexOfP < nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
         if(turnOf.getGod().equals("athena")){
@@ -474,9 +477,15 @@ public class Game extends Observable implements Serializable {
         ArrayList<Player> newPlayerList = (ArrayList<Player>)o.readObject();
         gameBoard = (Board)o.readObject();
         turnOf = (Player)o.readObject();
+        for(int i=0; i<playerList.size();i++){
+            if(turnOf.getName().equals(playerList.get(i).getName()))
+            {
+                turnOf=playerList.get(i);
+            }
+        }
+
         gameBoard.setCorrectPlayers(playerList);
         fixGods(newPlayerList);
-        //gameBoard.resetCurrentWorker();
         o.close();
         f.close();
         Message mex=new Message(-1,65,"true",turnOf.getName());
