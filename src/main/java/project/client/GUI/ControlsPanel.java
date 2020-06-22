@@ -211,6 +211,12 @@ public class ControlsPanel extends ImagePanel {
         });
     }
 
+    public void disableComponents(){
+        moveBtn.setEnabled(false);
+        buildBtn.setEnabled(false);
+        endTurnBtn.setEnabled(false);
+    }
+
     ImageIcon resizeImageButton(ImageIcon img, int width, int height){
         Image i = img.getImage();
         Image newImg = i.getScaledInstance(width,height,Image.SCALE_DEFAULT);

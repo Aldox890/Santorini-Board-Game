@@ -336,6 +336,7 @@ public class ClientViewGUI implements Observer {
                     santoriniFrame.add(winPanel,0);
                     santoriniFrame.validate();
                     santoriniFrame.repaint();
+                    controls_panel.disableComponents();
                     System.out.println(mex.getTurnOf()+" has won the game!");
                     //System.exit(0);
                     break;
