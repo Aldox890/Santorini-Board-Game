@@ -1,0 +1,624 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ClientView</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">project.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ClientView (project.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ClientView</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 18)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 283)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package project.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import project.Cell;
+<i>4</i>&nbsp;import project.ClientMessage;
+<i>5</i>&nbsp;import project.Message;
+<i>6</i>&nbsp;import project.server.model.Color;
+<i>7</i>&nbsp;
+<i>8</i>&nbsp;import java.awt.*;      //&lt;-- contrasto con lib SWING (?)
+<i>9</i>&nbsp;import java.io.IOException;
+<i>10</i>&nbsp;import java.io.ObjectOutputStream;
+<i>11</i>&nbsp;import java.net.Socket;
+<i>12</i>&nbsp;import java.util.ArrayList;
+<i>13</i>&nbsp;import java.util.Observable;
+<i>14</i>&nbsp;import java.util.Observer;
+<i>15</i>&nbsp;import java.util.Scanner;;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;public class ClientView implements Observer {
+<i>18</i>&nbsp;
+<i>19</i>&nbsp;    public static final String reset = &quot;\u001B[0m&quot;;
+<i>20</i>&nbsp;    ObjectOutputStream objectOutputStream;
+<i>21</i>&nbsp;    Scanner stdin;
+<i>22</i>&nbsp;    ArrayList&lt;String&gt; players;
+<i>23</i>&nbsp;    ArrayList&lt;String&gt; availableGods;
+<i>24</i>&nbsp;    String username;
+<i>25</i>&nbsp;    String god;
+<i>26</i>&nbsp;
+<b class="nc"><i>27</i>&nbsp;    int hasSetWorkers=0;</b>
+<b class="nc"><i>28</i>&nbsp;    int hasMoved = 0;</b>
+<b class="nc"><i>29</i>&nbsp;    int hasBuild = 0;</b>
+<i>30</i>&nbsp;
+<b class="nc"><i>31</i>&nbsp;    public ClientView(Socket s) throws IOException {</b>
+<b class="nc"><i>32</i>&nbsp;        objectOutputStream = new ObjectOutputStream(s.getOutputStream());</b>
+<b class="nc"><i>33</i>&nbsp;        stdin = new Scanner(System.in);</b>
+<b class="nc"><i>34</i>&nbsp;        players = new ArrayList&lt;String&gt;();</b>
+<b class="nc"><i>35</i>&nbsp;        availableGods = new ArrayList&lt;String&gt;();</b>
+<b class="nc"><i>36</i>&nbsp;    }</b>
+<i>37</i>&nbsp;
+<i>38</i>&nbsp;    /**
+<i>39</i>&nbsp;     * Reads messages from server and call different functions according to typeOfMessage
+<i>40</i>&nbsp;     * @param arg message received
+<i>41</i>&nbsp;     */
+<i>42</i>&nbsp;    @Override
+<i>43</i>&nbsp;    public void update(Observable o, Object arg) {
+<b class="nc"><i>44</i>&nbsp;        Message mex = (Message) arg;</b>
+<i>45</i>&nbsp;        try {
+<b class="nc"><i>46</i>&nbsp;            switch(mex.getTypeOfMessage()){</b>
+<i>47</i>&nbsp;                case(20): //con quanti giocatori vuoi giocare
+<b class="nc"><i>48</i>&nbsp;                    System.out.println(&quot;Number of players of the game&quot;);</b>
+<b class="nc"><i>49</i>&nbsp;                    String numOfPlayers = stdin.nextLine();</b>
+<b class="nc"><i>50</i>&nbsp;                    objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,numOfPlayers));</b>
+<b class="nc"><i>51</i>&nbsp;                    objectOutputStream.flush();</b>
+<b class="nc"><i>52</i>&nbsp;                    break;</b>
+<i>53</i>&nbsp;
+<i>54</i>&nbsp;                case(25): //crash during god selection
+<b class="nc"><i>55</i>&nbsp;                    System.out.println(mex.getData());</b>
+<b class="nc"><i>56</i>&nbsp;                    System.exit(0);</b>
+<b class="nc"><i>57</i>&nbsp;                    break;</b>
+<i>58</i>&nbsp;
+<i>59</i>&nbsp;                case(30):   //WIN
+<b class="nc"><i>60</i>&nbsp;                    printBoard(mex);</b>
+<b class="nc"><i>61</i>&nbsp;                    System.out.println(mex.getTurnOf()+&quot; has won the game!&quot;);</b>
+<b class="nc"><i>62</i>&nbsp;                    System.exit(0);</b>
+<b class="nc"><i>63</i>&nbsp;                    break;</b>
+<i>64</i>&nbsp;
+<i>65</i>&nbsp;                case(40): //Player stuck
+<b class="nc"><i>66</i>&nbsp;                    printBoard(mex);</b>
+<b class="nc"><i>67</i>&nbsp;                    System.out.println(mex.getTurnOf()+&quot; is stuck and his workers has been removed from the board&quot;);</b>
+<b class="nc"><i>68</i>&nbsp;                    break;</b>
+<i>69</i>&nbsp;
+<i>70</i>&nbsp;                case(60): //Load game
+<b class="nc"><i>71</i>&nbsp;                    if(loadGame()) {</b>
+<b class="nc"><i>72</i>&nbsp;                        objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, &quot;true&quot;));</b>
+<b class="nc"><i>73</i>&nbsp;                        objectOutputStream.flush();</b>
+<i>74</i>&nbsp;                    }
+<i>75</i>&nbsp;                    else{
+<b class="nc"><i>76</i>&nbsp;                        objectOutputStream.writeObject(new ClientMessage(30, null, null, -1, -1, -1, -1, &quot;false&quot;));</b>
+<b class="nc"><i>77</i>&nbsp;                        objectOutputStream.flush();</b>
+<i>78</i>&nbsp;                    }
+<b class="nc"><i>79</i>&nbsp;                    break;</b>
+<i>80</i>&nbsp;                case(65): //A game is loaded
+<b class="nc"><i>81</i>&nbsp;                    System.out.println(&quot;You start your old game&quot;);</b>
+<b class="nc"><i>82</i>&nbsp;                    System.out.println(mex.getTurnOf()+&quot; is the first player&quot;);</b>
+<b class="nc"><i>83</i>&nbsp;                    printBoard(mex);</b>
+<b class="nc"><i>84</i>&nbsp;                    break;</b>
+<i>85</i>&nbsp;                case(70):
+<b class="nc"><i>86</i>&nbsp;                    if(mex.getTurnOf().equals(username)){</b>
+<b class="nc"><i>87</i>&nbsp;                        System.out.println(mex.getData());</b>
+<i>88</i>&nbsp;                    }
+<i>89</i>&nbsp;                    break;
+<i>90</i>&nbsp;                case(420):  //print your previous god
+<b class="nc"><i>91</i>&nbsp;                    String[] godLoaded = mex.getData().split(&quot;;&quot;);</b>
+<b class="nc"><i>92</i>&nbsp;                    System.out.println(godLoaded[0] + &quot; ha scelto &quot;+godLoaded[1]);</b>
+<b class="nc"><i>93</i>&nbsp;                    god = godLoaded[1];</b>
+<b class="nc"><i>94</i>&nbsp;                    break;</b>
+<i>95</i>&nbsp;
+<i>96</i>&nbsp;                case (0): // required player registration
+<b class="nc"><i>97</i>&nbsp;                    if (mex.getData().equals(&quot;registered&quot;)) {</b>
+<b class="nc"><i>98</i>&nbsp;                        System.out.println(&quot;Successfully registered!&quot;);</b>
+<i>99</i>&nbsp;                    }
+<b class="nc"><i>100</i>&nbsp;                    else if(mex.getErrorData()==null){</b>
+<b class="nc"><i>101</i>&nbsp;                        register();</b>
+<i>102</i>&nbsp;                    }
+<i>103</i>&nbsp;                    else {
+<b class="nc"><i>104</i>&nbsp;                        System.out.println(mex.getErrorData());</b>
+<b class="nc"><i>105</i>&nbsp;                        register();</b>
+<i>106</i>&nbsp;                    }
+<b class="nc"><i>107</i>&nbsp;                    break;</b>
+<i>108</i>&nbsp;
+<i>109</i>&nbsp;                case (3): // recived player list
+<b class="nc"><i>110</i>&nbsp;                    if (!mex.getData().equals(&quot;false&quot;)) {</b>
+<b class="nc"><i>111</i>&nbsp;                        printPlayerList(mex);</b>
+<i>112</i>&nbsp;                    }
+<b class="nc"><i>113</i>&nbsp;                    if (mex.getData().equals(&quot;false&quot;)) {</b>
+<b class="nc"><i>114</i>&nbsp;                        System.out.println(&quot;Bad input&quot;);</b>
+<b class="nc"><i>115</i>&nbsp;                        System.out.println(mex.getErrorData());</b>
+<i>116</i>&nbsp;                    }
+<b class="nc"><i>117</i>&nbsp;                    choseAllowedGods();</b>
+<b class="nc"><i>118</i>&nbsp;                    break;</b>
+<i>119</i>&nbsp;
+<i>120</i>&nbsp;                case (1): // recived chosen gods list
+<b class="nc"><i>121</i>&nbsp;                    addAllowedGods(mex);</b>
+<b class="nc"><i>122</i>&nbsp;                    choseGod(mex);</b>
+<b class="nc"><i>123</i>&nbsp;                    break;</b>
+<i>124</i>&nbsp;
+<i>125</i>&nbsp;                case (2): // recived god chosen by a player
+<b class="nc"><i>126</i>&nbsp;                    removeAllowedGod(mex);</b>
+<b class="nc"><i>127</i>&nbsp;                    if(availableGods.isEmpty()){</b>
+<b class="nc"><i>128</i>&nbsp;                        createWorker(mex); // setup my workers position if it&#39;s my turn</b>
+<i>129</i>&nbsp;
+<b class="nc"><i>130</i>&nbsp;                        break;</b>
+<i>131</i>&nbsp;                    }
+<b class="nc"><i>132</i>&nbsp;                    if (mex.getData().equals(&quot;false&quot;)) {</b>
+<b class="nc"><i>133</i>&nbsp;                        System.out.println(&quot;Bad input&quot;);</b>
+<b class="nc"><i>134</i>&nbsp;                        System.out.println(mex.getErrorData());</b>
+<i>135</i>&nbsp;                    }
+<b class="nc"><i>136</i>&nbsp;                    choseGod(mex);</b>
+<b class="nc"><i>137</i>&nbsp;                    break;</b>
+<i>138</i>&nbsp;                case(4): //recived any player worker positions
+<b class="nc"><i>139</i>&nbsp;                    if(!mex.boardIsEmpty()){ printBoard(mex); }</b>
+<b class="nc"><i>140</i>&nbsp;                    if(mex.getTurnOf().equals(username) &amp;&amp; (hasSetWorkers&lt;2 || mex.getData().equals(&quot;false&quot;))){</b>
+<b class="nc"><i>141</i>&nbsp;                        if (mex.getData().equals(&quot;false&quot;)){</b>
+<b class="nc"><i>142</i>&nbsp;                            System.out.println(mex.getErrorData());</b>
+<b class="nc"><i>143</i>&nbsp;                            hasSetWorkers--;</b>
+<i>144</i>&nbsp;                        }
+<b class="nc"><i>145</i>&nbsp;                        createWorker(mex);</b>
+<i>146</i>&nbsp;                    } // setup my workers position if it&#39;s my turn
+<b class="nc"><i>147</i>&nbsp;                    else{turnMenu(mex);}</b>
+<b class="nc"><i>148</i>&nbsp;                    break;</b>
+<i>149</i>&nbsp;                case(5): //if someone has moved and it&#39;s me, i build
+<i>150</i>&nbsp;                case(6):
+<b class="nc"><i>151</i>&nbsp;                    if(!mex.boardIsEmpty()){ printBoard(mex); }</b>
+<b class="nc"><i>152</i>&nbsp;                    if (mex.getData().equals(&quot;false&quot;)) {</b>
+<b class="nc"><i>153</i>&nbsp;                        System.out.println(&quot;Bad input&quot;);</b>
+<b class="nc"><i>154</i>&nbsp;                        System.out.println(mex.getErrorData());</b>
+<i>155</i>&nbsp;                    }
+<b class="nc"><i>156</i>&nbsp;                    turnMenu(mex);</b>
+<i>157</i>&nbsp;                    //checkTurnPhase(mex);
+<i>158</i>&nbsp;                    break;
+<i>159</i>&nbsp;            }
+<i>160</i>&nbsp;        }
+<b class="nc"><i>161</i>&nbsp;        catch (IOException e) {</b>
+<b class="nc"><i>162</i>&nbsp;            e.printStackTrace();</b>
+<b class="nc"><i>163</i>&nbsp;        }</b>
+<b class="nc"><i>164</i>&nbsp;    }</b>
+<i>165</i>&nbsp;
+<i>166</i>&nbsp;    /**
+<i>167</i>&nbsp;    * method that asks to player if he want to move,build or end his turn
+<i>168</i>&nbsp;    * */
+<i>169</i>&nbsp;    public void turnMenu(Message mex) throws IOException {
+<b class="nc"><i>170</i>&nbsp;        if(mex.getTurnOf().equals(username)) {</b>
+<b class="nc"><i>171</i>&nbsp;            String in = &quot;0&quot;;</b>
+<b class="nc"><i>172</i>&nbsp;            while (!in.equals(&quot;1&quot;) &amp;&amp; !in.equals(&quot;2&quot;) &amp;&amp; !in.equals(&quot;3&quot;) &amp;&amp; !in.equals(&quot;4&quot;)) {</b>
+<b class="nc"><i>173</i>&nbsp;                System.out.print(&quot;wha&#39; will ye do next? &quot;);</b>
+<b class="nc"><i>174</i>&nbsp;                System.out.print(&quot;1)Move &quot;);</b>
+<b class="nc"><i>175</i>&nbsp;                System.out.print(&quot;2)Build &quot;);</b>
+<b class="nc"><i>176</i>&nbsp;                System.out.print(&quot;3)End turn &quot;);</b>
+<i>177</i>&nbsp;                // System.out.println(&quot;4)Save and exit&quot;);
+<b class="nc"><i>178</i>&nbsp;                in = stdin.nextLine();</b>
+<i>179</i>&nbsp;            }
+<b class="nc"><i>180</i>&nbsp;            switch (in) {</b>
+<i>181</i>&nbsp;                case (&quot;1&quot;):
+<b class="nc"><i>182</i>&nbsp;                    moveWorker(mex);</b>
+<b class="nc"><i>183</i>&nbsp;                    break;</b>
+<i>184</i>&nbsp;                case (&quot;2&quot;):     //controllo su
+<b class="nc"><i>185</i>&nbsp;                    build(mex);</b>
+<b class="nc"><i>186</i>&nbsp;                    break;</b>
+<i>187</i>&nbsp;                case (&quot;3&quot;):
+<b class="nc"><i>188</i>&nbsp;                    objectOutputStream.writeObject(new ClientMessage(10,null, null, -1, -1,-1,-1,null));</b>
+<b class="nc"><i>189</i>&nbsp;                    objectOutputStream.flush();</b>
+<i>190</i>&nbsp;                    break;
+<i>191</i>&nbsp;                /*case (&quot;4&quot;):
+<i>192</i>&nbsp;                    objectOutputStream.writeObject(new ClientMessage(20,null, null, -1, -1,-1,-1,null));
+<i>193</i>&nbsp;                    objectOutputStream.flush();
+<i>194</i>&nbsp;                    break;*/
+<i>195</i>&nbsp;            }
+<i>196</i>&nbsp;        }
+<b class="nc"><i>197</i>&nbsp;    }</b>
+<i>198</i>&nbsp;
+<i>199</i>&nbsp;    public void checkTurnPhase(Message mex) throws IOException {
+<b class="nc"><i>200</i>&nbsp;        if(mex.getTurnOf().equals(username)){</b>
+<b class="nc"><i>201</i>&nbsp;            if(mex.getTypeOfMessage()==5){</b>
+<b class="nc"><i>202</i>&nbsp;                if(mex.getData().equals(&quot;false&quot;)){</b>
+<b class="nc"><i>203</i>&nbsp;                    moveWorker(mex);</b>
+<b class="nc"><i>204</i>&nbsp;                    System.out.println(mex.getErrorData());</b>
+<i>205</i>&nbsp;                }
+<b class="nc"><i>206</i>&nbsp;                else if(hasMoved==0) {</b>
+<b class="nc"><i>207</i>&nbsp;                    moveWorker(mex);</b>
+<b class="nc"><i>208</i>&nbsp;                    hasMoved--;</b>
+<i>209</i>&nbsp;                }
+<b class="nc"><i>210</i>&nbsp;                else if(hasMoved==1) {</b>
+<b class="nc"><i>211</i>&nbsp;                    build(mex);</b>
+<i>212</i>&nbsp;                }
+<i>213</i>&nbsp;            }
+<i>214</i>&nbsp;
+<b class="nc"><i>215</i>&nbsp;            if(mex.getTypeOfMessage()==6){</b>
+<b class="nc"><i>216</i>&nbsp;                if(mex.getData().equals(&quot;false&quot;)){</b>
+<b class="nc"><i>217</i>&nbsp;                    System.out.println(mex.getErrorData());</b>
+<b class="nc"><i>218</i>&nbsp;                    build(mex);</b>
+<b class="nc"><i>219</i>&nbsp;                    hasBuild--;</b>
+<i>220</i>&nbsp;                }
+<b class="nc"><i>221</i>&nbsp;                else if(hasBuild==0) {</b>
+<b class="nc"><i>222</i>&nbsp;                    build(mex);</b>
+<i>223</i>&nbsp;                }
+<b class="nc"><i>224</i>&nbsp;                else if(hasBuild==1) {</b>
+<b class="nc"><i>225</i>&nbsp;                    System.out.println(&quot;Turn finished&quot;);</b>
+<i>226</i>&nbsp;                }
+<i>227</i>&nbsp;            }
+<i>228</i>&nbsp;        }
+<b class="nc"><i>229</i>&nbsp;    }</b>
+<i>230</i>&nbsp;
+<i>231</i>&nbsp;    /**
+<i>232</i>&nbsp;     * Method that asks username and age and send this data to server
+<i>233</i>&nbsp;     */
+<i>234</i>&nbsp;    public void register() throws IOException {
+<b class="nc"><i>235</i>&nbsp;        System.out.print(&quot;Insert username: &quot;);</b>
+<b class="nc"><i>236</i>&nbsp;        String inputLineUsername = stdin.nextLine();</b>
+<i>237</i>&nbsp;        //System.out.println();
+<b class="nc"><i>238</i>&nbsp;        while((inputLineUsername.length()&lt;3) || inputLineUsername.contains(&quot;;&quot;)){</b>
+<b class="nc"><i>239</i>&nbsp;            System.out.print(&quot;Input error re-insert username: &quot;);</b>
+<b class="nc"><i>240</i>&nbsp;            inputLineUsername = stdin.nextLine();</b>
+<b class="nc"><i>241</i>&nbsp;            System.out.println();</b>
+<i>242</i>&nbsp;        }
+<b class="nc"><i>243</i>&nbsp;        username = inputLineUsername;</b>
+<i>244</i>&nbsp;
+<b class="nc"><i>245</i>&nbsp;        System.out.print(&quot;Insert your age: &quot;);</b>
+<b class="nc"><i>246</i>&nbsp;        String inputLineAge = stdin.nextLine();</b>
+<i>247</i>&nbsp;
+<b class="nc"><i>248</i>&nbsp;        while(checkAge(inputLineAge)){</b>
+<b class="nc"><i>249</i>&nbsp;            System.out.print(&quot;Input error re-insert your age: &quot;);</b>
+<b class="nc"><i>250</i>&nbsp;            inputLineAge = stdin.nextLine();</b>
+<b class="nc"><i>251</i>&nbsp;            System.out.println();</b>
+<i>252</i>&nbsp;        }
+<i>253</i>&nbsp;
+<i>254</i>&nbsp;        //send message to the project.server
+<b class="nc"><i>255</i>&nbsp;        objectOutputStream.writeObject(new ClientMessage(0,null, null, -1, -1,-1,-1,(inputLineUsername+&quot;;&quot;+inputLineAge) ));</b>
+<b class="nc"><i>256</i>&nbsp;        objectOutputStream.flush();</b>
+<b class="nc"><i>257</i>&nbsp;    }</b>
+<i>258</i>&nbsp;
+<i>259</i>&nbsp;    /**
+<i>260</i>&nbsp;     * Eldest player chooses 3 gods
+<i>261</i>&nbsp;     * @throws IOException
+<i>262</i>&nbsp;     */
+<i>263</i>&nbsp;    public void choseAllowedGods() throws IOException {
+<b class="nc"><i>264</i>&nbsp;        ArrayList&lt;String&gt; listOfGods = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>265</i>&nbsp;        if(players.get(players.size()-1).equals(username)){ //last player in list (eldest) choses the gods</b>
+<b class="nc"><i>266</i>&nbsp;            System.out.println(&quot;You are the eldest player, choose &quot;+ players.size() +&quot; dei:&quot; + &quot;Apollo &quot; + &quot;Artemis &quot; +&quot;Athena &quot;+ &quot;Atlas &quot;+&quot;Demeter &quot;+ &quot;Hephaestus &quot;+&quot;Minotaur &quot;+ &quot;Pan &quot;+ &quot;Prometheus&quot;);</b>
+<i>267</i>&nbsp;
+<b class="nc"><i>268</i>&nbsp;            int gods_selection=1;   //index of selection</b>
+<b class="nc"><i>269</i>&nbsp;            while(gods_selection&lt;=players.size()){</b>
+<b class="nc"><i>270</i>&nbsp;                System.out.print(&quot;Divinità &quot;+gods_selection+&quot;: &quot;);    //input gods (aggiungere controlli)</b>
+<b class="nc"><i>271</i>&nbsp;                String input= stdin.nextLine();</b>
+<b class="nc"><i>272</i>&nbsp;                if(!listOfGods.contains(input)){    //if the input isn&#39;t already in the list of gods, the input will be insert in; otherwise it wont.</b>
+<b class="nc"><i>273</i>&nbsp;                    listOfGods.add(input);</b>
+<b class="nc"><i>274</i>&nbsp;                    gods_selection++;</b>
+<i>275</i>&nbsp;                }else{
+<b class="nc"><i>276</i>&nbsp;                    System.out.println(&quot;Bad input, re-insert the current God&quot;);</b>
+<i>277</i>&nbsp;                }
+<b class="nc"><i>278</i>&nbsp;            }</b>
+<i>279</i>&nbsp;
+<b class="nc"><i>280</i>&nbsp;            objectOutputStream.writeObject(new ClientMessage(0,null, listOfGods, -1, -1,-1,-1,null));</b>
+<b class="nc"><i>281</i>&nbsp;            objectOutputStream.flush();</b>
+<i>282</i>&nbsp;        }
+<b class="nc"><i>283</i>&nbsp;    }</b>
+<i>284</i>&nbsp;
+<i>285</i>&nbsp;    /**
+<i>286</i>&nbsp;     * Sets allowed gods
+<i>287</i>&nbsp;     * @param mex message received from server
+<i>288</i>&nbsp;     */
+<i>289</i>&nbsp;    public void addAllowedGods(Message mex){
+<b class="nc"><i>290</i>&nbsp;        String[] serverGodList = mex.getData().split(&quot;;&quot;);</b>
+<i>291</i>&nbsp;
+<b class="nc"><i>292</i>&nbsp;        System.out.print(&quot;LISTA DEI SCELTI: &quot;);</b>
+<b class="nc"><i>293</i>&nbsp;        for(int i=0;i&lt;=serverGodList.length-1;i++){</b>
+<b class="nc"><i>294</i>&nbsp;            availableGods.add(serverGodList[i]);</b>
+<b class="nc"><i>295</i>&nbsp;            System.out.print(serverGodList[i]+&quot; &quot;);</b>
+<i>296</i>&nbsp;        }
+<b class="nc"><i>297</i>&nbsp;        System.out.println();</b>
+<b class="nc"><i>298</i>&nbsp;    }</b>
+<i>299</i>&nbsp;
+<i>300</i>&nbsp;    /**
+<i>301</i>&nbsp;     * Allows a player to choose his god
+<i>302</i>&nbsp;     */
+<i>303</i>&nbsp;    public void choseGod(Message mex) throws IOException {
+<b class="nc"><i>304</i>&nbsp;        if(mex.getTurnOf().equals(username) &amp;&amp; !availableGods.isEmpty()){  //tocca a me</b>
+<b class="nc"><i>305</i>&nbsp;            System.out.print(&quot;Seleziona il Dio: &quot;);</b>
+<b class="nc"><i>306</i>&nbsp;            String input = stdin.nextLine();</b>
+<i>307</i>&nbsp;            //inserire controllo input
+<b class="nc"><i>308</i>&nbsp;            input = input.toLowerCase();</b>
+<b class="nc"><i>309</i>&nbsp;            god=input;</b>
+<b class="nc"><i>310</i>&nbsp;            objectOutputStream.writeObject(new ClientMessage(1,god, null, -1, -1,-1,-1,null));</b>
+<i>311</i>&nbsp;                    //new Message(0,1,input,null));
+<b class="nc"><i>312</i>&nbsp;            objectOutputStream.flush();</b>
+<i>313</i>&nbsp;        }
+<b class="nc"><i>314</i>&nbsp;    }</b>
+<i>315</i>&nbsp;
+<i>316</i>&nbsp;    /**
+<i>317</i>&nbsp;     * Removes a god from list when it is taken from another player
+<i>318</i>&nbsp;     */
+<i>319</i>&nbsp;    public void removeAllowedGod(Message mex){
+<b class="nc"><i>320</i>&nbsp;        if(!mex.getData().equals(&quot;false&quot;)){</b>
+<b class="nc"><i>321</i>&nbsp;            String[] selectedGod = mex.getData().split(&quot;;&quot;);</b>
+<b class="nc"><i>322</i>&nbsp;            System.out.println(selectedGod[0] + &quot; has selected &quot; + selectedGod[1]);</b>
+<b class="nc"><i>323</i>&nbsp;            availableGods.remove(selectedGod[1]);</b>
+<i>324</i>&nbsp;        }
+<b class="nc"><i>325</i>&nbsp;    }</b>
+<i>326</i>&nbsp;
+<i>327</i>&nbsp;    /**
+<i>328</i>&nbsp;    * prints the list of players with their respective color assaigned by the server.
+<i>329</i>&nbsp;    * */
+<i>330</i>&nbsp;    public void printPlayerList(Message mex){
+<b class="nc"><i>331</i>&nbsp;        String[] serverResponse = mex.getData().split(&quot;;&quot;);</b>
+<b class="nc"><i>332</i>&nbsp;        if(serverResponse.length &lt;2){   //if there is only 1 player left, because of disconnection=&gt; WIN</b>
+<b class="nc"><i>333</i>&nbsp;            System.out.println(mex.getData());</b>
+<b class="nc"><i>334</i>&nbsp;            System.exit(0);</b>
+<i>335</i>&nbsp;        }
+<b class="nc"><i>336</i>&nbsp;        if(serverResponse.length == 3){</b>
+<b class="nc"><i>337</i>&nbsp;            System.out.println(&quot;Giocatori connessi: &quot;+ Color.RED.getColor()+&quot;1st-&quot;+serverResponse[0]+Color.YELLOW.getColor()+&quot; 2nd-&quot;+serverResponse[1]+Color.CYAN.getColor()+&quot; 3rd-&quot;+serverResponse[2]+&quot;\u001B[0m&quot;);</b>
+<b class="nc"><i>338</i>&nbsp;        }else if(serverResponse.length == 2){</b>
+<b class="nc"><i>339</i>&nbsp;            System.out.println(&quot;Giocatori connessi: &quot;+ Color.RED.getColor()+&quot;1st-&quot;+serverResponse[0]+Color.YELLOW.getColor()+&quot; 2nd-&quot;+serverResponse[1]+&quot;\u001B[0m&quot;);</b>
+<i>340</i>&nbsp;        }
+<b class="nc"><i>341</i>&nbsp;        for(int i=0;i&lt;=serverResponse.length-1;i++){</b>
+<b class="nc"><i>342</i>&nbsp;            players.add(serverResponse[i]);</b>
+<i>343</i>&nbsp;        }
+<b class="nc"><i>344</i>&nbsp;    }</b>
+<i>345</i>&nbsp;
+<i>346</i>&nbsp;    /**
+<i>347</i>&nbsp;     function used to create a worker and set it in a cell.
+<i>348</i>&nbsp;    */
+<i>349</i>&nbsp;    public void createWorker(Message mex) throws IOException {
+<i>350</i>&nbsp;        String coordinates;
+<i>351</i>&nbsp;        String coords[];
+<b class="nc"><i>352</i>&nbsp;        if (mex.getTurnOf().equals(username)) {</b>
+<b class="nc"><i>353</i>&nbsp;            System.out.println(&quot;Insert workers&#39; starting position:&quot;);</b>
+<b class="nc"><i>354</i>&nbsp;            coordinates = insertCoordinates();</b>
+<b class="nc"><i>355</i>&nbsp;            coords = coordinates.split(&quot;;&quot;);</b>
+<b class="nc"><i>356</i>&nbsp;            int x = Integer.parseInt(coords[0]);</b>
+<b class="nc"><i>357</i>&nbsp;            int y = Integer.parseInt(coords[1]);</b>
+<i>358</i>&nbsp;            //inserire controllo input
+<b class="nc"><i>359</i>&nbsp;            objectOutputStream.writeObject( new ClientMessage(2,null, null, x, y,-1,-1,null));</b>
+<i>360</i>&nbsp;                    //new Message(0, 2, (x + &quot;;&quot; + y), null));
+<b class="nc"><i>361</i>&nbsp;            objectOutputStream.flush();</b>
+<b class="nc"><i>362</i>&nbsp;            hasSetWorkers++;</b>
+<i>363</i>&nbsp;        }
+<b class="nc"><i>364</i>&nbsp;    }</b>
+<i>365</i>&nbsp;
+<i>366</i>&nbsp;    /**
+<i>367</i>&nbsp;    function used to print the game board on terminal
+<i>368</i>&nbsp;    */
+<i>369</i>&nbsp;    public void printBoard(Message mex){
+<b class="nc"><i>370</i>&nbsp;        Cell[][] board = mex.getBoard();</b>
+<b class="nc"><i>371</i>&nbsp;        for(int i = 0;i&lt;5;i++){</b>
+<b class="nc"><i>372</i>&nbsp;            for(int j = 0;j&lt;5;j++){</b>
+<b class="nc"><i>373</i>&nbsp;                if(board[i][j].isOccupiedBy() != null) {</b>
+<b class="nc"><i>374</i>&nbsp;                    String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player</b>
+<b class="nc"><i>375</i>&nbsp;                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();</b>
+<b class="nc"><i>376</i>&nbsp;                    String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level</b>
+<b class="nc"><i>377</i>&nbsp;                    System.out.print(color+player+lvl+&quot; &quot;+reset);</b>
+<b class="nc"><i>378</i>&nbsp;                }</b>
+<i>379</i>&nbsp;                else{
+<b class="nc"><i>380</i>&nbsp;                    System.out.print(&quot; &quot; + board[i][j].getLevel() + &quot; &quot;);</b>
+<i>381</i>&nbsp;                }
+<i>382</i>&nbsp;            }
+<b class="nc"><i>383</i>&nbsp;            System.out.println(&quot;&quot;);</b>
+<i>384</i>&nbsp;        }
+<b class="nc"><i>385</i>&nbsp;        System.out.println(&quot;turnof: &quot;+ mex.getTurnOf());</b>
+<b class="nc"><i>386</i>&nbsp;        System.out.println(&quot;&quot;);</b>
+<i>387</i>&nbsp;
+<b class="nc"><i>388</i>&nbsp;        mex.addBoard(null);</b>
+<b class="nc"><i>389</i>&nbsp;        mex = null;</b>
+<b class="nc"><i>390</i>&nbsp;    }</b>
+<i>391</i>&nbsp;
+<i>392</i>&nbsp;    /**
+<i>393</i>&nbsp;     * Function used to move one worker from a position [xStart;yStart] to the position [xdest;yDest]
+<i>394</i>&nbsp;     */
+<i>395</i>&nbsp;    public void moveWorker(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
+<b class="nc"><i>396</i>&nbsp;        if (mex.getTurnOf().equals(username)) {</b>
+<b class="nc"><i>397</i>&nbsp;            String[] coords = new String[2];</b>
+<b class="nc"><i>398</i>&nbsp;            System.out.println(&quot;Insert worker&#39;s MOVING starting point coordinates: &quot;);</b>
+<b class="nc"><i>399</i>&nbsp;            String coordinates = insertCoordinates();</b>
+<i>400</i>&nbsp;
+<b class="nc"><i>401</i>&nbsp;            coords = coordinates.split(&quot;;&quot;);</b>
+<b class="nc"><i>402</i>&nbsp;            int xStart = Integer.parseInt(coords[0]);</b>
+<b class="nc"><i>403</i>&nbsp;            int yStart = Integer.parseInt(coords[1]);</b>
+<i>404</i>&nbsp;
+<b class="nc"><i>405</i>&nbsp;            System.out.println(&quot;Insert worker&#39;s MOVING destination point coordinates: &quot;);</b>
+<b class="nc"><i>406</i>&nbsp;            coordinates=insertCoordinates();</b>
+<i>407</i>&nbsp;
+<b class="nc"><i>408</i>&nbsp;            coords = coordinates.split(&quot;;&quot;);</b>
+<b class="nc"><i>409</i>&nbsp;            int xDest = Integer.parseInt(coords[0]);</b>
+<b class="nc"><i>410</i>&nbsp;            int yDest = Integer.parseInt(coords[1]);</b>
+<i>411</i>&nbsp;            //inserire controllo input
+<i>412</i>&nbsp;
+<b class="nc"><i>413</i>&nbsp;            objectOutputStream.writeObject(new ClientMessage(3,null, null, xStart, yStart,xDest,yDest,null));</b>
+<i>414</i>&nbsp;                    //new Message(0, 3, coordinates, null));
+<b class="nc"><i>415</i>&nbsp;            objectOutputStream.flush();</b>
+<b class="nc"><i>416</i>&nbsp;            hasMoved++;</b>
+<i>417</i>&nbsp;        }
+<i>418</i>&nbsp;        else{
+<i>419</i>&nbsp;
+<i>420</i>&nbsp;        }
+<b class="nc"><i>421</i>&nbsp;    }</b>
+<i>422</i>&nbsp;
+<i>423</i>&nbsp;    /**
+<i>424</i>&nbsp;    * Build function by the client.
+<i>425</i>&nbsp;    * Receives the message from the server, checks if it&#39;s the client&#39;s turn and asks for the building coordinates ( [xStart;yStart] and [xDest;yDest] ).
+<i>426</i>&nbsp;    * If the client who&#39;s building has the power of Hephaestus or Atlas, asks the client if wants to use its power.
+<i>427</i>&nbsp;    * Sends the building coordinates to the server.
+<i>428</i>&nbsp;    * */
+<i>429</i>&nbsp;    public void build(Message mex) throws IOException {  //   int x_start,int y_start,int x_dest,int y_dest
+<i>430</i>&nbsp;        int resp;
+<b class="nc"><i>431</i>&nbsp;        if (mex.getTurnOf().equals(username)) {</b>
+<b class="nc"><i>432</i>&nbsp;            String[] coords = new String[2];</b>
+<b class="nc"><i>433</i>&nbsp;            System.out.println(&quot;Insert worker&#39;s starting BUILDING point coordinates: &quot;);</b>
+<b class="nc"><i>434</i>&nbsp;            String coordinates = insertCoordinates();</b>
+<b class="nc"><i>435</i>&nbsp;            coords = coordinates.split(&quot;;&quot;);</b>
+<b class="nc"><i>436</i>&nbsp;            int xStart = Integer.parseInt(coords[0]);</b>
+<b class="nc"><i>437</i>&nbsp;            int yStart = Integer.parseInt(coords[1]);</b>
+<i>438</i>&nbsp;
+<b class="nc"><i>439</i>&nbsp;            System.out.println(&quot;Insert worker&#39;s destination BUILDING point coordinates: &quot;);</b>
+<b class="nc"><i>440</i>&nbsp;            coordinates = insertCoordinates();</b>
+<b class="nc"><i>441</i>&nbsp;            coords = coordinates.split(&quot;;&quot;);</b>
+<b class="nc"><i>442</i>&nbsp;            int xDest = Integer.parseInt(coords[0]);</b>
+<b class="nc"><i>443</i>&nbsp;            int yDest = Integer.parseInt(coords[1]);</b>
+<i>444</i>&nbsp;            //inserire controllo input
+<i>445</i>&nbsp;
+<b class="nc"><i>446</i>&nbsp;            if(god.equals(&quot;hephaestus&quot;)){</b>
+<i>447</i>&nbsp;                do {
+<b class="nc"><i>448</i>&nbsp;                    System.out.println(&quot;Do you want to use Hephaestus power? 1-Y 2-N&quot;);</b>
+<b class="nc"><i>449</i>&nbsp;                    resp = Integer.parseInt(stdin.nextLine());</b>
+<b class="nc"><i>450</i>&nbsp;                }while(resp!=1 &amp;&amp; resp!=2);</b>
+<b class="nc"><i>451</i>&nbsp;                if(resp==1){</b>
+<b class="nc"><i>452</i>&nbsp;                    objectOutputStream.writeObject( new ClientMessage(6,null, null, xStart, yStart,xDest,yDest,null));</b>
+<i>453</i>&nbsp;                            //new Message(0, 6, coordinates, null));
+<b class="nc"><i>454</i>&nbsp;                    objectOutputStream.flush();</b>
+<b class="nc"><i>455</i>&nbsp;                    hasBuild++;</b>
+<i>456</i>&nbsp;                }
+<i>457</i>&nbsp;                else{
+<b class="nc"><i>458</i>&nbsp;                    objectOutputStream.writeObject(new ClientMessage(4,null, null, xStart, yStart,xDest,yDest,null));</b>
+<i>459</i>&nbsp;                            //new Message(0, 4, coordinates, null));
+<b class="nc"><i>460</i>&nbsp;                    objectOutputStream.flush();</b>
+<b class="nc"><i>461</i>&nbsp;                    hasBuild++;</b>
+<i>462</i>&nbsp;                }
+<i>463</i>&nbsp;            }
+<b class="nc"><i>464</i>&nbsp;            else if(god.equals(&quot;atlas&quot;)){</b>
+<i>465</i>&nbsp;                do {
+<b class="nc"><i>466</i>&nbsp;                    System.out.println(&quot;Do you want to use atlas power? 1-Y 2-N&quot;);</b>
+<b class="nc"><i>467</i>&nbsp;                    resp = Integer.parseInt(stdin.nextLine());</b>
+<b class="nc"><i>468</i>&nbsp;                }while(resp!=1 &amp;&amp; resp!=2);</b>
+<b class="nc"><i>469</i>&nbsp;                if(resp==1){</b>
+<b class="nc"><i>470</i>&nbsp;                    objectOutputStream.writeObject(new ClientMessage(7,null, null, xStart, yStart,xDest,yDest,null));</b>
+<i>471</i>&nbsp;                            //new Message(0, 7, coordinates, null));
+<b class="nc"><i>472</i>&nbsp;                    objectOutputStream.flush();</b>
+<b class="nc"><i>473</i>&nbsp;                    hasBuild++;</b>
+<i>474</i>&nbsp;                }
+<i>475</i>&nbsp;                else{
+<b class="nc"><i>476</i>&nbsp;                    objectOutputStream.writeObject(new ClientMessage(4,null, null, xStart, yStart,xDest,yDest,null));</b>
+<i>477</i>&nbsp;                            //new Message(0, 4, coordinates, null));
+<b class="nc"><i>478</i>&nbsp;                    objectOutputStream.flush();</b>
+<b class="nc"><i>479</i>&nbsp;                    hasBuild++;</b>
+<i>480</i>&nbsp;                }
+<i>481</i>&nbsp;            }
+<i>482</i>&nbsp;            else{
+<b class="nc"><i>483</i>&nbsp;                objectOutputStream.writeObject(new ClientMessage(4,null, null, xStart, yStart,xDest,yDest,null));</b>
+<i>484</i>&nbsp;                        //new Message(0, 4, coordinates, null));
+<b class="nc"><i>485</i>&nbsp;                objectOutputStream.flush();</b>
+<b class="nc"><i>486</i>&nbsp;                hasBuild++;</b>
+<i>487</i>&nbsp;            }
+<i>488</i>&nbsp;        }
+<i>489</i>&nbsp;
+<b class="nc"><i>490</i>&nbsp;    }</b>
+<i>491</i>&nbsp;
+<i>492</i>&nbsp;    /** strategy method to control if the input of the age is correct*/
+<i>493</i>&nbsp;    boolean checkAge(String inputAge){
+<b class="nc"><i>494</i>&nbsp;        int age = Integer.parseInt(inputAge);</b>
+<b class="nc"><i>495</i>&nbsp;        return ( (age&lt;5 || age&gt;120) || (inputAge.contains(&quot;;&quot;)) );</b>
+<i>496</i>&nbsp;    }
+<i>497</i>&nbsp;
+<i>498</i>&nbsp;    /**
+<i>499</i>&nbsp;     * Method that allows to insert coordinates
+<i>500</i>&nbsp;     * @return a string in format &quot;x,y&quot; where x and y are int
+<i>501</i>&nbsp;     */
+<i>502</i>&nbsp;    String insertCoordinates(){
+<i>503</i>&nbsp;        String x,y;
+<i>504</i>&nbsp;        do{
+<b class="nc"><i>505</i>&nbsp;        System.out.print(&quot;Insert X: &quot;);</b>
+<b class="nc"><i>506</i>&nbsp;        x = stdin.nextLine();</b>
+<b class="nc"><i>507</i>&nbsp;        System.out.print(&quot;Insert Y: &quot;);</b>
+<b class="nc"><i>508</i>&nbsp;        y = stdin.nextLine();</b>
+<b class="nc"><i>509</i>&nbsp;        if(!isNumeric(x) || !isNumeric(y)){System.out.println(&quot;ERROR : You have not inserted a number&quot;);}</b>
+<b class="nc"><i>510</i>&nbsp;        }while(!isNumeric(x) || !isNumeric(y));</b>
+<b class="nc"><i>511</i>&nbsp;        return (x+&quot;;&quot;+y);</b>
+<i>512</i>&nbsp;    }
+<i>513</i>&nbsp;
+<i>514</i>&nbsp;    /**
+<i>515</i>&nbsp;     * Method that checks if the input string is a number
+<i>516</i>&nbsp;     */
+<i>517</i>&nbsp;    public boolean isNumeric(String str) {
+<i>518</i>&nbsp;        try {
+<b class="nc"><i>519</i>&nbsp;            Integer.parseInt(str);</b>
+<b class="nc"><i>520</i>&nbsp;            return true;</b>
+<b class="nc"><i>521</i>&nbsp;        } catch(NumberFormatException e){</b>
+<b class="nc"><i>522</i>&nbsp;            return false;</b>
+<i>523</i>&nbsp;        }
+<i>524</i>&nbsp;    }
+<i>525</i>&nbsp;
+<i>526</i>&nbsp;    /**
+<i>527</i>&nbsp;     *Asks to a player if he wants to resume a previous game
+<i>528</i>&nbsp;    */
+<i>529</i>&nbsp;     public Boolean loadGame(){
+<i>530</i>&nbsp;        String resp;
+<b class="nc"><i>531</i>&nbsp;        System.out.println(&quot;Your previous game has been found&quot;);</b>
+<i>532</i>&nbsp;        do {
+<b class="nc"><i>533</i>&nbsp;            System.out.println(&quot;Do you want to load that game? (Y/N)&quot;);</b>
+<b class="nc"><i>534</i>&nbsp;            resp = stdin.nextLine();</b>
+<b class="nc"><i>535</i>&nbsp;        }while(!resp.equals(&quot;Y&quot;)&amp;&amp;!resp.equals(&quot;N&quot;)&amp;&amp;!resp.equals(&quot;y&quot;)&amp;&amp;!resp.equals(&quot;n&quot;));</b>
+<b class="nc"><i>536</i>&nbsp;        if(resp.equals(&quot;Y&quot;)||resp.equals(&quot;y&quot;))</b>
+<b class="nc"><i>537</i>&nbsp;            return true;</b>
+<i>538</i>&nbsp;        else
+<b class="nc"><i>539</i>&nbsp;            return false;</b>
+<i>540</i>&nbsp;    }
+<i>541</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-28 16:20</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,124 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: ServerObserver</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">project.client</a> ]
+</div>
+
+<h1>Coverage Summary for Class: ServerObserver (project.client)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">ServerObserver</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 14)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package project.client;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import project.Message;
+<i>4</i>&nbsp;
+<i>5</i>&nbsp;import java.io.IOException;
+<i>6</i>&nbsp;import java.io.ObjectInputStream;
+<i>7</i>&nbsp;import java.io.ObjectOutputStream;
+<i>8</i>&nbsp;import java.net.Socket;
+<i>9</i>&nbsp;import java.net.SocketException;
+<i>10</i>&nbsp;import java.util.ArrayList;
+<i>11</i>&nbsp;import java.util.List;
+<i>12</i>&nbsp;import java.util.Observable;
+<i>13</i>&nbsp;import java.util.Observer;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class ServerObserver extends Observable {
+<b class="nc"><i>16</i>&nbsp;    private List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();</b>
+<i>17</i>&nbsp;    Socket socket;
+<i>18</i>&nbsp;    ObjectInputStream ois;
+<i>19</i>&nbsp;
+<b class="nc"><i>20</i>&nbsp;    public ServerObserver(Socket socket) throws IOException {</b>
+<b class="nc"><i>21</i>&nbsp;        ois = new ObjectInputStream(socket.getInputStream());</b>
+<b class="nc"><i>22</i>&nbsp;        this.socket = socket;</b>
+<b class="nc"><i>23</i>&nbsp;    }</b>
+<i>24</i>&nbsp;
+<i>25</i>&nbsp;    public void addObserver(Observer arg) {
+<b class="nc"><i>26</i>&nbsp;        this.observers.add(arg);</b>
+<b class="nc"><i>27</i>&nbsp;    }</b>
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    public void notifyObserver(Object obj){
+<b class="nc"><i>30</i>&nbsp;        for (Observer observer : this.observers) {</b>
+<b class="nc"><i>31</i>&nbsp;            observer.update(this,obj);</b>
+<b class="nc"><i>32</i>&nbsp;        }</b>
+<b class="nc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public void waitFromServer() throws IOException, ClassNotFoundException{
+<i>36</i>&nbsp;        while(true){
+<b class="nc"><i>37</i>&nbsp;            Message obj = (Message)ois.readObject();</b>
+<b class="nc"><i>38</i>&nbsp;            notifyObserver(obj);</b>
+<b class="nc"><i>39</i>&nbsp;        }</b>
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-28 16:20</div>
+</div>
+</body>
+</html>
