@@ -104,10 +104,10 @@ public class Board implements Serializable {
             return 0;
         }
 
-        if(!player.getGod().equals("arthemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
+        if(!player.getGod().equals("artemis") && numberOfMoves ==1){   //if the god isn't Arthemis and worker has already moved ->
             return 0;
         }
-        if(player.getGod().equals("arthemis") && numberOfMoves ==1){
+        if(player.getGod().equals("artemis") && numberOfMoves ==1){
             if(oldCell.getX()== x_dest && (oldCell.getY()== y_dest)){
                 return 0;
             }
