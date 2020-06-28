@@ -190,6 +190,7 @@ public class Game extends Observable implements Serializable {
             if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board
                 try {
                     passTurn();
+                    checkStuckPlayer(this.turnOf);
                 }
                 catch (IOException e){
                     e.printStackTrace();
@@ -315,6 +316,9 @@ public class Game extends Observable implements Serializable {
     * */
     public void passTurn() throws IOException {
         int indexOfP = playerList.indexOf(turnOf);
+        /*if(indexOfP == -1){
+            indexOfP = 0;
+        }*/
         if (indexOfP < nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }
         else{ turnOf = playerList.get(0);}
         if(turnOf.getGod().equals("athena")){
@@ -390,28 +394,35 @@ public class Game extends Observable implements Serializable {
      * if true, removes the player from game and his workers from board
     */
     public void checkStuckPlayer(Player p) throws IOException {
+
+        if(p.getWorkers().size() < 2){
+            return;
+        }
         Worker w1 = p.getWorkers().get(0);
         Worker w2 = p.getWorkers().get(1);
-        if(gameBoard.checkStuckWorker(w1.getCell().getX(),w1.getCell().getY())){
-            if (gameBoard.checkStuckWorker(w2.getCell().getX(),w2.getCell().getY())){
-                gameBoard.removeWorker(w1);
-                gameBoard.removeWorker(w2);
-                Message mex = new Message(-1, 40, "true", turnOf.getName());
+        if(w1 != null && w2 != null){
+            if(gameBoard.checkStuckWorker(w1.getCell().getX(),w1.getCell().getY())){
+                if (gameBoard.checkStuckWorker(w2.getCell().getX(),w2.getCell().getY())){
+                    gameBoard.removeWorker(w1);
+                    gameBoard.removeWorker(w2);
+                    Message mex = new Message(-1, 40, "true", turnOf.getName());
+                    mex.addBoard(gameBoard.getBoard());
+                    notifyObserver(mex);
+                    passTurn();
+                    this.playerList.remove(p);
+                    nPlayers--;
+
+                }
+            }
+
+            if(playerList.size()==1){
+                Message mex = new Message(-1, 30, "true", playerList.get(0).getName());
                 mex.addBoard(gameBoard.getBoard());
                 notifyObserver(mex);
-                passTurn();
-                this.playerList.remove(p);
-                nPlayers--;
 
             }
         }
 
-        if(playerList.size()==1){
-            Message mex = new Message(-1, 30, "true", playerList.get(0).getName());
-            mex.addBoard(gameBoard.getBoard());
-            notifyObserver(mex);
-
-        }
     }
 
     public Player getTurnOf() {
@@ -477,9 +488,15 @@ public class Game extends Observable implements Serializable {
         ArrayList<Player> newPlayerList = (ArrayList<Player>)o.readObject();
         gameBoard = (Board)o.readObject();
         turnOf = (Player)o.readObject();
+        for(int i=0; i<playerList.size();i++){
+            if(turnOf.getName().equals(playerList.get(i).getName()))
+            {
+                turnOf=playerList.get(i);
+            }
+        }
+
         gameBoard.setCorrectPlayers(playerList);
         fixGods(newPlayerList);
-        //gameBoard.resetCurrentWorker();
         o.close();
         f.close();
         Message mex=new Message(-1,65,"true",turnOf.getName());
