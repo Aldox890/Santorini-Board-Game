@@ -75,6 +75,16 @@ public class BoardPanel extends JPanel {
 
     }
 
+    public void removeListeners(){
+        Component[] compArray = this.getComponents();
+
+        for (Component c : compArray){
+            if(c instanceof CellButton) {
+                this.remove(c);
+            }
+        }
+    }
+
     public static final String reset = "\u001B[0m";
     public void updateBoard(Message mex) throws IOException {
         Cell[][] board = mex.getBoard();
@@ -124,34 +134,11 @@ public class BoardPanel extends JPanel {
 
         component.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                //super.mouseEntered(e);
-                /*
-                component.setOpaque(true);
-                component.setBackground(new Color(225, 234, 61, 140));
-                 */
-                //component.setBorder(new LineBorder(Color.BLACK, 1));
-            }
-        });
-
-        component.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseExited(MouseEvent e) {
-                super.mouseExited(e);
-                //component.setOpaque(false);
-                component.setBorder(null);
-            }
-        });
-
-        /*TO FIX*/
-        component.addMouseListener(new MouseAdapter() {
-            @Override
             public void mousePressed(MouseEvent e) {
                 super.mouseClicked(e);
                 if(gameState.isMyTurn()){
                     if(gameState.getHasSetWorkers() == 0 || gameState.getHasSetWorkers() == 1){
                         try {
-
                             objectOutputStream.writeObject( new ClientMessage(2,null, null, component.getRow(), component.getColumn(),-1,-1,null));
                             objectOutputStream.flush();
                             gameState.setHasSetWorkers(gameState.getHasSetWorkers()+1);
