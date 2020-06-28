@@ -1,0 +1,190 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GodsPanel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">project.client.GUI</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GodsPanel (project.client.GUI)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GodsPanel</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 31)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">GodsPanel$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 13)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 44)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package project.client.GUI;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import project.ClientMessage;
+<i>4</i>&nbsp;import project.server.model.Player;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import javax.swing.*;
+<i>7</i>&nbsp;import java.awt.*;
+<i>8</i>&nbsp;import java.awt.event.MouseAdapter;
+<i>9</i>&nbsp;import java.awt.event.MouseEvent;
+<i>10</i>&nbsp;import java.io.File;
+<i>11</i>&nbsp;import java.io.IOException;
+<i>12</i>&nbsp;import java.io.ObjectOutputStream;
+<i>13</i>&nbsp;import java.util.ArrayList;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;public class GodsPanel extends JPanel {
+<i>16</i>&nbsp;    private static final String graphicsPath = &quot;graphics//gods//cards//&quot;;
+<i>17</i>&nbsp;    ArrayList&lt;String&gt; listOfGods;
+<i>18</i>&nbsp;    int nPlayers;
+<i>19</i>&nbsp;    ObjectOutputStream objectOutputStream;
+<b class="nc"><i>20</i>&nbsp;    GodsPanel(ObjectOutputStream obj, int numOfPlayers) {</b>
+<b class="nc"><i>21</i>&nbsp;        this. nPlayers = numOfPlayers;</b>
+<b class="nc"><i>22</i>&nbsp;        this.objectOutputStream = obj;</b>
+<b class="nc"><i>23</i>&nbsp;        this.setBounds(0,0,1280,720);</b>
+<b class="nc"><i>24</i>&nbsp;        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));</b>
+<b class="nc"><i>25</i>&nbsp;        this.setOpaque(true);</b>
+<b class="nc"><i>26</i>&nbsp;        this.setBackground(new Color(0.0f, 0.0f, 0.0f, 0.6f));</b>
+<b class="nc"><i>27</i>&nbsp;        System.out.println(&quot;test&quot;);</b>
+<b class="nc"><i>28</i>&nbsp;        this.add(Box.createHorizontalStrut(300));</b>
+<i>29</i>&nbsp;
+<b class="nc"><i>30</i>&nbsp;        addGods();</b>
+<i>31</i>&nbsp;
+<b class="nc"><i>32</i>&nbsp;        this.add(Box.createHorizontalStrut(300));</b>
+<b class="nc"><i>33</i>&nbsp;    }</b>
+<i>34</i>&nbsp;
+<i>35</i>&nbsp;    public void addGods(){
+<b class="nc"><i>36</i>&nbsp;        JPanel innerPanel = new JPanel();</b>
+<b class="nc"><i>37</i>&nbsp;        innerPanel.setLayout(new GridLayout(3,3));</b>
+<b class="nc"><i>38</i>&nbsp;        innerPanel.setOpaque(false);</b>
+<b class="nc"><i>39</i>&nbsp;        innerPanel.setVisible(true);</b>
+<b class="nc"><i>40</i>&nbsp;        listOfGods = new ArrayList&lt;&gt;();</b>
+<b class="nc"><i>41</i>&nbsp;        File dir = new File(graphicsPath);</b>
+<b class="nc"><i>42</i>&nbsp;        File[] directoryListing = dir.listFiles();</b>
+<b class="nc"><i>43</i>&nbsp;        if (directoryListing != null) {</b>
+<i>44</i>&nbsp;
+<b class="nc"><i>45</i>&nbsp;            for (File child : directoryListing) {</b>
+<b class="nc"><i>46</i>&nbsp;                String godName = child.getName();</b>
+<b class="nc"><i>47</i>&nbsp;                ImagePanel godImage = new ImagePanel(graphicsPath + godName, 138, 230);</b>
+<b class="nc"><i>48</i>&nbsp;                innerPanel.add(godImage);</b>
+<b class="nc"><i>49</i>&nbsp;                createListener(godImage, godName.substring(0,godName.length()-4));</b>
+<b class="nc"><i>50</i>&nbsp;                System.out.println(godName);</b>
+<i>51</i>&nbsp;            }
+<i>52</i>&nbsp;        }
+<i>53</i>&nbsp;
+<b class="nc"><i>54</i>&nbsp;        this.add(innerPanel);</b>
+<b class="nc"><i>55</i>&nbsp;    }</b>
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    public void createListener(ImagePanel godImage, String name){
+<b class="nc"><i>58</i>&nbsp;        GodsPanel gPanel = this;</b>
+<b class="nc"><i>59</i>&nbsp;        godImage.addMouseListener(new MouseAdapter() {</b>
+<i>60</i>&nbsp;            @Override
+<i>61</i>&nbsp;            public void mouseClicked(MouseEvent e) {
+<b class="nc"><i>62</i>&nbsp;                if(listOfGods.size()&lt;nPlayers) {</b>
+<b class="nc"><i>63</i>&nbsp;                    if(!listOfGods.contains(name)) {</b>
+<b class="nc"><i>64</i>&nbsp;                        listOfGods.add(name);</b>
+<i>65</i>&nbsp;                    }
+<i>66</i>&nbsp;                }
+<b class="nc"><i>67</i>&nbsp;                if (listOfGods.size() &gt;= nPlayers){</b>
+<i>68</i>&nbsp;                    try {
+<b class="nc"><i>69</i>&nbsp;                        objectOutputStream.writeObject(new ClientMessage(0,null, listOfGods, -1, -1,-1,-1,null));</b>
+<b class="nc"><i>70</i>&nbsp;                        objectOutputStream.flush();</b>
+<b class="nc"><i>71</i>&nbsp;                        gPanel.setEnabled(false);</b>
+<b class="nc"><i>72</i>&nbsp;                        gPanel.setVisible(false);</b>
+<b class="nc"><i>73</i>&nbsp;                    } catch (IOException ex) {</b>
+<b class="nc"><i>74</i>&nbsp;                        ex.printStackTrace();</b>
+<b class="nc"><i>75</i>&nbsp;                    }</b>
+<i>76</i>&nbsp;                }
+<b class="nc"><i>77</i>&nbsp;            }</b>
+<i>78</i>&nbsp;        });
+<i>79</i>&nbsp;
+<b class="nc"><i>80</i>&nbsp;    }</b>
+<i>81</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-28 16:20</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,688 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: Game</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">project.server.model</a> ]
+</div>
+
+<h1>Coverage Summary for Class: Game (project.server.model)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">Game</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    87,1%
+  </span>
+  <span class="absValue">
+    (27/ 31)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    86,6%
+  </span>
+  <span class="absValue">
+    (265/ 306)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package project.server.model;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import project.Cell;
+<i>4</i>&nbsp;import project.Message;
+<i>5</i>&nbsp;import project.Worker;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.io.*;
+<i>8</i>&nbsp;import java.lang.reflect.Array;
+<i>9</i>&nbsp;import java.nio.file.*;
+<i>10</i>&nbsp;import java.util.*;
+<i>11</i>&nbsp;import java.util.concurrent.atomic.AtomicBoolean;
+<i>12</i>&nbsp;import java.util.stream.Stream;
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;/*
+<i>16</i>&nbsp;* &quot;Subject&quot; class that contains all of the Model status attributes,
+<i>17</i>&nbsp;* and to be observed by the Observers.
+<i>18</i>&nbsp;*  */
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;public class Game extends Observable implements Serializable {
+<b class="fc"><i>21</i>&nbsp;    private ArrayList &lt;String&gt; startingNames = new ArrayList&lt;&gt;();</b>
+<i>22</i>&nbsp;    private int startingPlayers;
+<i>23</i>&nbsp;    private static final long serialVersionUID = 261752617;
+<i>24</i>&nbsp;    public static final String reset = &quot;\u001B[0m&quot;;
+<b class="fc"><i>25</i>&nbsp;    private List&lt;Observer&gt; observers = new ArrayList&lt;&gt;();</b>
+<i>26</i>&nbsp;    private ArrayList&lt;Player&gt; playerList;
+<i>27</i>&nbsp;    private Board gameBoard;
+<i>28</i>&nbsp;    private Player turnOf;
+<i>29</i>&nbsp;    private Worker worker;
+<i>30</i>&nbsp;    private boolean roomIsFull;
+<b class="fc"><i>31</i>&nbsp;    private String file=&quot;&quot;;</b>
+<i>32</i>&nbsp;    private ArrayList&lt;String&gt; allowedGods;
+<i>33</i>&nbsp;    private int turnNumber;
+<i>34</i>&nbsp;    private ArrayList&lt;String&gt; godsList;
+<i>35</i>&nbsp;    private int nPlayers;
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    public int getNPlayers(){
+<b class="nc"><i>38</i>&nbsp;        return nPlayers;</b>
+<i>39</i>&nbsp;    }
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;    public Game(){</b>
+<b class="fc"><i>42</i>&nbsp;        gameBoard = new Board();</b>
+<b class="fc"><i>43</i>&nbsp;        playerList = new ArrayList();</b>
+<b class="fc"><i>44</i>&nbsp;        roomIsFull = false;</b>
+<b class="fc"><i>45</i>&nbsp;        this.turnOf = new Player(&quot;&quot;,0);</b>
+<b class="fc"><i>46</i>&nbsp;        godsList = new ArrayList&lt;String&gt;();</b>
+<b class="fc"><i>47</i>&nbsp;        allowedGods = new ArrayList&lt;String&gt;();</b>
+<b class="fc"><i>48</i>&nbsp;        godsList.add(&quot;apollo&quot;);</b>
+<b class="fc"><i>49</i>&nbsp;        godsList.add(&quot;artemis&quot;);</b>
+<b class="fc"><i>50</i>&nbsp;        godsList.add(&quot;athena&quot;);</b>
+<b class="fc"><i>51</i>&nbsp;        godsList.add(&quot;atlas&quot;);</b>
+<b class="fc"><i>52</i>&nbsp;        godsList.add(&quot;demeter&quot;);</b>
+<b class="fc"><i>53</i>&nbsp;        godsList.add(&quot;hephaestus&quot;);</b>
+<b class="fc"><i>54</i>&nbsp;        godsList.add(&quot;minotaur&quot;);</b>
+<b class="fc"><i>55</i>&nbsp;        godsList.add(&quot;pan&quot;);</b>
+<b class="fc"><i>56</i>&nbsp;        godsList.add(&quot;prometheus&quot;);</b>
+<b class="fc"><i>57</i>&nbsp;        worker = null;</b>
+<b class="fc"><i>58</i>&nbsp;    }</b>
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Adds a new observer to the list.
+<i>62</i>&nbsp;     */
+<i>63</i>&nbsp;    public void addObserver(Observer arg) {
+<b class="nc"><i>64</i>&nbsp;        this.observers.add(arg);</b>
+<b class="nc"><i>65</i>&nbsp;    }</b>
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;    /**
+<i>68</i>&nbsp;     * Notifies the observers about changes.
+<i>69</i>&nbsp;     */
+<i>70</i>&nbsp;    public void notifyObserver(Object obj){
+<b class="fc"><i>71</i>&nbsp;        for (Observer observer : this.observers) {</b>
+<b class="nc"><i>72</i>&nbsp;            observer.update(this,obj);</b>
+<b class="nc"><i>73</i>&nbsp;        }</b>
+<b class="fc"><i>74</i>&nbsp;    }</b>
+<i>75</i>&nbsp;
+<i>76</i>&nbsp;
+<i>77</i>&nbsp;    /**
+<i>78</i>&nbsp;     * notifies the client through the observer that has occoured an error in the input
+<i>79</i>&nbsp;     */
+<i>80</i>&nbsp;    public void badInputException(int socketId,int typeOfMessage,String data, String errorData){
+<b class="nc"><i>81</i>&nbsp;        Message mex = new Message(socketId,typeOfMessage,data, turnOf.getName());</b>
+<b class="nc"><i>82</i>&nbsp;        mex.setErrorData(errorData);</b>
+<b class="nc"><i>83</i>&nbsp;        notifyObserver(mex);</b>
+<b class="nc"><i>84</i>&nbsp;    }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    /**
+<i>87</i>&nbsp;     * remove a player when he disconnects
+<i>88</i>&nbsp;     * @param p
+<i>89</i>&nbsp;     * @throws IOException
+<i>90</i>&nbsp;     */
+<i>91</i>&nbsp;    public void removePlayer(Player p) throws IOException {
+<b class="fc"><i>92</i>&nbsp;        if ((p != null &amp;&amp; allowedGods.isEmpty() &amp;&amp; turnNumber&gt;0)) {</b>
+<b class="fc"><i>93</i>&nbsp;            playerList.remove(p);</b>
+<b class="fc"><i>94</i>&nbsp;            if(p.getWorkers().size()&gt;2) {</b>
+<b class="nc"><i>95</i>&nbsp;                gameBoard.removeWorker(p.getWorkers().get(1));</b>
+<b class="nc"><i>96</i>&nbsp;                gameBoard.removeWorker(p.getWorkers().get(0));</b>
+<i>97</i>&nbsp;            }
+<i>98</i>&nbsp;            //removeobserver
+<b class="fc"><i>99</i>&nbsp;            subNPlayers();</b>
+<b class="fc"><i>100</i>&nbsp;            if (turnOf == p) {</b>
+<b class="fc"><i>101</i>&nbsp;                passTurn();</b>
+<b class="fc"><i>102</i>&nbsp;                notifyObserver(new Message(-1, 6, &quot;true&quot;, turnOf.getName()));</b>
+<i>103</i>&nbsp;            }
+<i>104</i>&nbsp;        }
+<i>105</i>&nbsp;        else{
+<b class="fc"><i>106</i>&nbsp;            notifyObserver(new Message(-1, 25, &quot;partita chiusa&quot;, turnOf.getName()));</b>
+<i>107</i>&nbsp;        }
+<b class="fc"><i>108</i>&nbsp;    }</b>
+<i>109</i>&nbsp;
+<i>110</i>&nbsp;    /**
+<i>111</i>&nbsp;     * Reduce nPlayers by 1
+<i>112</i>&nbsp;     */
+<i>113</i>&nbsp;    public void subNPlayers(){
+<b class="fc"><i>114</i>&nbsp;        nPlayers = nPlayers -1;</b>
+<b class="fc"><i>115</i>&nbsp;    }</b>
+<i>116</i>&nbsp;    public void setNPlayers(int nPlayers){
+<b class="fc"><i>117</i>&nbsp;        this.nPlayers = nPlayers;</b>
+<b class="fc"><i>118</i>&nbsp;        startingPlayers = nPlayers;</b>
+<b class="fc"><i>119</i>&nbsp;    }</b>
+<i>120</i>&nbsp;
+<i>121</i>&nbsp;    /**
+<i>122</i>&nbsp;     * Adds a new player to the list and notifies the observer.
+<i>123</i>&nbsp;     * calls init() once 3 players are connected.
+<i>124</i>&nbsp;     * @return true if a player is added, false if player name already exists in actual game
+<i>125</i>&nbsp;     */
+<i>126</i>&nbsp;    public synchronized boolean addPlayer(Player p,int socketId){
+<b class="fc"><i>127</i>&nbsp;        for(int i = 0; i &lt; playerList.size(); i++){</b>
+<b class="fc"><i>128</i>&nbsp;            if(playerList.get(i).getName().equals(p.getName())){</b>
+<b class="fc"><i>129</i>&nbsp;                Message m = new Message(socketId,0,&quot;false&quot;, turnOf.getName());</b>
+<b class="fc"><i>130</i>&nbsp;                m.setErrorData(&quot;Error: player already present in game, choose another username.&quot;);</b>
+<b class="fc"><i>131</i>&nbsp;                notifyObserver(m);</b>
+<b class="fc"><i>132</i>&nbsp;                return false;</b>
+<i>133</i>&nbsp;            }
+<i>134</i>&nbsp;        }
+<b class="fc"><i>135</i>&nbsp;        playerList.add(p);</b>
+<b class="fc"><i>136</i>&nbsp;        startingNames.add(p.getName());</b>
+<b class="fc"><i>137</i>&nbsp;        System.out.println(&quot;added to playerlist: &quot; + p.getName());</b>
+<i>138</i>&nbsp;
+<b class="fc"><i>139</i>&nbsp;        notifyObserver(new Message(socketId,0,&quot;registered&quot;, turnOf.getName()));</b>
+<b class="fc"><i>140</i>&nbsp;        if (playerList.size() &gt; nPlayers - 1) {</b>
+<b class="fc"><i>141</i>&nbsp;            roomIsFull = true;</b>
+<b class="fc"><i>142</i>&nbsp;            init();</b>
+<i>143</i>&nbsp;        }
+<i>144</i>&nbsp;
+<b class="fc"><i>145</i>&nbsp;        return true;</b>
+<i>146</i>&nbsp;    }
+<i>147</i>&nbsp;
+<i>148</i>&nbsp;    /**
+<i>149</i>&nbsp;     * Orders the playerList and sets turnOf. Sends playerList to the clients
+<i>150</i>&nbsp;     * Checks if there is a saved game with same players of actual game
+<i>151</i>&nbsp;     */
+<i>152</i>&nbsp;    public void init(){
+<b class="fc"><i>153</i>&nbsp;        Collections.sort(playerList, (Player m1, Player m2) -&gt; (int) (m1.getAge() - m2.getAge()));  //sorting of players</b>
+<b class="fc"><i>154</i>&nbsp;        Player p = playerList.get(nPlayers - 1);</b>
+<b class="fc"><i>155</i>&nbsp;        turnOf = p;</b>
+<b class="fc"><i>156</i>&nbsp;        turnNumber = 0;</b>
+<b class="fc"><i>157</i>&nbsp;        String response = &quot;&quot;;</b>
+<b class="fc"><i>158</i>&nbsp;        if (nPlayers == 3) {</b>
+<b class="fc"><i>159</i>&nbsp;            response = playerList.get(0).getName() + &quot;;&quot; + playerList.get(1).getName() + &quot;;&quot; + playerList.get(2).getName();</b>
+<i>160</i>&nbsp;
+<b class="fc"><i>161</i>&nbsp;            playerList.get(0).setColor(Color.RED);</b>
+<b class="fc"><i>162</i>&nbsp;            playerList.get(1).setColor(Color.YELLOW);</b>
+<b class="fc"><i>163</i>&nbsp;            playerList.get(2).setColor(Color.CYAN);</b>
+<i>164</i>&nbsp;        }
+<b class="fc"><i>165</i>&nbsp;        else if (nPlayers == 2){</b>
+<b class="fc"><i>166</i>&nbsp;            response = playerList.get(0).getName() + &quot;;&quot; + playerList.get(1).getName();</b>
+<i>167</i>&nbsp;
+<b class="fc"><i>168</i>&nbsp;            playerList.get(0).setColor(Color.RED);</b>
+<b class="fc"><i>169</i>&nbsp;            playerList.get(1).setColor(Color.YELLOW);</b>
+<i>170</i>&nbsp;        }
+<b class="nc"><i>171</i>&nbsp;        else if (nPlayers == 1){</b>
+<b class="nc"><i>172</i>&nbsp;            notifyObserver(new Message(-1,3,&quot; YOU ARE THE ONLY PLAYER CONNECTED &quot;, turnOf.getName()));</b>
+<i>173</i>&nbsp;        }
+<b class="fc"><i>174</i>&nbsp;        checkGame();</b>
+<b class="fc"><i>175</i>&nbsp;        if(file.equals(&quot;&quot;)){</b>
+<b class="fc"><i>176</i>&nbsp;            notifyObserver(new Message(-1,3,response, turnOf.getName()));</b>
+<i>177</i>&nbsp;        }
+<b class="fc"><i>178</i>&nbsp;    }</b>
+<i>179</i>&nbsp;
+<i>180</i>&nbsp;    /**
+<i>181</i>&nbsp;     * Adds a worker in board
+<i>182</i>&nbsp;     * @return TRUE if the worker is added inside the game board
+<i>183</i>&nbsp;     * @return FALSE if the worker isn&#39;t added inside the game board
+<i>184</i>&nbsp;     */
+<i>185</i>&nbsp;    public boolean addWorker(Player p,int x, int y, int socketId) throws IOException {
+<b class="fc"><i>186</i>&nbsp;        if (gameBoard.createWorker(p,x,y)) {</b>
+<b class="fc"><i>187</i>&nbsp;            if (p.getNumberOfWorker() == 2) {           //If a player has two worker change turn and print the board</b>
+<i>188</i>&nbsp;                try {
+<b class="fc"><i>189</i>&nbsp;                    passTurn();</b>
+<b class="fc"><i>190</i>&nbsp;                    checkStuckPlayer(this.turnOf);</b>
+<i>191</i>&nbsp;                }
+<b class="nc"><i>192</i>&nbsp;                catch (IOException e){</b>
+<b class="nc"><i>193</i>&nbsp;                    e.printStackTrace();</b>
+<b class="fc"><i>194</i>&nbsp;                }</b>
+<b class="fc"><i>195</i>&nbsp;                Message mex = new Message(-1, 4, &quot;true&quot;, turnOf.getName());</b>
+<b class="fc"><i>196</i>&nbsp;                mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>197</i>&nbsp;                printBoard(mex);</b>
+<b class="fc"><i>198</i>&nbsp;                notifyObserver(mex);</b>
+<b class="fc"><i>199</i>&nbsp;                return true;</b>
+<i>200</i>&nbsp;            }
+<b class="fc"><i>201</i>&nbsp;            notifyObserver(new Message(-1, 4, &quot;&quot;, turnOf.getName()));      //If a player add a worker print the board</b>
+<b class="fc"><i>202</i>&nbsp;            return true;</b>
+<i>203</i>&nbsp;        }
+<i>204</i>&nbsp;        else {
+<b class="fc"><i>205</i>&nbsp;            Message m = new Message(socketId, 4, &quot;false&quot;, turnOf.getName());//ERROR : if a player choose a wrong position</b>
+<b class="fc"><i>206</i>&nbsp;            m.setErrorData(&quot;Error: Bad inputs while inserting workers&quot;);</b>
+<b class="fc"><i>207</i>&nbsp;            notifyObserver(m);</b>
+<b class="fc"><i>208</i>&nbsp;            return false;</b>
+<i>209</i>&nbsp;        }
+<i>210</i>&nbsp;    }
+<i>211</i>&nbsp;
+<i>212</i>&nbsp;    /**
+<i>213</i>&nbsp;     * Method that print the board
+<i>214</i>&nbsp;     * @param mex mex sent to client
+<i>215</i>&nbsp;     */
+<i>216</i>&nbsp;    public void printBoard(Message mex){
+<i>217</i>&nbsp;        //Cell[][] board = mex.getBoard();
+<i>218</i>&nbsp;
+<b class="fc"><i>219</i>&nbsp;        for(int i = 0;i&lt;5;i++){</b>
+<b class="fc"><i>220</i>&nbsp;            for(int j = 0;j&lt;5;j++){</b>
+<b class="fc"><i>221</i>&nbsp;                if(mex.getCell(i,j).isOccupiedBy() != null) {</b>
+<b class="fc"><i>222</i>&nbsp;                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();</b>
+<b class="fc"><i>223</i>&nbsp;                    System.out.print(color+&quot; P &quot;+reset);</b>
+<b class="fc"><i>224</i>&nbsp;                }</b>
+<i>225</i>&nbsp;                else{
+<b class="fc"><i>226</i>&nbsp;                    System.out.print(&quot; &quot; + mex.getCell(i,j).getLevel() + &quot; &quot;);</b>
+<i>227</i>&nbsp;                }
+<i>228</i>&nbsp;            }
+<b class="fc"><i>229</i>&nbsp;            System.out.println(&quot;&quot;);</b>
+<i>230</i>&nbsp;        }
+<b class="fc"><i>231</i>&nbsp;        System.out.println(&quot;&quot;);</b>
+<b class="fc"><i>232</i>&nbsp;    }</b>
+<i>233</i>&nbsp;
+<i>234</i>&nbsp;    /**
+<i>235</i>&nbsp;     * Sets the 3 allowed gods to allowedGods list.
+<i>236</i>&nbsp;     * Broadcast list to all players if it works.
+<i>237</i>&nbsp;     * @return true if gods are set, false if fails
+<i>238</i>&nbsp;     */
+<i>239</i>&nbsp;    public boolean setGods(ArrayList&lt;String&gt; gods, int socketId) {
+<b class="fc"><i>240</i>&nbsp;        boolean correctGodsFlag = true;</b>
+<b class="fc"><i>241</i>&nbsp;        if(gods.size()==3){</b>
+<b class="fc"><i>242</i>&nbsp;            if (godsList.contains(gods.get(0).toLowerCase()) &amp;&amp; godsList.contains(gods.get(1).toLowerCase()) &amp;&amp; godsList.contains(gods.get(2).toLowerCase())) {</b>
+<b class="fc"><i>243</i>&nbsp;                for(int i =0; i &lt;gods.size()-1;i++){</b>
+<b class="fc"><i>244</i>&nbsp;                    for(int j=i+1; j&lt;gods.size();j++){</b>
+<b class="fc"><i>245</i>&nbsp;                        if(gods.get(i).equals(gods.get(j))){</b>
+<b class="nc"><i>246</i>&nbsp;                            correctGodsFlag = false;</b>
+<i>247</i>&nbsp;                        }
+<i>248</i>&nbsp;                    }
+<i>249</i>&nbsp;                }
+<b class="fc"><i>250</i>&nbsp;                if (correctGodsFlag) {</b>
+<b class="fc"><i>251</i>&nbsp;                allowedGods.add(gods.get(0).toLowerCase());</b>
+<b class="fc"><i>252</i>&nbsp;                allowedGods.add(gods.get(1).toLowerCase());</b>
+<b class="fc"><i>253</i>&nbsp;                allowedGods.add(gods.get(2).toLowerCase());</b>
+<i>254</i>&nbsp;
+<b class="fc"><i>255</i>&nbsp;                turnNumber = 1;</b>
+<b class="fc"><i>256</i>&nbsp;                turnOf = getPlayerList().get(0);</b>
+<b class="fc"><i>257</i>&nbsp;                notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + &quot;;&quot; + gods.get(1).toLowerCase() + &quot;;&quot; + gods.get(2).toLowerCase(), turnOf.getName()));</b>
+<i>258</i>&nbsp;                //notifyObserver(&quot;-1;1;&quot; + gList[0] + &quot;;&quot; + gList[1] + &quot;;&quot; + gList[2]); OLD VERSION
+<b class="fc"><i>259</i>&nbsp;                return true;</b>
+<i>260</i>&nbsp;                }
+<i>261</i>&nbsp;            }
+<i>262</i>&nbsp;        }
+<b class="fc"><i>263</i>&nbsp;        else if(gods.size()==2){</b>
+<b class="fc"><i>264</i>&nbsp;            if (godsList.contains(gods.get(0).toLowerCase()) &amp;&amp; godsList.contains(gods.get(1).toLowerCase())) {</b>
+<b class="fc"><i>265</i>&nbsp;                for(int i =0; i&lt;gods.size()-1;i++){</b>
+<b class="fc"><i>266</i>&nbsp;                    for(int j=i+1; j&lt;gods.size();j++){</b>
+<b class="fc"><i>267</i>&nbsp;                        if(gods.get(i).equals(gods.get(j))){</b>
+<b class="nc"><i>268</i>&nbsp;                            correctGodsFlag = false;</b>
+<i>269</i>&nbsp;                        }
+<i>270</i>&nbsp;                    }
+<i>271</i>&nbsp;                }
+<b class="fc"><i>272</i>&nbsp;                if(correctGodsFlag){</b>
+<b class="fc"><i>273</i>&nbsp;                    allowedGods.add(gods.get(0).toLowerCase());</b>
+<b class="fc"><i>274</i>&nbsp;                    allowedGods.add(gods.get(1).toLowerCase());</b>
+<b class="fc"><i>275</i>&nbsp;                    turnNumber = 1;</b>
+<b class="fc"><i>276</i>&nbsp;                    turnOf = getPlayerList().get(0);</b>
+<b class="fc"><i>277</i>&nbsp;                    notifyObserver(new Message(-1,1,gods.get(0).toLowerCase() + &quot;;&quot; + gods.get(1).toLowerCase(), turnOf.getName()));</b>
+<i>278</i>&nbsp;                    //notifyObserver(&quot;-1;1;&quot; + gList[0] + &quot;;&quot; + gList[1] + &quot;;&quot; + gList[2]); OLD VERSION
+<b class="fc"><i>279</i>&nbsp;                    return true;</b>
+<i>280</i>&nbsp;                }
+<i>281</i>&nbsp;            }
+<i>282</i>&nbsp;        }
+<i>283</i>&nbsp;
+<b class="nc"><i>284</i>&nbsp;        Message m = new Message(socketId,3,&quot;false&quot;, turnOf.getName());</b>
+<b class="nc"><i>285</i>&nbsp;        m.setErrorData(&quot;Error: unknown gods in the input.&quot;);</b>
+<b class="nc"><i>286</i>&nbsp;        notifyObserver(m);</b>
+<b class="nc"><i>287</i>&nbsp;        return false;</b>
+<i>288</i>&nbsp;    }
+<i>289</i>&nbsp;
+<i>290</i>&nbsp;    /**
+<i>291</i>&nbsp;     * Sets god chosen by a player and remove god from allowedGods list
+<i>292</i>&nbsp;     */
+<i>293</i>&nbsp;    public void addGod(String god, Player player, int socketId){
+<b class="fc"><i>294</i>&nbsp;        if(allowedGods.contains(god)){</b>
+<b class="fc"><i>295</i>&nbsp;            player.selectGod(god);</b>
+<b class="fc"><i>296</i>&nbsp;            allowedGods.remove(god);</b>
+<b class="fc"><i>297</i>&nbsp;            turnNumber ++;</b>
+<b class="fc"><i>298</i>&nbsp;            if (turnNumber &lt;=nPlayers) { turnOf = playerList.get(turnNumber - 1);}</b>
+<b class="fc"><i>299</i>&nbsp;            else { turnOf = playerList.get(0);}</b>
+<i>300</i>&nbsp;
+<b class="fc"><i>301</i>&nbsp;            notifyObserver(new Message(-1,2,player.getName() + &quot;;&quot; + god, turnOf.getName()));</b>
+<i>302</i>&nbsp;            //notifyObserver(&quot;-1;2;&quot; + player.getName() + &quot; picked &quot; + god); OLD
+<b class="fc"><i>303</i>&nbsp;            return;</b>
+<i>304</i>&nbsp;        }
+<i>305</i>&nbsp;
+<b class="fc"><i>306</i>&nbsp;        Message m = new Message(socketId,2,&quot;false&quot;, turnOf.getName());</b>
+<b class="fc"><i>307</i>&nbsp;        m.setErrorData(&quot;Error: God not in gods usage list.&quot;);</b>
+<b class="fc"><i>308</i>&nbsp;        notifyObserver(m);</b>
+<b class="fc"><i>309</i>&nbsp;    }</b>
+<i>310</i>&nbsp;
+<i>311</i>&nbsp;    /**
+<i>312</i>&nbsp;    * Method that ends the turn of the current player and saves the game
+<i>313</i>&nbsp;    * */
+<i>314</i>&nbsp;    public void passTurn() throws IOException {
+<b class="fc"><i>315</i>&nbsp;        int indexOfP = playerList.indexOf(turnOf);</b>
+<i>316</i>&nbsp;        /*if(indexOfP == -1){
+<i>317</i>&nbsp;            indexOfP = 0;
+<i>318</i>&nbsp;        }*/
+<b class="fc"><i>319</i>&nbsp;        if (indexOfP &lt; nPlayers - 1) { turnOf = playerList.get(indexOfP + 1); }</b>
+<b class="fc"><i>320</i>&nbsp;        else{ turnOf = playerList.get(0);}</b>
+<b class="fc"><i>321</i>&nbsp;        if(turnOf.getGod().equals(&quot;athena&quot;)){</b>
+<b class="fc"><i>322</i>&nbsp;            gameBoard.resetCanMoveUp();</b>
+<i>323</i>&nbsp;        }
+<b class="fc"><i>324</i>&nbsp;        gameBoard.resetCurrentWorker();</b>
+<b class="fc"><i>325</i>&nbsp;        gameBoard.resetState();</b>
+<b class="fc"><i>326</i>&nbsp;        if(playerList.size()&gt;1){</b>
+<b class="fc"><i>327</i>&nbsp;            this.saveGame();</b>
+<i>328</i>&nbsp;        }
+<b class="fc"><i>329</i>&nbsp;    }</b>
+<i>330</i>&nbsp;
+<i>331</i>&nbsp;    /**
+<i>332</i>&nbsp;     * Method that calls passTurn() and checkStuckPlayer() if a player can end his turn
+<i>333</i>&nbsp;     * @throws IOException if game can&#39;t be saved
+<i>334</i>&nbsp;     */
+<i>335</i>&nbsp;    public void nextTurn() throws IOException {
+<b class="fc"><i>336</i>&nbsp;        if(gameBoard.getNumberOfMoves()&gt;=1 &amp;&amp; gameBoard.getNumberOfBuild()&gt;=1){</b>
+<b class="fc"><i>337</i>&nbsp;        passTurn();</b>
+<b class="fc"><i>338</i>&nbsp;        checkStuckPlayer(this.turnOf);</b>
+<b class="fc"><i>339</i>&nbsp;        notifyObserver(new Message(-1, 6, &quot;true&quot;, turnOf.getName()));</b>
+<i>340</i>&nbsp;        }
+<i>341</i>&nbsp;        else{
+<b class="fc"><i>342</i>&nbsp;            notifyObserver(new Message(-1,6,&quot;true&quot;,turnOf.getName()));</b>
+<i>343</i>&nbsp;        }
+<i>344</i>&nbsp;
+<b class="fc"><i>345</i>&nbsp;    }</b>
+<i>346</i>&nbsp;
+<i>347</i>&nbsp;    /**
+<i>348</i>&nbsp;     * Method that invokes Board.move() and according to results sends different messages to clients
+<i>349</i>&nbsp;     */
+<i>350</i>&nbsp;    public void moveWorker(Player p,int xStart,int yStart,int xDest, int yDest, int socketId) {
+<b class="fc"><i>351</i>&nbsp;        int ris = gameBoard.move(p, xStart, yStart, xDest, yDest);</b>
+<b class="fc"><i>352</i>&nbsp;        if (ris == 1) {</b>
+<i>353</i>&nbsp;            //sends the board to the client
+<b class="fc"><i>354</i>&nbsp;            Message mex = new Message(-1, 5, &quot;true&quot;, turnOf.getName());</b>
+<b class="fc"><i>355</i>&nbsp;            mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>356</i>&nbsp;            notifyObserver(mex);</b>
+<b class="fc"><i>357</i>&nbsp;            return;</b>
+<i>358</i>&nbsp;        }
+<b class="fc"><i>359</i>&nbsp;        else if (ris == -1) { //win condition</b>
+<b class="fc"><i>360</i>&nbsp;            Message mex = new Message(-1, 30, &quot;true&quot;, turnOf.getName());</b>
+<b class="fc"><i>361</i>&nbsp;            mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>362</i>&nbsp;            notifyObserver(mex);</b>
+<b class="fc"><i>363</i>&nbsp;            deleteSavedGame();</b>
+<b class="fc"><i>364</i>&nbsp;            return;</b>
+<i>365</i>&nbsp;        }
+<b class="fc"><i>366</i>&nbsp;        Message m = new Message(socketId,5,&quot;false&quot;, turnOf.getName());</b>
+<b class="fc"><i>367</i>&nbsp;        m.setErrorData(&quot;Error: Bad input for the move.&quot;);</b>
+<b class="fc"><i>368</i>&nbsp;        notifyObserver(m);</b>
+<i>369</i>&nbsp;
+<b class="fc"><i>370</i>&nbsp;    }</b>
+<i>371</i>&nbsp;
+<i>372</i>&nbsp;
+<i>373</i>&nbsp;    /**
+<i>374</i>&nbsp;     * Method that invokes Board.build() and according to results sends different messages to clients
+<i>375</i>&nbsp;     */
+<i>376</i>&nbsp;    public void build(Player p,int xStart,int yStart,int xDest, int yDest,int level, int socketId){   // &lt;------ DA MODIFICARE
+<b class="fc"><i>377</i>&nbsp;        if (gameBoard.build(p, level, xStart, yStart, xDest, yDest)) {</b>
+<i>378</i>&nbsp;            //send the board to the clinet
+<b class="fc"><i>379</i>&nbsp;            Message mex = new Message(-1, 6, &quot;true&quot;, turnOf.getName());</b>
+<b class="fc"><i>380</i>&nbsp;            mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>381</i>&nbsp;            notifyObserver(mex);</b>
+<b class="fc"><i>382</i>&nbsp;            return;</b>
+<i>383</i>&nbsp;        }
+<b class="fc"><i>384</i>&nbsp;        Message m = new Message(socketId,6,&quot;false&quot;, turnOf.getName());</b>
+<b class="fc"><i>385</i>&nbsp;        m.setErrorData(&quot;Error: Bad input for the build.&quot;);</b>
+<b class="fc"><i>386</i>&nbsp;        notifyObserver(m);</b>
+<b class="fc"><i>387</i>&nbsp;    }</b>
+<i>388</i>&nbsp;
+<i>389</i>&nbsp;    /**
+<i>390</i>&nbsp;     * checks if a player has both the workers stucked
+<i>391</i>&nbsp;     * if true, removes the player from game and his workers from board
+<i>392</i>&nbsp;    */
+<i>393</i>&nbsp;    public void checkStuckPlayer(Player p) throws IOException {
+<i>394</i>&nbsp;
+<b class="fc"><i>395</i>&nbsp;        if(p.getWorkers().size() &lt; 2){</b>
+<b class="fc"><i>396</i>&nbsp;            return;</b>
+<i>397</i>&nbsp;        }
+<b class="fc"><i>398</i>&nbsp;        Worker w1 = p.getWorkers().get(0);</b>
+<b class="fc"><i>399</i>&nbsp;        Worker w2 = p.getWorkers().get(1);</b>
+<b class="fc"><i>400</i>&nbsp;        if(w1 != null &amp;&amp; w2 != null){</b>
+<b class="fc"><i>401</i>&nbsp;            if(gameBoard.checkStuckWorker(w1.getCell().getX(),w1.getCell().getY())){</b>
+<b class="fc"><i>402</i>&nbsp;                if (gameBoard.checkStuckWorker(w2.getCell().getX(),w2.getCell().getY())){</b>
+<b class="fc"><i>403</i>&nbsp;                    gameBoard.removeWorker(w1);</b>
+<b class="fc"><i>404</i>&nbsp;                    gameBoard.removeWorker(w2);</b>
+<b class="fc"><i>405</i>&nbsp;                    Message mex = new Message(-1, 40, &quot;true&quot;, turnOf.getName());</b>
+<b class="fc"><i>406</i>&nbsp;                    mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>407</i>&nbsp;                    notifyObserver(mex);</b>
+<b class="fc"><i>408</i>&nbsp;                    passTurn();</b>
+<b class="fc"><i>409</i>&nbsp;                    this.playerList.remove(p);</b>
+<b class="fc"><i>410</i>&nbsp;                    nPlayers--;</b>
+<i>411</i>&nbsp;
+<i>412</i>&nbsp;                }
+<i>413</i>&nbsp;            }
+<i>414</i>&nbsp;
+<b class="fc"><i>415</i>&nbsp;            if(playerList.size()==1){</b>
+<b class="fc"><i>416</i>&nbsp;                Message mex = new Message(-1, 30, &quot;true&quot;, playerList.get(0).getName());</b>
+<b class="fc"><i>417</i>&nbsp;                mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>418</i>&nbsp;                notifyObserver(mex);</b>
+<i>419</i>&nbsp;
+<i>420</i>&nbsp;            }
+<i>421</i>&nbsp;        }
+<i>422</i>&nbsp;
+<b class="fc"><i>423</i>&nbsp;    }</b>
+<i>424</i>&nbsp;
+<i>425</i>&nbsp;    public Player getTurnOf() {
+<b class="fc"><i>426</i>&nbsp;        return turnOf;</b>
+<i>427</i>&nbsp;    }
+<i>428</i>&nbsp;    public ArrayList&lt;Player&gt; getPlayerList() {
+<b class="fc"><i>429</i>&nbsp;        return playerList;</b>
+<i>430</i>&nbsp;    }
+<i>431</i>&nbsp;
+<i>432</i>&nbsp;    //PER TESTING
+<i>433</i>&nbsp;    public ArrayList&lt;String&gt; getGodList() {
+<b class="fc"><i>434</i>&nbsp;        return allowedGods;</b>
+<i>435</i>&nbsp;    }
+<i>436</i>&nbsp;
+<b class="fc"><i>437</i>&nbsp;    public Board getGameBoard(){return gameBoard;}</b>
+<i>438</i>&nbsp;
+<i>439</i>&nbsp;    /**
+<i>440</i>&nbsp;     *Saves current state of the game in a file in &quot;savedgames&quot; directory
+<i>441</i>&nbsp;     */
+<i>442</i>&nbsp;     public void saveGame() {
+<i>443</i>&nbsp;        try {
+<b class="fc"><i>444</i>&nbsp;            FileOutputStream f = new FileOutputStream(new File(&quot;savedgames//&quot; + nPlayers + &quot;-&quot; + playersName()));</b>
+<b class="fc"><i>445</i>&nbsp;            ObjectOutputStream o = new ObjectOutputStream(f);</b>
+<b class="fc"><i>446</i>&nbsp;            o.writeObject(playerList);</b>
+<b class="fc"><i>447</i>&nbsp;            o.writeObject(gameBoard);</b>
+<b class="fc"><i>448</i>&nbsp;            o.writeObject(turnOf);</b>
+<b class="fc"><i>449</i>&nbsp;            o.close();</b>
+<b class="fc"><i>450</i>&nbsp;            f.close();</b>
+<i>451</i>&nbsp;        }
+<b class="nc"><i>452</i>&nbsp;        catch(IOException e){</b>
+<b class="nc"><i>453</i>&nbsp;            e.printStackTrace();</b>
+<b class="fc"><i>454</i>&nbsp;        }</b>
+<b class="fc"><i>455</i>&nbsp;    }</b>
+<i>456</i>&nbsp;
+<i>457</i>&nbsp;    /**
+<i>458</i>&nbsp;     *Check if there is a game in &quot;savedgames&quot; directory with same players of the actual game
+<i>459</i>&nbsp;    */
+<i>460</i>&nbsp;     public void checkGame(){
+<b class="fc"><i>461</i>&nbsp;        File f = new File(&quot;savedgames&quot;);</b>
+<b class="fc"><i>462</i>&nbsp;        String[] fileList = f.list();</b>
+<b class="fc"><i>463</i>&nbsp;        for(String str : fileList){</b>
+<b class="fc"><i>464</i>&nbsp;            String names[] = str.split(&quot;-&quot;);</b>
+<b class="fc"><i>465</i>&nbsp;            int numPlayers = Integer.parseInt(names[0]);</b>
+<b class="fc"><i>466</i>&nbsp;            for(int i=1;i&lt;numPlayers;i++){</b>
+<b class="fc"><i>467</i>&nbsp;                if(numPlayers == playerList.size()){</b>
+<b class="fc"><i>468</i>&nbsp;                    if(checkNames(names)){</b>
+<b class="fc"><i>469</i>&nbsp;                        file=str;</b>
+<b class="fc"><i>470</i>&nbsp;                        notifyObserver(new Message(0, 60, &quot;true&quot;, turnOf.getName()));</b>
+<b class="fc"><i>471</i>&nbsp;                        return;</b>
+<i>472</i>&nbsp;                    }
+<i>473</i>&nbsp;            }
+<i>474</i>&nbsp;            }
+<i>475</i>&nbsp;        }
+<b class="fc"><i>476</i>&nbsp;    }</b>
+<i>477</i>&nbsp;
+<i>478</i>&nbsp;    /**
+<i>479</i>&nbsp;     * Loads an existing game
+<i>480</i>&nbsp;     */
+<i>481</i>&nbsp;    public void loadGame() throws IOException, ClassNotFoundException {
+<b class="fc"><i>482</i>&nbsp;        file=&quot;savedgames//&quot;+file;</b>
+<b class="fc"><i>483</i>&nbsp;        FileInputStream f=new FileInputStream(new File(this.file));</b>
+<b class="fc"><i>484</i>&nbsp;        ObjectInputStream o=new ObjectInputStream(f);</b>
+<b class="fc"><i>485</i>&nbsp;        ArrayList&lt;Player&gt; newPlayerList = (ArrayList&lt;Player&gt;)o.readObject();</b>
+<b class="fc"><i>486</i>&nbsp;        gameBoard = (Board)o.readObject();</b>
+<b class="fc"><i>487</i>&nbsp;        turnOf = (Player)o.readObject();</b>
+<b class="fc"><i>488</i>&nbsp;        for(int i=0; i&lt;playerList.size();i++){</b>
+<b class="fc"><i>489</i>&nbsp;            if(turnOf.getName().equals(playerList.get(i).getName()))</b>
+<i>490</i>&nbsp;            {
+<b class="fc"><i>491</i>&nbsp;                turnOf=playerList.get(i);</b>
+<i>492</i>&nbsp;            }
+<i>493</i>&nbsp;        }
+<i>494</i>&nbsp;
+<b class="fc"><i>495</i>&nbsp;        gameBoard.setCorrectPlayers(playerList);</b>
+<b class="fc"><i>496</i>&nbsp;        fixGods(newPlayerList);</b>
+<b class="fc"><i>497</i>&nbsp;        o.close();</b>
+<b class="fc"><i>498</i>&nbsp;        f.close();</b>
+<b class="fc"><i>499</i>&nbsp;        Message mex=new Message(-1,65,&quot;true&quot;,turnOf.getName());</b>
+<b class="fc"><i>500</i>&nbsp;        mex.addBoard(gameBoard.getBoard());</b>
+<b class="fc"><i>501</i>&nbsp;        notifyObserver(mex);</b>
+<b class="fc"><i>502</i>&nbsp;        notifyObserver(new Message(-1,70,</b>
+<b class="fc"><i>503</i>&nbsp;                &quot;You have to do &quot;+(1-gameBoard.getNumberOfMoves())+&quot; moves and &quot;+(1-gameBoard.getNumberOfBuild())+&quot; build&quot;,turnOf.getName()));</b>
+<b class="fc"><i>504</i>&nbsp;        notifyObserver(new Message(-1,5,&quot;true&quot;,turnOf.getName()));</b>
+<b class="fc"><i>505</i>&nbsp;    }</b>
+<i>506</i>&nbsp;
+<i>507</i>&nbsp;    /**
+<i>508</i>&nbsp;     *
+<i>509</i>&nbsp;     * @return all players name in this format name1-name2-name3-
+<i>510</i>&nbsp;     */
+<i>511</i>&nbsp;
+<i>512</i>&nbsp;    public String playersName(){
+<b class="fc"><i>513</i>&nbsp;        String s=&quot;&quot;;</b>
+<b class="fc"><i>514</i>&nbsp;        for(int i=0;i&lt;playerList.size();i++) {</b>
+<b class="fc"><i>515</i>&nbsp;            s = s + playerList.get(i).getName() + &quot;-&quot;;</b>
+<i>516</i>&nbsp;        }
+<b class="fc"><i>517</i>&nbsp;        return s;</b>
+<i>518</i>&nbsp;    }
+<i>519</i>&nbsp;
+<i>520</i>&nbsp;    /**
+<i>521</i>&nbsp;     * Checks if actual game players are the same of the saved games
+<i>522</i>&nbsp;     * @return true if there are a game with same players, else false
+<i>523</i>&nbsp;     */
+<i>524</i>&nbsp;    public boolean checkNames(String[] names){
+<b class="fc"><i>525</i>&nbsp;        int cont=0;</b>
+<b class="fc"><i>526</i>&nbsp;        for(int i=0;i&lt;playerList.size();i++){</b>
+<b class="fc"><i>527</i>&nbsp;            for(int j=1;j&lt;playerList.size()+1;j++){</b>
+<b class="fc"><i>528</i>&nbsp;                if(playerList.get(i).getName().equals(names[j])){</b>
+<b class="fc"><i>529</i>&nbsp;                    cont++;</b>
+<i>530</i>&nbsp;                }
+<i>531</i>&nbsp;            }
+<i>532</i>&nbsp;        }
+<b class="fc"><i>533</i>&nbsp;        if(cont==playerList.size()){</b>
+<b class="fc"><i>534</i>&nbsp;            return true;</b>
+<i>535</i>&nbsp;        }
+<b class="fc"><i>536</i>&nbsp;        else return false;</b>
+<i>537</i>&nbsp;    }
+<i>538</i>&nbsp;
+<i>539</i>&nbsp;    /**
+<i>540</i>&nbsp;     *players in actual game will have same gods they had in the saved game
+<i>541</i>&nbsp;     */
+<i>542</i>&nbsp;    public void fixGods(ArrayList&lt;Player&gt; plNew){
+<b class="fc"><i>543</i>&nbsp;        for(int i=0;i&lt;playerList.size();i++){</b>
+<b class="fc"><i>544</i>&nbsp;            for(int j=0;j&lt;playerList.size();j++){</b>
+<b class="fc"><i>545</i>&nbsp;                if(playerList.get(i).getName().equals(plNew.get(j).getName())) {</b>
+<b class="fc"><i>546</i>&nbsp;                    playerList.get(i).selectGod(plNew.get(j).getGod());</b>
+<b class="fc"><i>547</i>&nbsp;                    notifyObserver(new Message(-1,420,playerList.get(i).getName()+&quot;;&quot;+playerList.get(i).getGod()+&quot;;&quot;+i,turnOf.getName()));</b>
+<i>548</i>&nbsp;                }
+<i>549</i>&nbsp;            }
+<i>550</i>&nbsp;        }
+<b class="fc"><i>551</i>&nbsp;    }</b>
+<i>552</i>&nbsp;
+<i>553</i>&nbsp;
+<i>554</i>&nbsp;
+<i>555</i>&nbsp;    /**
+<i>556</i>&nbsp;     * used if a player doesn&#39;t want to load a previous game
+<i>557</i>&nbsp;     */
+<i>558</i>&nbsp;    public void callGod(){
+<b class="nc"><i>559</i>&nbsp;        String response = &quot;&quot;;</b>
+<b class="nc"><i>560</i>&nbsp;        if (playerList.size() == 3) {</b>
+<b class="nc"><i>561</i>&nbsp;            response = playerList.get(0).getName() + &quot;;&quot; + playerList.get(1).getName() + &quot;;&quot; + playerList.get(2).getName();</b>
+<i>562</i>&nbsp;
+<b class="nc"><i>563</i>&nbsp;            playerList.get(0).setColor(Color.RED);</b>
+<b class="nc"><i>564</i>&nbsp;            playerList.get(1).setColor(Color.YELLOW);</b>
+<b class="nc"><i>565</i>&nbsp;            playerList.get(2).setColor(Color.CYAN);</b>
+<i>566</i>&nbsp;        }
+<b class="nc"><i>567</i>&nbsp;        else if (playerList.size() == 2){</b>
+<b class="nc"><i>568</i>&nbsp;            response = playerList.get(0).getName() + &quot;;&quot; + playerList.get(1).getName();</b>
+<i>569</i>&nbsp;
+<b class="nc"><i>570</i>&nbsp;            playerList.get(0).setColor(Color.RED);</b>
+<b class="nc"><i>571</i>&nbsp;            playerList.get(1).setColor(Color.YELLOW);</b>
+<i>572</i>&nbsp;        }
+<b class="nc"><i>573</i>&nbsp;        notifyObserver(new Message(-1,3,response, turnOf.getName()));</b>
+<b class="nc"><i>574</i>&nbsp;    }</b>
+<i>575</i>&nbsp;
+<i>576</i>&nbsp;    /**
+<i>577</i>&nbsp;     * When a game is completed his file is deleted
+<i>578</i>&nbsp;     */
+<i>579</i>&nbsp;    public void deleteSavedGame(){
+<b class="fc"><i>580</i>&nbsp;        String filename=&quot;&quot;;</b>
+<b class="fc"><i>581</i>&nbsp;        filename=filename+startingPlayers+&quot;-&quot;;</b>
+<b class="fc"><i>582</i>&nbsp;        for(int i=0;i&lt;startingPlayers;i++) {</b>
+<b class="fc"><i>583</i>&nbsp;            filename=filename+startingNames.get(i)+&quot;-&quot;;</b>
+<i>584</i>&nbsp;        }
+<i>585</i>&nbsp;        try
+<i>586</i>&nbsp;        {
+<b class="fc"><i>587</i>&nbsp;            Files.deleteIfExists(Paths.get(&quot;savedgames//&quot;+filename));</b>
+<i>588</i>&nbsp;        }
+<b class="nc"><i>589</i>&nbsp;        catch(NoSuchFileException e)</b>
+<i>590</i>&nbsp;        {
+<b class="nc"><i>591</i>&nbsp;            System.out.println(&quot;No such file/directory exists&quot;);</b>
+<i>592</i>&nbsp;        }
+<b class="nc"><i>593</i>&nbsp;        catch(DirectoryNotEmptyException e)</b>
+<i>594</i>&nbsp;        {
+<b class="nc"><i>595</i>&nbsp;            System.out.println(&quot;Directory is not empty.&quot;);</b>
+<i>596</i>&nbsp;        }
+<b class="nc"><i>597</i>&nbsp;        catch(IOException e)</b>
+<i>598</i>&nbsp;        {
+<b class="nc"><i>599</i>&nbsp;            System.out.println(&quot;Invalid permissions.&quot;);</b>
+<b class="fc"><i>600</i>&nbsp;        }</b>
+<b class="fc"><i>601</i>&nbsp;        System.out.println(&quot;Deletion successful.&quot;);</b>
+<b class="fc"><i>602</i>&nbsp;    }</b>
+<i>603</i>&nbsp;
+<i>604</i>&nbsp;}
+<i>605</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-28 16:20</div>
+</div>
+</body>
+</html>

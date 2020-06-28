@@ -35,6 +35,7 @@ class Game2PlayersTest {
     void addPlayer() {
         ArrayList<Player> playerList;
         playerList=g.getPlayerList();
+        g.addPlayer(new Player("Giovanni",22),2);
         assertEquals(playerList.get(0).getName(),"Giovanni");
         assertEquals(playerList.get(1).getName(),"Mattia");
     }
@@ -138,4 +139,12 @@ class Game2PlayersTest {
         g.nextTurn();
     }
 
+    @Test
+    void loadGame() throws IOException, ClassNotFoundException {
+        g.loadGame();
+        assertNotNull(g.getGameBoard());
+        assertNotNull(g.getTurnOf());
+        assertEquals(g.getPlayerList().get(0).getName(),"Giovanni");
+        assertEquals(g.getPlayerList().get(1).getName(),"Mattia");
+    }
 }

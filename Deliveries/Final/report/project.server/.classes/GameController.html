@@ -1,0 +1,234 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: GameController</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">project.server</a> ]
+</div>
+
+<h1>Coverage Summary for Class: GameController (project.server)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">GameController</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 11)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/ 40)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package project.server;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import project.Message;
+<i>4</i>&nbsp;import project.server.model.Game;
+<i>5</i>&nbsp;import project.server.model.Player;
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;import java.io.*;
+<i>8</i>&nbsp;import java.util.ArrayList;
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;/*
+<i>11</i>&nbsp;* This class plays the role of the controller in the MVC Pattern.
+<i>12</i>&nbsp;* */
+<i>13</i>&nbsp;public class GameController {
+<i>14</i>&nbsp;
+<i>15</i>&nbsp;    private Game game;
+<b class="nc"><i>16</i>&nbsp;    public GameController(Game game){</b>
+<b class="nc"><i>17</i>&nbsp;        this.game = game;</b>
+<b class="nc"><i>18</i>&nbsp;    }</b>
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;    /**
+<i>21</i>&nbsp;     * This method sets the Gods chosen by the eldest player, that will be used in the Game.
+<i>22</i>&nbsp;     * @param gods arraylist that contains gods chosen by eldest player
+<i>23</i>&nbsp;     * @param socketId id of the eldest player
+<i>24</i>&nbsp;     */
+<i>25</i>&nbsp;    public void setGods(ArrayList&lt;String&gt; gods, int socketId){
+<b class="nc"><i>26</i>&nbsp;        if (gods!= null  &amp;&amp; (gods.size() == game.getNPlayers())) {</b>
+<b class="nc"><i>27</i>&nbsp;            if(gods.get(0)!=gods.get(1)) {</b>
+<b class="nc"><i>28</i>&nbsp;                if(game.getNPlayers() == 2 || (gods.get(1)!=gods.get(2))) {</b>
+<b class="nc"><i>29</i>&nbsp;                    game.setGods(gods, socketId);</b>
+<b class="nc"><i>30</i>&nbsp;                    return;</b>
+<i>31</i>&nbsp;                }
+<i>32</i>&nbsp;            }
+<i>33</i>&nbsp;        }
+<b class="nc"><i>34</i>&nbsp;        game.badInputException(socketId,3,&quot;false&quot;, &quot;Error: Bad inputs while inserting the gods.&quot;);</b>
+<b class="nc"><i>35</i>&nbsp;    }</b>
+<i>36</i>&nbsp;
+<i>37</i>&nbsp;    /**
+<i>38</i>&nbsp;     * Method called when a player end his turn
+<i>39</i>&nbsp;     * @throws IOException when the game can&#39;t be saved correctly
+<i>40</i>&nbsp;     */
+<i>41</i>&nbsp;    public void passTurn() throws IOException {
+<b class="nc"><i>42</i>&nbsp;        game.nextTurn();</b>
+<b class="nc"><i>43</i>&nbsp;    }</b>
+<i>44</i>&nbsp;
+<i>45</i>&nbsp;
+<i>46</i>&nbsp;    /**
+<i>47</i>&nbsp;     * This method adds a new player inside the game if there are less than 3 player already in
+<i>48</i>&nbsp;     * @param player Player object
+<i>49</i>&nbsp;     * @param socketId id of the player
+<i>50</i>&nbsp;     * @return
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    public boolean addPlayer(Player player, int socketId){
+<b class="nc"><i>53</i>&nbsp;        return game.addPlayer(player,socketId);</b>
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    /**
+<i>57</i>&nbsp;     * This method adds a new player&#39;s worker in a certain position on the board .
+<i>58</i>&nbsp;     * @param p player
+<i>59</i>&nbsp;     * @param x x coordinate where a worker is placed
+<i>60</i>&nbsp;     * @param y y coordinate where a worker is placed
+<i>61</i>&nbsp;     * @param socketId id of the player
+<i>62</i>&nbsp;     * @throws IOException
+<i>63</i>&nbsp;     */
+<i>64</i>&nbsp;    public void addWorker(Player p, int x,int y,int socketId) throws IOException {
+<b class="nc"><i>65</i>&nbsp;        if(p!= null &amp;&amp; p.getNumberOfWorker()&lt;2) {</b>
+<b class="nc"><i>66</i>&nbsp;            if (x &gt;= 0 &amp;&amp; y &gt;= 0) {</b>
+<b class="nc"><i>67</i>&nbsp;                game.addWorker(p, x, y,socketId);</b>
+<b class="nc"><i>68</i>&nbsp;                return;</b>
+<i>69</i>&nbsp;            }
+<i>70</i>&nbsp;        }
+<b class="nc"><i>71</i>&nbsp;        game.badInputException(socketId,4,&quot;false&quot;, &quot;Error: Bad inputs of adding a worker.&quot;);</b>
+<b class="nc"><i>72</i>&nbsp;        return;</b>
+<i>73</i>&nbsp;    }
+<i>74</i>&nbsp;
+<i>75</i>&nbsp;    /**
+<i>76</i>&nbsp;     * This method moves a player&#39;s worker in a certain position.
+<i>77</i>&nbsp;     * @param player
+<i>78</i>&nbsp;     * @param xStart starting x coordinate of the worker
+<i>79</i>&nbsp;     * @param yStart starting y coordinate of the worker
+<i>80</i>&nbsp;     * @param xDest final x coordinate of the worker
+<i>81</i>&nbsp;     * @param yDest final y coordinate of the worker
+<i>82</i>&nbsp;     * @param socketId id of the player
+<i>83</i>&nbsp;     */
+<i>84</i>&nbsp;    public void moveWorker(Player player, int xStart,int yStart,int xDest, int yDest,int socketId){
+<b class="nc"><i>85</i>&nbsp;        if (xStart &gt;=0 &amp;&amp; yStart &gt;=0 &amp;&amp; xDest &gt;= 0 &amp;&amp; yDest &gt;= 0) {</b>
+<b class="nc"><i>86</i>&nbsp;            game.moveWorker(player, xStart,yStart,xDest,yDest, socketId);</b>
+<b class="nc"><i>87</i>&nbsp;            return;</b>
+<i>88</i>&nbsp;        }
+<b class="nc"><i>89</i>&nbsp;        game.badInputException(socketId,5,&quot;false&quot;,&quot;Error: Bad Move inputs.&quot;);</b>
+<b class="nc"><i>90</i>&nbsp;    }</b>
+<i>91</i>&nbsp;
+<i>92</i>&nbsp;    /**
+<i>93</i>&nbsp;     * This method builds a new level inside a certain cell of the game board
+<i>94</i>&nbsp;     * @param player
+<i>95</i>&nbsp;     * @param xStart x coordinate of the worker that builds
+<i>96</i>&nbsp;     * @param yStart y coordinate of the worker that builds
+<i>97</i>&nbsp;     * @param xDest x coordinate where a worker builds
+<i>98</i>&nbsp;     * @param yDest y coordinate where a worker builds
+<i>99</i>&nbsp;     * @param level 1 if standard build, 2 if hephaestus build, 4 if atlas build
+<i>100</i>&nbsp;     * @param socketId id of the player
+<i>101</i>&nbsp;     */
+<i>102</i>&nbsp;    public void build(Player player, int xStart,int yStart,int xDest, int yDest,int level,int socketId){
+<b class="nc"><i>103</i>&nbsp;        if (xStart &gt;= 0 &amp;&amp; yStart &gt;= 0 &amp;&amp; xDest &gt;= 0 &amp;&amp; yDest &gt;= 0) {</b>
+<b class="nc"><i>104</i>&nbsp;            game.build(player, xStart, yStart, xDest, yDest, level, socketId);</b>
+<b class="nc"><i>105</i>&nbsp;            return;</b>
+<i>106</i>&nbsp;        }
+<b class="nc"><i>107</i>&nbsp;        game.badInputException(socketId,6,&quot;false&quot;,&quot;Error: Bad Build inputs.&quot;);</b>
+<i>108</i>&nbsp;
+<b class="nc"><i>109</i>&nbsp;    }</b>
+<i>110</i>&nbsp;
+<i>111</i>&nbsp;    /**
+<i>112</i>&nbsp;     * lets the player chose his god card.
+<i>113</i>&nbsp;     * @param god god chosen by the player
+<i>114</i>&nbsp;     * @param player
+<i>115</i>&nbsp;     * @param socketId id of the player
+<i>116</i>&nbsp;     */
+<i>117</i>&nbsp;    public void setGod(String god,Player player,int socketId) {
+<b class="nc"><i>118</i>&nbsp;        if(god != null){</b>
+<b class="nc"><i>119</i>&nbsp;            game.addGod(god,player,socketId);</b>
+<b class="nc"><i>120</i>&nbsp;            return;</b>
+<i>121</i>&nbsp;        }
+<b class="nc"><i>122</i>&nbsp;        game.badInputException(socketId,2,&quot;false&quot;, &quot;Error: Bad inputs while selecting a god.&quot;);</b>
+<b class="nc"><i>123</i>&nbsp;        return;</b>
+<i>124</i>&nbsp;    }
+<i>125</i>&nbsp;
+<i>126</i>&nbsp;    /**
+<i>127</i>&nbsp;     * Remove a player in case of disconnection
+<i>128</i>&nbsp;     * @param player player to remove
+<i>129</i>&nbsp;     * @throws IOException
+<i>130</i>&nbsp;     */
+<i>131</i>&nbsp;    public void removePlayer(Player player) throws IOException {
+<b class="nc"><i>132</i>&nbsp;            game.removePlayer(player);</b>
+<b class="nc"><i>133</i>&nbsp;    }</b>
+<i>134</i>&nbsp;
+<i>135</i>&nbsp;    /**
+<i>136</i>&nbsp;     * Method called when a player decides to continue an existing game
+<i>137</i>&nbsp;     * @throws IOException
+<i>138</i>&nbsp;     * @throws ClassNotFoundException
+<i>139</i>&nbsp;     */
+<i>140</i>&nbsp;    public void loadGame() throws IOException, ClassNotFoundException {
+<b class="nc"><i>141</i>&nbsp;        game.loadGame();</b>
+<b class="nc"><i>142</i>&nbsp;    }</b>
+<i>143</i>&nbsp;
+<i>144</i>&nbsp;    /**
+<i>145</i>&nbsp;     * Method used if a player decides to not continue an existing game
+<i>146</i>&nbsp;     */
+<i>147</i>&nbsp;    public void callGod(){
+<b class="nc"><i>148</i>&nbsp;        game.callGod();</b>
+<b class="nc"><i>149</i>&nbsp;    }</b>
+<i>150</i>&nbsp;
+<i>151</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-06-28 16:20</div>
+</div>
+</body>
+</html>

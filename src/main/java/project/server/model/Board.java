@@ -165,7 +165,7 @@ public class Board implements Serializable {
         this.moveWorker(worker,x_dest,y_dest);  //effective move of the worker
 
         //win condition
-        if(board[x_dest][y_dest].getLevel()==3 || ((player.getGod().equals("pan"))&&
+        if((board[x_dest][y_dest].getLevel()==3 && board[x_start][y_start].getLevel()!=3)|| ((player.getGod().equals("pan"))&&
                 ((board[x_start][y_start].getLevel()-board[x_dest][y_dest].getLevel())>=2)) ){  //check if worker has moved on top of a level 3
 
             return -1;  //win
