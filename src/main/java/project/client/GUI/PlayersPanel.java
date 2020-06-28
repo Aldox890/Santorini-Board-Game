@@ -7,6 +7,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* Class container of the infos of every player who's playing the game.
+* */
 public class PlayersPanel extends JPanel {
     private static final String graphicsPath = "graphics//";
     private static final String pathGodsIcon = "graphics//gods//icons";

@@ -8,13 +8,15 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+/*
+* Class dedicated to managing the controls of the game: "Move", "Build" and "End Turn"
+* */
 public class ControlsPanel extends ImagePanel {
     private static final String graphicsPath = "graphics//btncontrols//";
     JPanel containerPanel;
     ImagePanel godCardPanel;
-    //JPanel fillerPanel;
     JPanel buttonsPanel;
-    JButton moveBtn, buildBtn, endTurnBtn, godButton;
+    JButton moveBtn, buildBtn, endTurnBtn;
     GameState gameState;
     ObjectOutputStream objectOutputStream;
 
@@ -23,7 +25,6 @@ public class ControlsPanel extends ImagePanel {
         objectOutputStream = oos;
         gameState = gs;
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
-        //this.setAlignmentY(Component.CENTER_ALIGNMENT);
         this.setBounds(990,0,300,720);
         this.setOpaque(true);
 
@@ -33,6 +34,9 @@ public class ControlsPanel extends ImagePanel {
         this.add(containerPanel);
     }
 
+    /*
+    * It instantiates the container for the containers of the controls and the god card
+    * */
     void createContainerPanel(){
         containerPanel = new JPanel();
         containerPanel.setBounds(990,100,200,538);
@@ -46,21 +50,16 @@ public class ControlsPanel extends ImagePanel {
         containerPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         containerPanel.setOpaque(false);
 
-        //createGodPanel();
         createButtonPanel();
 
-
-        //containerPanel.add(Box.createVerticalStrut(50));
-        //containerPanel.add(godCardPanel);
         containerPanel.add(Box.createVerticalStrut(30));
-        //containerPanel.add(Box.createRigidArea(new Dimension(200,50)));
         containerPanel.add(buttonsPanel);
-
-        //godCardPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
     }
 
+    /*
+    * Creates an ImagePanel containing the card of the god, given the name.
+    * */
     public void createGodPanel(String godName){
         godCardPanel = new ImagePanel("graphics//gods//cards//"+ godName+".png",200,250);//new ImagePanel(bgpath+"SidePanel.png",200,300);
         godCardPanel.setMinimumSize(new Dimension(200, 250));
@@ -72,17 +71,16 @@ public class ControlsPanel extends ImagePanel {
         this.containerPanel.add(godCardPanel);
     }
 
-
+    /*
+    * Creates the panel containing all the controls and adds to them Listeners
+    * */
     void createButtonPanel(){
-
         buttonsPanel = new JPanel();
         buttonsPanel.setOpaque(false);
-        //buttonsPanel.setBackground(Color.BLACK);
 
         buttonsPanel.setMinimumSize(new Dimension(200, 235));
         buttonsPanel.setPreferredSize(new Dimension(200, 235));
         buttonsPanel.setMaximumSize(new Dimension(200, 235));
-        //buttonsPanel.setBounds(600,440,200,220);   //buttonsPanel.setBounds(1048,440,200,220);
         buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.PAGE_AXIS));
 
         moveBtn=new JButton();
@@ -100,9 +98,11 @@ public class ControlsPanel extends ImagePanel {
         buttonsPanel.add(moveBtn);
         buttonsPanel.add(buildBtn);
         buttonsPanel.add(endTurnBtn);
-
     }
 
+    /*
+    * Sets the button "b" with the given width, height and image.
+    * */
     void setButton(JButton b, String path, int width, int height){
         ImageIcon imgbtn = resizeImageButton(new ImageIcon(path),width,height);
         b.setIcon(imgbtn);
@@ -111,11 +111,13 @@ public class ControlsPanel extends ImagePanel {
         b.setBorderPainted(false);
     }
 
+    /*
+    * Adds to each control button a mouseEntered listener.
+    * */
     void addMouseEnteredToButtons(){
         moveBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                //super.mouseEntered(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_MOVE_pressed.png"),190,70);
                 moveBtn.setIcon(imgbtn);
             }
@@ -123,7 +125,6 @@ public class ControlsPanel extends ImagePanel {
         buildBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                //super.mouseEntered(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_BUILD_pressed.png"),190,70);
                 buildBtn.setIcon(imgbtn);
             }
@@ -131,18 +132,19 @@ public class ControlsPanel extends ImagePanel {
         endTurnBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                //super.mouseEntered(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_ENDTURN_pressed.png"),190,70);
                 endTurnBtn.setIcon(imgbtn);
             }
         });
     }
 
+    /*
+     * Adds to each control button a mouseExited listener.
+     * */
     void addMouseExitedToButtons(){
         moveBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                //super.mouseExited(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_MOVE.png"),190,70);
                 moveBtn.setIcon(imgbtn);
             }
@@ -150,7 +152,6 @@ public class ControlsPanel extends ImagePanel {
         buildBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                //super.mouseExited(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_BUILD.png"),190,70);
                 buildBtn.setIcon(imgbtn);
             }
@@ -159,13 +160,15 @@ public class ControlsPanel extends ImagePanel {
         endTurnBtn.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseExited(MouseEvent e) {
-                //super.mouseExited(e);
                 ImageIcon imgbtn = resizeImageButton(new ImageIcon(graphicsPath+"btn_ENDTURN.png"),190,70);
                 endTurnBtn.setIcon(imgbtn);
             }
         });
     }
 
+    /*
+     * Adds to each control button a mouseEntered listener, to manage what each control does when is pressed
+     * */
     void addMouseClickToButtons(){
         moveBtn.addMouseListener(new MouseAdapter() {
             @Override
@@ -217,6 +220,9 @@ public class ControlsPanel extends ImagePanel {
         endTurnBtn.setEnabled(false);
     }
 
+    /*
+    * Given an ImageIcon and the desirable width and height, return a new ImageIcon with the given dimension.
+    * */
     ImageIcon resizeImageButton(ImageIcon img, int width, int height){
         Image i = img.getImage();
         Image newImg = i.getScaledInstance(width,height,Image.SCALE_DEFAULT);

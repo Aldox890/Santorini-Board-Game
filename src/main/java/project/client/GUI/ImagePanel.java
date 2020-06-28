@@ -7,30 +7,38 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/*
+* Class that specifies a JPanel with an image.
+* */
 public class ImagePanel extends JPanel{
 
     private BufferedImage img=null;
     int width;
     int height;
 
+    //Costruttore da eliminare
     public ImagePanel(int width, int height){
         try {
             this.width=width;
             this.height=height;
             img = ImageIO.read(new File("graphics//SantoriniBoard.png"));//Toolkit.getDefaultToolkit().createImage("graphics/SantoriniBoard.png");
         } catch (IOException e) {
-            System.out.println("LOOZAPALOOZA");
+            e.printStackTrace();
         }
         loadImage(img);
     }
 
+    /*
+    * Constructor.
+    * Takes as input the path of an image and the desirable width and height
+    * */
     public ImagePanel(String imgPath, int width, int height){
         try {
             this.width=width;
             this.height=height;
             img = ImageIO.read(new File(imgPath));
         } catch (IOException e) {
-            System.out.println("LOOZAPALOOZA");
+            e.printStackTrace();
         }
         loadImage(img);
     }
@@ -52,15 +60,4 @@ public class ImagePanel extends JPanel{
             e.printStackTrace();
         }
     }
-
-    /*public void setBackground(String imgpath, int width, int height){
-        try {
-            this.width=width;
-            this.height=height;
-            img = ImageIO.read(new File(imgpath));
-        } catch (IOException e) {
-            System.out.println("LOOZAPALOOZA");
-        }
-        loadImage(img);
-    }*/
 }

@@ -33,6 +33,9 @@ public class GodsPanel extends JPanel {
         this.add(Box.createHorizontalStrut(300));
     }
 
+    /*
+    *
+    * */
     public void addGods(){
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new GridLayout(3,3));
@@ -55,11 +58,14 @@ public class GodsPanel extends JPanel {
         this.add(innerPanel);
     }
 
+    /*
+    * adds the listener on the given god image when is pressed, that send the selected god card to the server.
+    * */
     public void createListener(ImagePanel godImage, String name){
         GodsPanel gPanel = this;
         godImage.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                 if(listOfGods.size()<nPlayers) {
                     if(!listOfGods.contains(name)) {
                         listOfGods.add(name);

@@ -3,6 +3,9 @@ package project.client.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+* Class for the panel that shows who has won the game.
+* */
 public class WinPanel extends JPanel {
     JPanel container;
     JPanel godCardContainer;

@@ -10,12 +10,16 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/*
+* Class of the frame for the login
+* */
 public class LoginFrame extends JFrame{
 
     ObjectOutputStream objectOutputStream;
     //String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
     private static final String graphicsPath = "graphics//"; //"src//main//java//project//client//graphics//";
     String userName;
+
     LoginFrame( ObjectOutputStream obj) throws IOException{
         //this.socket=s;
         this.objectOutputStream = obj;

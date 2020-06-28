@@ -3,6 +3,9 @@ package project.client.GUI;
 import javax.swing.*;
 import java.awt.*;
 
+/*
+* Class of the panel that contains the chosen god by a player, the player name and the color of its workers
+* */
 public class PlayerInfoPanel extends JPanel {
 
     private static final String pathGodsIcon = "graphics//gods//icons//";
@@ -57,7 +60,9 @@ public class PlayerInfoPanel extends JPanel {
         this.color.setBackground(color);
     }
 
-    /*sets the border of the panel if the boolean flag is true otherwise it resets it*/
+    /*
+    * sets the border of the panel if the boolean flag is true otherwise it resets it
+    * */
     public void setBorder(boolean active){
         if(active){
             this.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));

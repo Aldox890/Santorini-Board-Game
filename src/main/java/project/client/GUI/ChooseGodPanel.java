@@ -11,6 +11,10 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+
+/*
+* Class for creating a panel for choosing the personal god at the starting of the game.
+* */
 public class ChooseGodPanel extends JPanel {
 
     private static final String graphicsPath = "graphics//gods//cards//";
@@ -34,6 +38,9 @@ public class ChooseGodPanel extends JPanel {
         this.add(Box.createHorizontalStrut(300));
     }
 
+    /*
+    * add all the available gods' card on the display
+    * */
     public void addGods(){
         JPanel innerPanel = new JPanel();
         innerPanel.setLayout(new GridLayout(3,3));
@@ -59,11 +66,14 @@ public class ChooseGodPanel extends JPanel {
         this.add(innerPanel);
     }
 
+    /*
+    * Adds a listener for each god image, to send the selected god to the server, when the card is pressed
+    * */
     public void createListener(ImagePanel godImage, String name){
         ChooseGodPanel cgPanel = this;
         godImage.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
+            public void mousePressed(MouseEvent e) {
                     try {
                         chosenGod = name;
                         objectOutputStream.writeObject(new ClientMessage(1,name, null, -1, -1,-1,-1,null));
