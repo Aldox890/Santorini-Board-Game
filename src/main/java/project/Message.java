@@ -67,6 +67,10 @@ public class Message implements Serializable {
         return gameBoard[i][j];
     }
 
+    /**
+     *
+     * @return true if the board in the message is not set
+     */
     public boolean boardIsEmpty(){
         if (gameBoard[0][0] == null) return true;
         return false;
