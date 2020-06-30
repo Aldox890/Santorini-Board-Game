@@ -1,7 +1,7 @@
 ### Requirements met
 - Server
 - CLI
-- GUI interface
+- GUI
 - 1 Advanced functionality: Save game
 
 ### How to start the game
