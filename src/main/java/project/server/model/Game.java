@@ -21,7 +21,7 @@ public class Game extends Observable implements Serializable {
     private ArrayList <String> startingNames = new ArrayList<>();
     private int startingPlayers;
     private static final long serialVersionUID = 261752617;
-    public static final String reset = "\u001B[0m";
+    public static final String reset = "\033[0m";
     private List<Observer> observers = new ArrayList<>();
     private ArrayList<Player> playerList;
     private Board gameBoard;

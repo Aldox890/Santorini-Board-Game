@@ -5,13 +5,13 @@ public enum Color {
 
     public String getColor(){
         if(this.equals(RED)){
-            return "\u001B[31m";
+            return "\033[31m";
         }
         if (this.equals(CYAN)){
-            return "\u001B[36m";
+            return "\033[36m";
         }
         if(this.equals(YELLOW)){
-            return "\u001B[33m";
+            return "\033[33m";
         }
         return "";
     }

@@ -16,7 +16,7 @@ import java.util.Scanner;;
 
 public class ClientView implements Observer {
 
-    public static final String reset = "\u001B[0m";
+    public static final String reset = "\033[0m";
     ObjectOutputStream objectOutputStream;
     Scanner stdin;
     ArrayList<String> players;
