@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ing-sw-2020-plenzich-sala-siracusa:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/ing_sw_2020_plenzich_sala_siracusa_jar</output-path>
+    <root id="archive" name="ing-sw-2020-plenzich-sala-siracusa.jar">
+      <element id="module-output" name="ing-sw-2020-plenzich-sala-siracusa" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src/main/java/graphics" />
+    </root>
+  </artifact>
+</component>

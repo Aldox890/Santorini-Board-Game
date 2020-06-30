@@ -482,7 +482,7 @@ public class Game extends Observable implements Serializable {
      * Loads an existing game
      */
     public void loadGame() throws IOException, ClassNotFoundException {
-        file="savedgames//"+file;
+        file=".//savedgames//"+file;
         FileInputStream f=new FileInputStream(new File(this.file));
         ObjectInputStream o=new ObjectInputStream(f);
         ArrayList<Player> newPlayerList = (ArrayList<Player>)o.readObject();
