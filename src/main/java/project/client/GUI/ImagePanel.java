@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-/*
+/**
 * Class that specifies a JPanel with an image.
 * */
 public class ImagePanel extends JPanel{
@@ -21,17 +21,19 @@ public class ImagePanel extends JPanel{
         try {
             this.width=width;
             this.height=height;
-            img = ImageIO.read(new File("graphics//SantoriniBoard.png"));//Toolkit.getDefaultToolkit().createImage("graphics/SantoriniBoard.png");
+            img = ImageIO.read(new File("graphics//SantoriniBoard.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
         loadImage(img);
     }
 
-    /*
-    * Constructor.
-    * Takes as input the path of an image and the desirable width and height
-    * */
+    /**
+     * Takes as input the path of an image and the desirable width and height
+     * @param imgPath
+     * @param width
+     * @param height
+     */
     public ImagePanel(String imgPath, int width, int height){
         try {
             this.width=width;

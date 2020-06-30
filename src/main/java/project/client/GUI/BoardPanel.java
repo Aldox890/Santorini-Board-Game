@@ -13,9 +13,9 @@ import java.io.ObjectOutputStream;
 
 import static project.server.model.Color.*;
 
-/*
-* Class dedicated to managing the game board
-* */
+/**
+ * Class dedicated to managing the game board
+ */
 public class BoardPanel extends JPanel {
     ObjectOutputStream objectOutputStream;
     String graphicsPath = "graphics//";
@@ -40,7 +40,6 @@ public class BoardPanel extends JPanel {
             for(int c=0;c<=4;c++){
                 ImagePanel img = new ImagePanel(graphicsPath+"buildings//0.png",102,102);
                 buttonBoard[r][c] = new CellButton(r,c);
-                //component.setPreferredSize(new Dimension(102,102));
                 buttonBoard[r][c].setContentAreaFilled(false);
                 buttonBoard[r][c].setOpaque(false);
                 buttonBoard[r][c].setBorder(null);
@@ -51,7 +50,6 @@ public class BoardPanel extends JPanel {
                 lim.weightx=1;
                 lim.weighty=1;
                 lim.fill = GridBagConstraints.BOTH;
-                //lim.insets = new Insets(10, 10, 10, 10); //lim è un GridBagConstraints
                 gridbaglayout.setConstraints(buttonBoard[r][c],lim);
                 this.add(buttonBoard[r][c]);
 
@@ -60,13 +58,11 @@ public class BoardPanel extends JPanel {
 
             }
         }
-
-
     }
 
-    /*
-    * Removes the CellButton cells of the board
-    * */
+    /**
+     * Removes the CellButton cells of the board
+    */
     public void removeListeners(){
         Component[] compArray = this.getComponents();
 
@@ -78,10 +74,11 @@ public class BoardPanel extends JPanel {
     }
 
 
-
-    /*
-    * Updates the board everytime a move of a worker or a build happens
-    * */
+    /**
+     * Updates the board everytime a move of a worker or a build happens
+     * @param mex
+     * @throws IOException
+     */
     public void updateBoard(Message mex) throws IOException {
         Cell[][] board = mex.getBoard();
         for(int i = 0;i<5;i++){
@@ -124,9 +121,10 @@ public class BoardPanel extends JPanel {
         mex = null;
     }
 
-    /*
-    * Creates all the MouseListeners for each CellButton of the game board
-    * */
+    /**
+     * Creates all the MouseListeners for each CellButton of the game board
+     * @param component
+     */
     public void createListener(CellButton component){
         BoardPanel bPanel = this;
 
@@ -223,14 +221,13 @@ public class BoardPanel extends JPanel {
                 }
             }
         });
-
-
     }
 
-    /*
-    * Opens up a pop-up dialog whenever the usage of certain gods' power should be asked to the user.
-    * If "Yes", the god power will be used otherwise it wont.
-    * */
+    /**
+     * Opens up a pop-up dialog whenever the usage of certain gods' power should be asked to the user. If "Yes", the god power will be used otherwise it wont.
+     * @param godName
+     * @return
+     */
     public int useGodPowerDialogBox(String godName){
         Object[] options = {"YES",
                 "NO"};

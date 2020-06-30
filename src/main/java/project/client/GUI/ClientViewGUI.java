@@ -51,6 +51,7 @@ public class ClientViewGUI implements Observer {
         availableGods = new ArrayList<>();
         gameState = new GameState();
     }
+
     public void loginWithFrame(){
         try {
             login_frame=new LoginFrame(this.objectOutputStream);
@@ -60,77 +61,7 @@ public class ClientViewGUI implements Observer {
         }
     }
 
-    public void login() throws IOException {
-
-        ImageIcon logo = new ImageIcon(graphicsPath+"santorini-logo.png");
-        ImageIcon loginBtnImg = new ImageIcon(graphicsPath+"button-play-normal.png");
-        loginFrame = new JFrame("Santorini login");
-        //JPanel loginPanel = new JPanel();
-        ImagePanel loginPanel = new ImagePanel(graphicsPath+"bg_modeselect.png",600,300);
-
-
-        Image i = logo.getImage();
-        Image newImg = i.getScaledInstance(200,70,Image.SCALE_DEFAULT);
-        logo = new ImageIcon(newImg);
-
-        i = loginBtnImg.getImage();
-        newImg = i.getScaledInstance(90,90,Image.SCALE_DEFAULT);
-        loginBtnImg = new ImageIcon(newImg);
-
-
-
-        JLabel logoLabel = new JLabel(logo);
-        JLabel username = new JLabel("Username:");
-        JLabel age = new JLabel("Age:");
-        JLabel errorMexLogin = new JLabel("ERROR LABEL");
-        JTextField usernameArea = new JTextField(10);
-        JTextField ageArea = new JTextField(2);
-        JButton loginButton = new JButton("Login", loginBtnImg);
-
-        loginPanel.setLayout(null);
-
-        loginFrame.setSize(new Dimension(600,300));
-        //loginPanel.setSize(new Dimension(600,300));
-        //loginPanel.setBackground(new Color(135, 177, 182));
-
-        logoLabel.setBounds(200,5,200,70);
-        username.setBounds(20,105,100,20);
-        age.setBounds(20,135,100,20);
-
-        usernameArea.setBounds(100,105,150,20);
-        ageArea.setBounds(100,135,30,20);
-        usernameArea.setOpaque(false);
-        usernameArea.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));   //show just bottom border of JTextField
-        ageArea.setOpaque(false);
-        ageArea.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK));
-
-        loginButton.setBounds(450,150,90,90);
-        loginButton.setBorder(null);
-        loginButton.setOpaque(false);
-        loginButton.setContentAreaFilled(false);
-        loginButton.setBorderPainted(false);
-
-        errorMexLogin.setBounds(150,200,300,20);
-        errorMexLogin.setForeground(Color.RED);
-        errorMexLogin.setFont(errorMexLogin.getFont().deriveFont(14f)); //increase font of error label
-        errorMexLogin.setVisible(false);
-
-
-
-        loginPanel.add(loginButton);
-        loginPanel.add(age);
-        loginPanel.add(username);
-        loginPanel.add(logoLabel);
-        loginPanel.add(usernameArea);
-        loginPanel.add(ageArea);
-        loginPanel.add(errorMexLogin);
-        loginFrame.add(loginPanel);
-        loginFrame.setResizable(false);
-        loginFrame.setVisible(true);
-    }
-
     public void createGameFrame() {
-        //loginFrame.setVisible(false);
         login_frame.setVisible(false);
         alertPanel = new AlertPanel();
         santoriniFrame = new JFrame("Santorini");
@@ -147,8 +78,6 @@ public class ClientViewGUI implements Observer {
         santoriniFrame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                //super.windowClosing(e);
-
                 int choice = JOptionPane.showConfirmDialog(santoriniFrame,
                                 "Are you sure you want to close this window?", "Close Window?",
                                 JOptionPane.YES_NO_OPTION,
@@ -176,8 +105,6 @@ public class ClientViewGUI implements Observer {
         santoriniFrame.getContentPane().add(imagePanel);
         santoriniFrame.getContentPane().add(alertPanel,0);
 
-
-        //gameBoard.setSize(new Dimension(1280, 720));
         santoriniFrame.setSize(1280, 758);
         santoriniFrame.setResizable(false);
 
@@ -216,7 +143,6 @@ public class ClientViewGUI implements Observer {
     }
 
     public void choseAllowedGods() throws IOException {
-        ArrayList<String> listOfGods = new ArrayList<>();
         if(players.get(players.size()-1).equals(login_frame.getUsername())){ //last player in list (eldest) choses the gods
             System.out.println("You are the most godlike player");
 
@@ -250,9 +176,6 @@ public class ClientViewGUI implements Observer {
 
             santoriniFrame.validate();
             santoriniFrame.repaint();
-
-            //objectOutputStream.writeObject(new ClientMessage(1,god, null, -1, -1,-1,-1,null));
-            //objectOutputStream.flush();
         }
     }
 
@@ -299,7 +222,6 @@ public class ClientViewGUI implements Observer {
             if(login_frame != null && mex.getTurnOf() != null && login_frame.getUsername() != null && mex.getTurnOf().equals(login_frame.getUsername())){
                 gameState.setMyTurn(true);
                 if(santoriniFrame != null){
-                    //santoriniFrame.setEnabled(true);
                     board_panel.setEnabled(true);
                     players_panel.setEnabled(true);
                     controls_panel.setEnabled(true);
@@ -308,7 +230,6 @@ public class ClientViewGUI implements Observer {
             else{
                 gameState.setMyTurn(false);
                 if(santoriniFrame != null){
-                    //santoriniFrame.setEnabled(false);
                     board_panel.setEnabled(false);
                     players_panel.setEnabled(false);
                     controls_panel.setEnabled(false);
@@ -339,11 +260,9 @@ public class ClientViewGUI implements Observer {
                     santoriniFrame.repaint();
                     controls_panel.disableComponents();
                     System.out.println(mex.getTurnOf()+" has won the game!");
-                    //System.exit(0);
                     break;
 
                 case(40): //Player stuck
-                    //printBoard(mex);
                     players.remove(mex.getTurnOf()); //remove player which has both workers stucked
                     santoriniFrame.validate();
                     santoriniFrame.repaint();
@@ -398,7 +317,6 @@ public class ClientViewGUI implements Observer {
 
                     } else {
                         System.out.println(mex.getErrorData());
-                        //login();
                     }
                     break;
 
@@ -449,7 +367,6 @@ public class ClientViewGUI implements Observer {
                             gameState.setHasSetWorkers(gameState.getHasSetWorkers()-1);
                         }
                     }
-                    //else{turnMenu(mex);}
                     break;
 
                 case(5): //if someone has moved and it's me, i build
@@ -459,8 +376,6 @@ public class ClientViewGUI implements Observer {
                         System.out.println("Bad input");
                         System.out.println(mex.getErrorData());
                     }
-                    //turnMenu(mex);
-                    //checkTurnPhase(mex);
                     break;
 
             }

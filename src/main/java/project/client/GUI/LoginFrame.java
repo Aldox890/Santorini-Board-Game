@@ -10,22 +10,19 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-/*
+/**
 * Class of the frame for the login
 * */
 public class LoginFrame extends JFrame{
 
     ObjectOutputStream objectOutputStream;
-    //String graphicsPath = "src\\main\\java\\project\\client\\graphics\\";
-    private static final String graphicsPath = "graphics//"; //"src//main//java//project//client//graphics//";
+    private static final String graphicsPath = "graphics//";
     String userName;
 
     LoginFrame( ObjectOutputStream obj) throws IOException{
-        //this.socket=s;
         this.objectOutputStream = obj;
         ImageIcon logo = new ImageIcon(graphicsPath+"santorini-logo.png");
         ImageIcon loginBtnImg = new ImageIcon(graphicsPath+"button-play-normal.png");
-        //loginFrame = new JFrame("Santorini login");
         ImagePanel loginPanel = new ImagePanel(graphicsPath+"bg_login_blured.png",600,300);
 
 
@@ -49,7 +46,6 @@ public class LoginFrame extends JFrame{
 
         loginPanel.setLayout(null);
 
-        //loginFrame.setSize(new Dimension(600,300));
         this.setSize(new Dimension(600,300));
 
         logoLabel.setBounds(200,5,200,70);
@@ -85,10 +81,6 @@ public class LoginFrame extends JFrame{
         loginPanel.add(errorMexLogin);
         this.add(loginPanel);
         this.setResizable(false);
-        //this.setVisible(true);
-        /*loginFrame.add(loginPanel);
-        loginFrame.setResizable(false);
-        loginFrame.setVisible(true);*/
 
         loginButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -118,9 +110,5 @@ public class LoginFrame extends JFrame{
 
     public String getUsername(){
         return userName;
-    }
-
-    public void setInvisible(){
-        this.setVisible(false);
     }
 }

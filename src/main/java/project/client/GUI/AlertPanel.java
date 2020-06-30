@@ -14,9 +14,6 @@ import java.util.ArrayList;
 public class AlertPanel extends JPanel {
 
     private static final String graphicsPath = "graphics//gods//cards//";
-    ArrayList<String> listOfAvailableGods;
-    ObjectOutputStream objectOutputStream;
-    private String chosenGod;
     private JLabel label;
     public AlertPanel() {
         this.setBounds(340,60,600,30);
