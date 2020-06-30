@@ -164,8 +164,10 @@ public class ClientView implements Observer {
     }
 
     /**
-    * method that asks to player if he want to move,build or end his turn
-    * */
+     * method that asks to player if he want to move,build or end his turn
+     * @param mex message received from server
+     * @throws IOException
+     */
     public void turnMenu(Message mex) throws IOException {
         if(mex.getTurnOf().equals(username)) {
             String in = "0";
@@ -230,6 +232,7 @@ public class ClientView implements Observer {
 
     /**
      * Method that asks username and age and send this data to server
+     * @throws IOException
      */
     public void register() throws IOException {
         System.out.print("Insert username: ");

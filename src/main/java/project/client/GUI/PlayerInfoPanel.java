@@ -3,7 +3,7 @@ package project.client.GUI;
 import javax.swing.*;
 import java.awt.*;
 
-/*
+/**
 * Class of the panel that contains the chosen god by a player, the player name and the color of its workers
 * */
 public class PlayerInfoPanel extends JPanel {
@@ -17,7 +17,6 @@ public class PlayerInfoPanel extends JPanel {
     public PlayerInfoPanel() {
         super();
         this.setPreferredSize(new Dimension(230,50));
-        //this.setBounds(0,0,250,50);
         this.setLayout(new FlowLayout());
         this.setOpaque(false);
 
@@ -42,6 +41,10 @@ public class PlayerInfoPanel extends JPanel {
         return imgGod.getIcon();
     }
 
+    /**
+     * Sets the image based on the gods name
+     * @param godname
+     */
     public void setImgGod(String godname) {
         String path = pathGodsIcon + godname +"_c.png";
         ImageIcon img = new ImageIcon(path);
@@ -60,9 +63,10 @@ public class PlayerInfoPanel extends JPanel {
         this.color.setBackground(color);
     }
 
-    /*
-    * sets the border of the panel if the boolean flag is true otherwise it resets it
-    * */
+    /**
+     * Sets the border of the panel if the boolean flag is true otherwise it resets it
+      * @param active
+     */
     public void setBorder(boolean active){
         if(active){
             this.setBorder(BorderFactory.createLineBorder(Color.BLUE,2));

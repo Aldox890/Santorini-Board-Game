@@ -8,9 +8,9 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
-/*
-* Class dedicated to managing the controls of the game: "Move", "Build" and "End Turn"
-* */
+/**
+ * Class dedicated to managing the controls of the game: "Move", "Build" and "End Turn"
+ */
 public class ControlsPanel extends ImagePanel {
     private static final String graphicsPath = "graphics//btncontrols//";
     JPanel containerPanel;
@@ -34,9 +34,9 @@ public class ControlsPanel extends ImagePanel {
         this.add(containerPanel);
     }
 
-    /*
-    * It instantiates the container for the containers of the controls and the god card
-    * */
+    /**
+     * It instantiates the container for the containers of the controls and the god card
+     */
     void createContainerPanel(){
         containerPanel = new JPanel();
         containerPanel.setBounds(990,100,200,538);
@@ -57,9 +57,10 @@ public class ControlsPanel extends ImagePanel {
         buttonsPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
 
-    /*
-    * Creates an ImagePanel containing the card of the god, given the name.
-    * */
+    /**
+     * Creates an ImagePanel containing the card of the god, given the name.
+     * @param godName
+     */
     public void createGodPanel(String godName){
         godCardPanel = new ImagePanel("graphics//gods//cards//"+ godName+".png",200,250);//new ImagePanel(bgpath+"SidePanel.png",200,300);
         godCardPanel.setMinimumSize(new Dimension(200, 250));
@@ -71,7 +72,7 @@ public class ControlsPanel extends ImagePanel {
         this.containerPanel.add(godCardPanel);
     }
 
-    /*
+    /**
     * Creates the panel containing all the controls and adds to them Listeners
     * */
     void createButtonPanel(){
@@ -100,9 +101,13 @@ public class ControlsPanel extends ImagePanel {
         buttonsPanel.add(endTurnBtn);
     }
 
-    /*
-    * Sets the button "b" with the given width, height and image.
-    * */
+    /**
+     * Sets the button "b" with the given width, height and image.
+     * @param b
+     * @param path
+     * @param width
+     * @param height
+     */
     void setButton(JButton b, String path, int width, int height){
         ImageIcon imgbtn = resizeImageButton(new ImageIcon(path),width,height);
         b.setIcon(imgbtn);
@@ -111,7 +116,7 @@ public class ControlsPanel extends ImagePanel {
         b.setBorderPainted(false);
     }
 
-    /*
+    /**
     * Adds to each control button a mouseEntered listener.
     * */
     void addMouseEnteredToButtons(){
@@ -138,7 +143,7 @@ public class ControlsPanel extends ImagePanel {
         });
     }
 
-    /*
+    /**
      * Adds to each control button a mouseExited listener.
      * */
     void addMouseExitedToButtons(){
@@ -166,7 +171,7 @@ public class ControlsPanel extends ImagePanel {
         });
     }
 
-    /*
+    /**
      * Adds to each control button a mouseEntered listener, to manage what each control does when is pressed
      * */
     void addMouseClickToButtons(){
@@ -220,9 +225,13 @@ public class ControlsPanel extends ImagePanel {
         endTurnBtn.setEnabled(false);
     }
 
-    /*
-    * Given an ImageIcon and the desirable width and height, return a new ImageIcon with the given dimension.
-    * */
+    /**
+     * Given an ImageIcon and the desirable width and height, return a new ImageIcon with the given dimension.
+     * @param img
+     * @param width
+     * @param height
+     * @return
+     */
     ImageIcon resizeImageButton(ImageIcon img, int width, int height){
         Image i = img.getImage();
         Image newImg = i.getScaledInstance(width,height,Image.SCALE_DEFAULT);

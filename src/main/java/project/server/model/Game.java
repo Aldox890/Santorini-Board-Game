@@ -34,10 +34,17 @@ public class Game extends Observable implements Serializable {
     private ArrayList<String> godsList;
     private int nPlayers;
 
+    /**
+     *
+     * @return number of players in game
+     */
     public int getNPlayers(){
         return nPlayers;
     }
 
+    /**
+     * Initialize game object and add to godsList every god in Santorini
+     */
     public Game(){
         gameBoard = new Board();
         playerList = new ArrayList();
@@ -89,7 +96,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * remove a player when he disconnects
-     * @param p
+     * @param p player to disconnect
      * @throws IOException
      */
     public void removePlayer(Player p) throws IOException {
@@ -116,6 +123,7 @@ public class Game extends Observable implements Serializable {
     public void subNPlayers(){
         nPlayers = nPlayers -1;
     }
+
     public void setNPlayers(int nPlayers){
         this.nPlayers = nPlayers;
         startingPlayers = nPlayers;

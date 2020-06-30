@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
+/**
 * Class container of the infos of every player who's playing the game.
 * */
 public class PlayersPanel extends JPanel {
@@ -40,6 +40,12 @@ public class PlayersPanel extends JPanel {
 
     }
 
+    /**
+     * Sets for a player its panel information panel
+     * @param name
+     * @param c
+     * @return
+     */
     JPanel createLabel(String name, Color c){
         PlayerInfoPanel infoPanel = new PlayerInfoPanel();
         infoPanel.setBounds(10,0,250,50);
@@ -52,6 +58,11 @@ public class PlayersPanel extends JPanel {
         return infoPanel;
     }
 
+    /**
+     * Inserts a given player into the player slot with a color.
+     * @param player
+     * @param index
+     */
     void addSinglePlayer(String player, String index){
         if(Integer.parseInt(index) == 0){
             playerSlot.add(createLabel(player,Color.RED));
@@ -64,6 +75,10 @@ public class PlayersPanel extends JPanel {
         }
     }
 
+    /**
+     * Sets the color for each player
+     * @param players
+     */
     void addPlayers(String[] players){
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.RED);
@@ -74,7 +89,11 @@ public class PlayersPanel extends JPanel {
         }
     }
 
-    /*adds the god image of each player */
+    /**
+     * Adds the god image of each player
+     * @param player_name
+     * @param god_name
+     */
     void addGodThumbnail(String player_name, String god_name){
         for(PlayerInfoPanel p : playersInfoList){
             if(p.getUsername().equals(player_name)){
@@ -83,7 +102,10 @@ public class PlayersPanel extends JPanel {
         }
     }
 
-    /*sets the border to blue of the container of the player who has the turn */
+    /**
+     * Sets the border to blue of the container of the player who has the turn
+     * @param player
+     */
     public void setTurn(String player){
         for(PlayerInfoPanel p : playersInfoList){
             if(p.getUsername().equals(player)){
