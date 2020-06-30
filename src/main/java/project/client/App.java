@@ -5,10 +5,10 @@ import java.net.Socket;
 import java.util.Scanner;
 
 /**
- * Hello world!
+ * main app for CLI
  *
  */
-public class App // !! QUESTO E' SOLO UN TEST !!
+public class App
 {
     public static void main( String[] args ) throws IOException, ClassNotFoundException {
         //Client client = new Client("95.248.176.145",26175);
