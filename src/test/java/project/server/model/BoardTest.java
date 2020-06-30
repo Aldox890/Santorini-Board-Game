@@ -81,7 +81,7 @@ class BoardTest {
     @Test
     //Testing Arthemis and Athena move
     void moveWorkerArtemisAthena(){
-        p.selectGod("arthemis");
+        p.selectGod("artemis");
         p1.selectGod("athena");
         p2.selectGod("pan");
         b.createWorker(p,0,1);
