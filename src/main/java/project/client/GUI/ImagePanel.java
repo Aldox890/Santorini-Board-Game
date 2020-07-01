@@ -16,7 +16,6 @@ public class ImagePanel extends JPanel{
     int width;
     int height;
 
-    //Costruttore da eliminare
     public ImagePanel(int width, int height){
         try {
             this.width=width;

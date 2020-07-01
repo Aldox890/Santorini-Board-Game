@@ -14,7 +14,4 @@ public class NumPlayersInputDialog extends JDialog {
         threePlayersButton = new JButton("3");
 
     }
-
-
-
 }

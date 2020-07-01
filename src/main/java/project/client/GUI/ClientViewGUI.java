@@ -377,7 +377,6 @@ public class ClientViewGUI implements Observer {
                         System.out.println(mex.getErrorData());
                     }
                     break;
-
             }
         }
         catch (IOException e){

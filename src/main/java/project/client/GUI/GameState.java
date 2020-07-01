@@ -6,15 +6,12 @@ import java.util.ArrayList;
 
 public class GameState {
 
-    private ArrayList<String> availableGods;
-    private ArrayList<String> players;
     private String playerName, personalGod;
     private int playerAge;
     private boolean isMyTurn;
     private int hasSetWorkers;
     private boolean moveFlag, buildFlag;
     private int boardClicks;
-    private Cell[][] gameBoard;
     private int xStart, xDest, yStart, yDest;
 
     public GameState() {
@@ -23,7 +20,6 @@ public class GameState {
         moveFlag = false;
         buildFlag = false;
         boardClicks = 0;
-        gameBoard = null;
     }
 
     public int getHasSetWorkers() {
@@ -56,14 +52,6 @@ public class GameState {
 
     public void setBoardClicks(int boardClicks) {
         this.boardClicks = boardClicks;
-    }
-
-    public Cell[][] getGameBoard() {
-        return gameBoard;
-    }
-
-    public void setGameBoard(Cell[][] gameBoard) {
-        this.gameBoard = gameBoard;
     }
 
     public String getPlayerName() {
@@ -120,22 +108,6 @@ public class GameState {
 
     public void setyDest(int yDest) {
         this.yDest = yDest;
-    }
-
-    public ArrayList<String> getAvailableGods() {
-        return availableGods;
-    }
-
-    public void setAvailableGods(ArrayList<String> availableGods) {
-        this.availableGods = availableGods;
-    }
-
-    public ArrayList<String> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(ArrayList<String> players) {
-        this.players = players;
     }
 
     public String getPersonalGod() {

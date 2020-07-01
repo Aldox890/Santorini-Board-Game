@@ -62,7 +62,7 @@
               <manifest>
                 <addClasspath>true</addClasspath>
                 <classpathPrefix>lib/</classpathPrefix>
-                <mainClass>project.client.App</mainClass>
+                <mainClass>project.server.ServerMain</mainClass>
               </manifest>
             </archive>
           </configuration>
