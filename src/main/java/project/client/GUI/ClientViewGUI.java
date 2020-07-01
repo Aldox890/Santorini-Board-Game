@@ -52,6 +52,9 @@ public class ClientViewGUI implements Observer {
         gameState = new GameState();
     }
 
+    /**
+     * Creates the JFrame for loggin in
+     */
     public void loginWithFrame(){
         try {
             login_frame=new LoginFrame(this.objectOutputStream);
@@ -61,6 +64,9 @@ public class ClientViewGUI implements Observer {
         }
     }
 
+    /**
+     * Creates the JFrame of the GUI
+     */
     public void createGameFrame() {
         login_frame.setVisible(false);
         alertPanel = new AlertPanel();
@@ -118,6 +124,10 @@ public class ClientViewGUI implements Observer {
         });
     }
 
+    /**
+     * Creates a dialog asking to the first connected client how many players the game will be played by.
+     * @return
+     */
     public int startingDialogBox(){
         Object[] options = {"2",
                 "3"};
@@ -132,6 +142,10 @@ public class ClientViewGUI implements Observer {
         return n;
     }
 
+    /**
+     * Gets the list of players from the server and puts it in a local list.
+     * @param mex
+     */
     public void addPlayersList(Message mex){
             String[] serverResponse = mex.getData().split(";");
             for(int i=0;i<=serverResponse.length-1;i++){
@@ -142,6 +156,10 @@ public class ClientViewGUI implements Observer {
             players_panel.setVisible(true);
     }
 
+    /**
+     * Create the panel with all the god cards to be chosen by the eldest player
+     * @throws IOException
+     */
     public void choseAllowedGods() throws IOException {
         if(players.get(players.size()-1).equals(login_frame.getUsername())){ //last player in list (eldest) choses the gods
             System.out.println("You are the most godlike player");
@@ -155,6 +173,10 @@ public class ClientViewGUI implements Observer {
         }
     }
 
+    /**
+     * Gets the list of playable gods from the message and puts it in a local list
+     * @param mex
+     */
     public void addAllowedGods(Message mex){
         String[] serverGodList = mex.getData().split(";");
 
@@ -166,6 +188,11 @@ public class ClientViewGUI implements Observer {
         System.out.println();
     }
 
+    /**
+     * Creates the panel with the cards of the gods contained inside the message.
+     * @param mex
+     * @throws IOException
+     */
     public void choseGod(Message mex) throws IOException {
         if(mex.getTurnOf().equals(login_frame.getUsername()) && !availableGods.isEmpty()){  //tocca a me
 
@@ -179,6 +206,10 @@ public class ClientViewGUI implements Observer {
         }
     }
 
+    /**
+     * Removes the god chosen by a player, given the message coming from the server.
+     * @param mex
+     */
     public void removeAllowedGod(Message mex){
         if(!mex.getData().equals("false")){
             String[] selectedGod = mex.getData().split(";");
@@ -192,6 +223,10 @@ public class ClientViewGUI implements Observer {
         }
     }
 
+    /**
+     * Creates a dialog asking if the previous game saved in server should be loaded.
+     * @return
+     */
     public int loadGame(){
         Object[] options = {"YES",
                 "NO"};
@@ -206,7 +241,27 @@ public class ClientViewGUI implements Observer {
         return n;
     }
 
-
+    /**
+     *Receives the message coming from the server.
+     * Parses the message and based on the content of the Data and TypeOfMessage field, does a certain operation.
+     * TypeOfMessage codes:
+     * 0 – Registration.
+     * 3 – Connected players list.
+     * 1 – Selected gods list.
+     * 2 – God selected by a player.
+     * 4 – Receive a player’s worker starting position.
+     * 5 & 6 – Receives the new board after a build/move.
+     * 20 – Confirmation message of connection.
+     * 25 – Crash handler during god selection.
+     * 30 – Players win condition.
+     * 40 – A player is stuck with both workers.
+     * 60 – Request to load a game.
+     * 65 – Receive previous game data.
+     * 70 – Tells the player the game state after loading.
+     * 420 – Contains a list of players and their gods.
+     * @param o
+     * @param arg
+     */
     @Override
     public void update(Observable o, Object arg) {
         Message mex = (Message) arg;
@@ -380,7 +435,7 @@ public class ClientViewGUI implements Observer {
             }
         }
         catch (IOException e){
-
+            e.printStackTrace();
         }
 
 

@@ -56,12 +56,17 @@ public class Board implements Serializable {
     }
 
     /**
-     *
      * Checks if it's possible to move from (x_start, y_start) to (x_dest, y_dest)
      * Checks if the requested position is already occupied by another worker
      * Moves the worker in the position at coordinates (x,y) or sends back an error message
      * Sets the previous occupied cell to "null" (so that the cell is now empty)
      * @return 0 if a move is not allowed, 1 if a move is allowed, -1 if a move bring a player to win
+     * @param player
+     * @param x_start
+     * @param y_start
+     * @param x_dest
+     * @param y_dest
+     * @return 0 if something went wrong, else 1.
      */
     public int move(Player player, int x_start, int y_start, int x_dest, int y_dest){
 
@@ -175,8 +180,12 @@ public class Board implements Serializable {
     }
 
     /**
-     * sets the previous occupied cell to "null" (so that the cell is now empty)
-     * sets the worker into the requested cell
+     * Sets the previous occupied cell to "null" (so that the cell is now empty)
+     * Sets the worker into the requested cell.
+     * @param worker
+     * @param posX
+     * @param posY
+     * @return true if the worker got moved into a new position, else false
      */
     public boolean moveWorker(Worker worker, int posX, int posY){
         oldCell = new Cell(worker.getCell().getX(), worker.getCell().getY());//previously occupied cell
@@ -184,7 +193,7 @@ public class Board implements Serializable {
         worker.setCell(board[posX][posY]);
         board[posX][posY].setOccupiedBy(worker);
         this.numberOfMoves++;
-        return true; //returns true if the worker got moved into a new position
+        return true;
     }
 
 
@@ -305,8 +314,11 @@ public class Board implements Serializable {
     }
 
     /**
-     * add level to actual level, set level to 4 if parameter is 4
+     * Add level to actual level, set level to 4 if parameter is 4
+     * @param worker
      * @param level 1 if standard build, 2 if hephaestus build, 4 if atlas build
+     * @param posX
+     * @param posY
      */
     public void buildInPos(Worker worker,int level,int posX,int posY){
         if(level < 4) {
@@ -320,7 +332,9 @@ public class Board implements Serializable {
     }
 
     /**
-     * Given (x,y) a worker position, returns true if the worker is stuck in his position
+     * Checks if a worker at a certain position is stucked
+     * @param x
+     * @param y
      * @return true if the worker is stuck, else false
      */
     public boolean checkStuckWorker(int x, int y){
@@ -364,6 +378,10 @@ public class Board implements Serializable {
 
     /**
      * Checks if (x_dest,y_dest) level is lower than (x_start,y_start) level + 1
+     * @param x_start
+     * @param y_start
+     * @param x_dest
+     * @param y_dest
      * @return true if (x_dest,y_dest) level is lower than (x_start,y_start) level + 1, else false
      */
     public boolean tooHighToMove(int x_start,int y_start,int x_dest,int y_dest){

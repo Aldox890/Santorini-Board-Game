@@ -103,10 +103,10 @@ public class ControlsPanel extends ImagePanel {
 
     /**
      * Sets the button "b" with the given width, height and image.
-     * @param b
-     * @param path
-     * @param width
-     * @param height
+     * @param b reference to a certain Jbutton to modify
+     * @param path path of the image to insert as image of the button
+     * @param width width of the button
+     * @param height height of the button
      */
     void setButton(JButton b, String path, int width, int height){
         ImageIcon imgbtn = resizeImageButton(new ImageIcon(path),width,height);
@@ -227,10 +227,10 @@ public class ControlsPanel extends ImagePanel {
 
     /**
      * Given an ImageIcon and the desirable width and height, return a new ImageIcon with the given dimension.
-     * @param img
-     * @param width
-     * @param height
-     * @return
+     * @param img Image to insert
+     * @param width desirable width
+     * @param height desirable height
+     * @return Image with given image file, width and height
      */
     ImageIcon resizeImageButton(ImageIcon img, int width, int height){
         Image i = img.getImage();

@@ -12,11 +12,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Stream;
 
 
-/*
-* "Subject" class that contains all of the Model status attributes,
-* and to be observed by the Observers.
-*  */
-
 public class Game extends Observable implements Serializable {
     private ArrayList <String> startingNames = new ArrayList<>();
     private int startingPlayers;
@@ -77,6 +72,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Notifies the observers about changes.
+     * @param obj
      */
     public void notifyObserver(Object obj){
         for (Observer observer : this.observers) {
@@ -84,9 +80,12 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-
     /**
-     * notifies the client through the observer that has occoured an error in the input
+     * Notifies the client through the observer that has occoured an error in the input
+     * @param socketId
+     * @param typeOfMessage
+     * @param data
+     * @param errorData
      */
     public void badInputException(int socketId,int typeOfMessage,String data, String errorData){
         Message mex = new Message(socketId,typeOfMessage,data, turnOf.getName());
@@ -223,6 +222,8 @@ public class Game extends Observable implements Serializable {
     /**
      * Sets the 3 allowed gods to allowedGods list.
      * Broadcast list to all players if it works.
+     * @param gods
+     * @param socketId
      * @return true if gods are set, false if fails
      */
     public boolean setGods(ArrayList<String> gods, int socketId) {
@@ -278,6 +279,9 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Sets god chosen by a player and remove god from allowedGods list
+     * @param god
+     * @param player
+     * @param socketId
      */
     public void addGod(String god, Player player, int socketId){
         if(allowedGods.contains(god)){
@@ -334,7 +338,13 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * Method that invokes Board.move() and according to results sends different messages to clients
+     * Invokes move() and according to results sends different messages to clients
+     * @param p
+     * @param xStart
+     * @param yStart
+     * @param xDest
+     * @param yDest
+     * @param socketId
      */
     public void moveWorker(Player p,int xStart,int yStart,int xDest, int yDest, int socketId) {
         int ris = gameBoard.move(p, xStart, yStart, xDest, yDest);
@@ -358,9 +368,15 @@ public class Game extends Observable implements Serializable {
 
     }
 
-
     /**
-     * Method that invokes Board.build() and according to results sends different messages to clients
+     * Invokes Board.build() and according to results sends different messages to clients
+     * @param p
+     * @param xStart
+     * @param yStart
+     * @param xDest
+     * @param yDest
+     * @param level
+     * @param socketId
      */
     public void build(Player p,int xStart,int yStart,int xDest, int yDest,int level, int socketId){   // <------ DA MODIFICARE
         if (gameBoard.build(p, level, xStart, yStart, xDest, yDest)) {
@@ -376,9 +392,10 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * checks if a player has both the workers stucked
-     * if true, removes the player from game and his workers from board
-    */
+     * Checks if a player has both the workers stucked and removes the player from game and his workers from board when the condition is verified.
+     * @param p
+     * @throws IOException
+     */
     public void checkStuckPlayer(Player p) throws IOException {
 
         if(p.getWorkers().size() < 2){
@@ -418,7 +435,6 @@ public class Game extends Observable implements Serializable {
         return playerList;
     }
 
-    //PER TESTING
     public ArrayList<String> getGodList() {
         return allowedGods;
     }
@@ -444,8 +460,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     *Check if there is a game in "savedgames" directory with same players of the actual game
-    */
+     * Check if there is a game in "savedgames" directory with same players of the actual game
+     */
      public void checkGame(){
         File f = new File("savedgames");
         String[] fileList = f.list();
@@ -466,6 +482,8 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Loads an existing game
+     * @throws IOException
+     * @throws ClassNotFoundException
      */
     public void loadGame() throws IOException, ClassNotFoundException {
         file=".//savedgames//"+file;
@@ -494,10 +512,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     *
      * @return all players name in this format name1-name2-name3-
      */
-
     public String playersName(){
         String s="";
         for(int i=0;i<playerList.size();i++) {
@@ -508,6 +524,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Checks if actual game players are the same of the saved games
+     * @param names
      * @return true if there are a game with same players, else false
      */
     public boolean checkNames(String[] names){
@@ -526,7 +543,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     *players in actual game will have same gods they had in the saved game
+     * Players in actual game will have same gods they had in the previous saved game
+     * @param plNew
      */
     public void fixGods(ArrayList<Player> plNew){
         for(int i=0;i<playerList.size();i++){
@@ -542,7 +560,7 @@ public class Game extends Observable implements Serializable {
 
 
     /**
-     * used if a player doesn't want to load a previous game
+     * Used if a player doesn't want to load a previous game
      */
     public void callGod(){
         String response = "";
@@ -563,7 +581,7 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * When a game is completed his file is deleted
+     * When a game gets to an end, its file is deleted
      */
     public void deleteSavedGame(){
         String filename="";
