@@ -17,12 +17,12 @@ import java.util.Scanner;
 * This class observes the action taken by the Client, and manages the messages exchanged between the View and the Controller
 * */
 public class ClientObserver implements Runnable {
-    GameController gameController;
-    Socket socket;
-    Scanner in;
-    PrintWriter out;
-    Player player;
-    ObjectInputStream ois;
+    private GameController gameController;
+    private Socket socket;
+    private Scanner in;
+    private PrintWriter out;
+    private Player player;
+    private ObjectInputStream ois;
     private int socketId;
 
     public ClientObserver(GameController gameController, Socket socket,ObjectInputStream i, int socketId) throws IOException {
