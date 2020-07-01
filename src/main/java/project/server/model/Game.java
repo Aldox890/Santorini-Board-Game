@@ -205,7 +205,6 @@ public class Game extends Observable implements Serializable {
                 }
                 Message mex = new Message(-1, 4, "true", turnOf.getName());
                 mex.addBoard(gameBoard.getBoard());
-                printBoard(mex);
                 notifyObserver(mex);
                 return true;
             }
@@ -220,27 +219,6 @@ public class Game extends Observable implements Serializable {
         }
     }
 
-    /**
-     * Method that print the board
-     * @param mex mex sent to client
-     */
-    public void printBoard(Message mex){
-        //Cell[][] board = mex.getBoard();
-
-        for(int i = 0;i<5;i++){
-            for(int j = 0;j<5;j++){
-                if(mex.getCell(i,j).isOccupiedBy() != null) {
-                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
-                    System.out.print(color+" P "+reset);
-                }
-                else{
-                    System.out.print(" " + mex.getCell(i,j).getLevel() + " ");
-                }
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-    }
 
     /**
      * Sets the 3 allowed gods to allowedGods list.

@@ -11,9 +11,6 @@ public class Player implements Serializable {
     private int age;
     private ArrayList<Worker> workers = new ArrayList<>();
     private Color color;
-
-
-
     private String god;
 
     /**

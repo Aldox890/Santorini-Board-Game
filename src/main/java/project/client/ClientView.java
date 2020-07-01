@@ -337,9 +337,9 @@ public class ClientView implements Observer {
             System.exit(0);
         }
         if(serverResponse.length == 3){
-            System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+Color.CYAN.getColor()+" 3rd-"+serverResponse[2]+"\u001B[0m");
+            System.out.println("Giocatori connessi: "+"1st-"+serverResponse[0]+" 2nd-"+serverResponse[1]+" 3rd-"+serverResponse[2]+"");
         }else if(serverResponse.length == 2){
-            System.out.println("Giocatori connessi: "+ Color.RED.getColor()+"1st-"+serverResponse[0]+Color.YELLOW.getColor()+" 2nd-"+serverResponse[1]+"\u001B[0m");
+            System.out.println("Giocatori connessi: "+"1st-"+serverResponse[0]+" 2nd-"+serverResponse[1]+"");
         }
         for(int i=0;i<=serverResponse.length-1;i++){
             players.add(serverResponse[i]);
@@ -375,9 +375,9 @@ public class ClientView implements Observer {
             for(int j = 0;j<5;j++){
                 if(board[i][j].isOccupiedBy() != null) {
                     String player = mex.getCell(i,j).isOccupiedBy().getOwner().getName().substring(0,1).toUpperCase();  //iniziale player
-                    String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
+                    //String color = mex.getCell(i,j).isOccupiedBy().getOwner().getColor().getColor();
                     String lvl = Integer.toString(mex.getCell(i,j).getLevel()); //level
-                    System.out.print(color+player+lvl+" "+reset);
+                    System.out.print(player+lvl+" ");
                 }
                 else{
                     System.out.print(" " + board[i][j].getLevel() + " ");
