@@ -241,5 +241,4 @@ public class BoardPanel extends JPanel {
                 options[0]); //default button title
         return n;
     }
-
 }

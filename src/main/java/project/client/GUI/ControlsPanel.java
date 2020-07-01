@@ -62,7 +62,7 @@ public class ControlsPanel extends ImagePanel {
      * @param godName
      */
     public void createGodPanel(String godName){
-        godCardPanel = new ImagePanel("graphics//gods//cards//"+ godName+".png",200,250);//new ImagePanel(bgpath+"SidePanel.png",200,300);
+        godCardPanel = new ImagePanel("graphics//gods//cards//" + godName+".png",200,250);//new ImagePanel(bgpath+"SidePanel.png",200,300);
         godCardPanel.setMinimumSize(new Dimension(200, 250));
         godCardPanel.setPreferredSize(new Dimension(200, 250));
         godCardPanel.setMaximumSize(new Dimension(200, 250));

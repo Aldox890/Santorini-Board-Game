@@ -3,7 +3,7 @@
     <output-path>$PROJECT_DIR$/out/artifacts/ing_sw_2020_plenzich_sala_siracusa_jar</output-path>
     <root id="archive" name="ing-sw-2020-plenzich-sala-siracusa.jar">
       <element id="module-output" name="ing-sw-2020-plenzich-sala-siracusa" />
-      <element id="dir-copy" path="$PROJECT_DIR$/src/main/java/graphics" />
+      <element id="dir-copy" path="$PROJECT_DIR$/graphics" />
     </root>
   </artifact>
 </component>

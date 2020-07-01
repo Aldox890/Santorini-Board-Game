@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 /**
 * Class of the frame for the login
