@@ -1,15 +1,7 @@
 package project.client.GUI;
 
-import project.ClientMessage;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 public class AlertPanel extends JPanel {
 
