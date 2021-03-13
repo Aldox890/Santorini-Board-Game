@@ -1,8 +1,5 @@
-### Requirements met
-- Server
-- CLI
-- GUI
-- 1 Advanced functionality: Save game
+### Description
+Santorini is a board game made in java as university project during accademic year 2019/2020 in a team of 3 people.
 
 ### How to start the game
 Jar files are located in Deliveries/Final/jar:
